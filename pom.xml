@@ -134,6 +134,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/esb-connector-amazonsqs.git</connection>
+        <url>https://github.com/wso2-extensions/esb-connector-amazonsqs.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-amazonsqs</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
             <plugin>

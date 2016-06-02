@@ -317,6 +317,11 @@ public class AmazonSQSConstants {
      * Constant for Ampersand.
      */
     public static final String AMPERSAND = "&";
+
+    /**
+     * Constant for Ampersand.
+     */
+    public static final String CURLYBRACE = "{";
     
     /**
      * Error code constant for Invalid parameters.

@@ -102,15 +102,25 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
             for (Map.Entry<String, String> entry : parametersMap.entrySet()) {
                 payloadBuilder.append(URLEncoder.encode(entry.getKey(), charSet));
                 payloadBuilder.append(AmazonSQSConstants.EQUAL);
-                payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
+                if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY) && entry.getValue().startsWith("{")){
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue().replace("\"", "'"), charSet));
+                } else {
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
+                }
                 payloadBuilder.append(AmazonSQSConstants.AMPERSAND);
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(entry.getKey());
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(AmazonSQSConstants.COLON);
-                payloadStrBuilder.append('"');
-                payloadStrBuilder.append(entry.getValue());
-                payloadStrBuilder.append('"');
+                if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY) && entry.getValue().startsWith("{")){
+                    payloadStrBuilder.append('"');
+                    payloadStrBuilder.append(entry.getValue().replace("\"", "'"));
+                    payloadStrBuilder.append('"');
+                } else {
+                    payloadStrBuilder.append('"');
+                    payloadStrBuilder.append(entry.getValue());
+                    payloadStrBuilder.append('"');
+                }
                 payloadStrBuilder.append(AmazonSQSConstants.COMMA);
             }
 

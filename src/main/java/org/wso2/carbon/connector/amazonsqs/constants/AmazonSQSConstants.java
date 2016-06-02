@@ -319,7 +319,7 @@ public class AmazonSQSConstants {
     public static final String AMPERSAND = "&";
 
     /**
-     * Constant for Ampersand.
+     * Constant for Curly Brace.
      */
     public static final String CURLYBRACE = "{";
     

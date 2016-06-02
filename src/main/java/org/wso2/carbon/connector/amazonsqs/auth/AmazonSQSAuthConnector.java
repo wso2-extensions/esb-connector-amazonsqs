@@ -103,7 +103,7 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadBuilder.append(URLEncoder.encode(entry.getKey(), charSet));
                 payloadBuilder.append(AmazonSQSConstants.EQUAL);
                 if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY) && entry.getValue().startsWith("{")){
-                    payloadBuilder.append(URLEncoder.encode(entry.getValue().replace("\"", "'"), charSet));
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
                 } else {
                     payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
                 }
@@ -114,7 +114,7 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append(AmazonSQSConstants.COLON);
                 payloadStrBuilder.append('"');
                 if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY) && entry.getValue().startsWith("{")){
-                    payloadStrBuilder.append(entry.getValue().replace("\"", "'"));
+                    payloadStrBuilder.append(entry.getValue().replace("\"", "\\\""));
                 } else {
                     payloadStrBuilder.append(entry.getValue());
                 }

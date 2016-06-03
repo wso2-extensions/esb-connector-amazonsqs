@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.connector.amazonsqs.constants;
 
+import java.util.ArrayList;
+
 /**
  * AmazonSQS contains required constants.
  */
@@ -317,6 +319,14 @@ public class AmazonSQSConstants {
      * Constant for Ampersand.
      */
     public static final String AMPERSAND = "&";
+
+    /**
+     * Constant for JSON start characters.
+     */
+    public static final ArrayList<String> JSON_START_CHARACTER = new ArrayList<String>() {{
+        add("{");
+        add("[");
+    }};
     
     /**
      * Error code constant for Invalid parameters.

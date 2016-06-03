@@ -102,7 +102,12 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
             for (Map.Entry<String, String> entry : parametersMap.entrySet()) {
                 payloadBuilder.append(URLEncoder.encode(entry.getKey(), charSet));
                 payloadBuilder.append(AmazonSQSConstants.EQUAL);
-                payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
+                if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
+                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue().replace("\\\"", "\""), charSet));
+                } else {
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue(), charSet));
+                }
                 payloadBuilder.append(AmazonSQSConstants.AMPERSAND);
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(entry.getKey());
@@ -111,7 +116,7 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append('"');
                 if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
                         && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
-                    payloadStrBuilder.append(entry.getValue().replace("\"", "\\\""));
+                    payloadStrBuilder.append(entry.getValue().replace("\"", "\\\"").replace("\\\\\"", "\\\""));
                 } else {
                     payloadStrBuilder.append(entry.getValue());
                 }

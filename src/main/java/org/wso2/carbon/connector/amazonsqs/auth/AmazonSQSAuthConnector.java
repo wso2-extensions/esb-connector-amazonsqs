@@ -110,7 +110,8 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append(AmazonSQSConstants.COLON);
                 payloadStrBuilder.append('"');
                 if(entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
-                        && entry.getValue().startsWith(AmazonSQSConstants.CURLYBRACE)){
+                        && (entry.getValue().startsWith(AmazonSQSConstants.CURLYBRACE))
+                        || entry.getValue().startsWith(AmazonSQSConstants.SQUAREBRACE)){
                     payloadStrBuilder.append(entry.getValue().replace("\"", "\\\""));
                 } else {
                     payloadStrBuilder.append(entry.getValue());

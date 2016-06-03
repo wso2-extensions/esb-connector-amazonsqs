@@ -322,6 +322,11 @@ public class AmazonSQSConstants {
      * Constant for Curly Brace.
      */
     public static final String CURLYBRACE = "{";
+
+    /**
+     * Constant for Square Brace.
+     */
+    public static final String SQUAREBRACE = "[";
     
     /**
      * Error code constant for Invalid parameters.

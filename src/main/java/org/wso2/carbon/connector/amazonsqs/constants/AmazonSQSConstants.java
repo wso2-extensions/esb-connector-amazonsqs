@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.connector.amazonsqs.constants;
 
+import java.util.ArrayList;
+
 /**
  * AmazonSQS contains required constants.
  */
@@ -319,14 +321,12 @@ public class AmazonSQSConstants {
     public static final String AMPERSAND = "&";
 
     /**
-     * Constant for Curly Brace.
+     * Constant for JSON start characters.
      */
-    public static final String CURLYBRACE = "{";
-
-    /**
-     * Constant for Square Brace.
-     */
-    public static final String SQUAREBRACE = "[";
+    public static final ArrayList<String> JSON_START_CHARACTER = new ArrayList<String>() {{
+        add("{");
+        add("[");
+    }};
     
     /**
      * Error code constant for Invalid parameters.

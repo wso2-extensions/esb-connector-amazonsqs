@@ -1,0 +1,66 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "ReceiveMessageResponse",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "ReceiveMessageResult": {
+      "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult",
+      "type": "object",
+      "properties": {
+        "Message": {
+          "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message",
+          "type": "object",
+          "properties": {
+            "Body": {
+              "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/Body",
+              "type": "string"
+            },
+            "MD5OfBody": {
+              "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/MD5OfBody",
+              "type": "string"
+            },
+            "ReceiptHandle": {
+              "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/ReceiptHandle",
+              "type": "string"
+            },
+            "Attribute": {
+              "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/Attribute",
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/Attribute\/Name",
+                  "type": "string"
+                },
+                "Value": {
+                  "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/Attribute\/Value",
+                  "type": "number"
+                }
+              }
+            },
+            "MessageId": {
+              "id": "http:\/\/wso2jsonschema.org\/ReceiveMessageResult\/Message\/MessageId",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ResponseMetadata": {
+      "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata",
+      "type": "object",
+      "properties": {
+        "RequestId": {
+          "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata\/RequestId",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "namespaces": [
+    {
+      "prefix": "axis2ns1",
+      "url": "http:\/\/queue.amazonaws.com\/doc\/2012-11-05\/"
+    }
+  ]
+}

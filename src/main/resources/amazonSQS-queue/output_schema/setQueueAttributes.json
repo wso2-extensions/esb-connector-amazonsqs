@@ -1,0 +1,24 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "SetQueueAttributesResponse",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "ResponseMetadata": {
+      "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata",
+      "type": "object",
+      "properties": {
+        "RequestId": {
+          "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata\/RequestId",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "namespaces": [
+    {
+      "prefix": "axis2ns12",
+      "url": "http:\/\/queue.amazonaws.com\/doc\/2012-11-05\/"
+    }
+  ]
+}

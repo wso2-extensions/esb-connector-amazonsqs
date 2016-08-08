@@ -1,0 +1,54 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "SendMessageBatchResponse",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "SendMessageBatchResult": {
+      "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult",
+      "type": "object",
+      "properties": {
+        "SendMessageBatchResultEntry": {
+          "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult\/SendMessageBatchResultEntry",
+          "type": "array",
+          "items": [
+            {
+              "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult\/SendMessageBatchResultEntry\/0",
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult\/SendMessageBatchResultEntry\/0\/Id",
+                  "type": "string"
+                },
+                "MessageId": {
+                  "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult\/SendMessageBatchResultEntry\/0\/MessageId",
+                  "type": "string"
+                },
+                "MD5OfMessageBody": {
+                  "id": "http:\/\/wso2jsonschema.org\/SendMessageBatchResult\/SendMessageBatchResultEntry\/0\/MD5OfMessageBody",
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ResponseMetadata": {
+      "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata",
+      "type": "object",
+      "properties": {
+        "RequestId": {
+          "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata\/RequestId",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "namespaces": [
+    {
+      "prefix": "axis2ns16",
+      "url": "http:\/\/queue.amazonaws.com\/doc\/2012-11-05\/"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "queueId": {
+      "id": "http:\/\/wso2jsonschema.org\/queueId",
+      "type": "number"
+    },
+    "queueName": {
+      "id": "http:\/\/wso2jsonschema.org\/queueName",
+      "type": "string"
+    },
+    "messageBody": {
+      "id": "http:\/\/wso2jsonschema.org\/messageBody",
+      "type": "string"
+    },
+    "messageAttributes": {
+      "id": "http:\/\/wso2jsonschema.org\/messageAttributes",
+      "type": "string",
+      "nullable": "true"
+    },
+    "delaySeconds": {
+      "id": "http:\/\/wso2jsonschema.org\/delaySeconds",
+      "type": "number",
+      "nullable": "true"
+    }
+  },
+  "type": "object"
+}

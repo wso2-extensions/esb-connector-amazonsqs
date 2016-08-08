@@ -1,0 +1,28 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "queueName": {
+      "id": "http:\/\/wso2jsonschema.org\/queueName",
+      "type": "string"
+    },
+    "queueId": {
+      "id": "http:\/\/wso2jsonschema.org\/queueId",
+      "type": "number"
+    },
+    "awsAccountNumbers": {
+      "id": "http:\/\/wso2jsonschema.org\/awsAccountNumbers",
+      "type": "string"
+    },
+    "actionNames": {
+      "id": "http:\/\/wso2jsonschema.org\/actionNames",
+      "type": "string"
+    },
+    "label": {
+      "id": "http:\/\/wso2jsonschema.org\/label",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

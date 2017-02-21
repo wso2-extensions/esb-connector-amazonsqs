@@ -44,6 +44,8 @@
             <property name="messageAttributes" expression="//messageAttributes/text()"/>
             <property name="accessKeyId" expression="//accessKeyId/text()"/>
             <property name="secretAccessKey" expression="//secretAccessKey/text()"/>
+            <property name="enableSSL" expression="//enableSSL/text()"/>
+            <property name="blocking" expression="//blocking/text()"/>
             <property name="version" expression="//version/text()"/>
             <property name="region" expression="//region/text()"/>
             <property name="accountId" expression="//accountId/text()"/>
@@ -51,6 +53,7 @@
             <amazonsqs.init>
                 <secretAccessKey>{$ctx:secretAccessKey}</secretAccessKey>
                 <accessKeyId>{$ctx:accessKeyId}</accessKeyId>
+                <enableSSL>{$ctx:enableSSL}</enableSSL>
                 <version>{$ctx:version}</version>
                 <region>{$ctx:region}</region>
             </amazonsqs.init>

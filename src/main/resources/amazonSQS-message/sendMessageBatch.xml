@@ -47,11 +47,22 @@
         </payloadFactory>
         <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
-        <call>
-            <endpoint>
-                <http method="post" uri-template="legacy-encoding:{uri.var.apiUrl}{uri.var.httpRequestUri}"/>
-            </endpoint>
-        </call>
+        <filter source="$ctx:amazonSQSBlocking" regex="true">
+            <then>
+                <call blocking="true">
+                    <endpoint>
+                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}"/>
+                    </endpoint>
+                </call>
+            </then>
+            <else>
+                <call>
+                    <endpoint>
+                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}"/>
+                    </endpoint>
+                </call>
+            </else>
+        </filter>
         <!-- Remove custom header information -->
         <header name="Proxy-Connection" scope="transport" action="remove"/>
         <header name="x-amzn-RequestId" scope="transport" action="remove"/>

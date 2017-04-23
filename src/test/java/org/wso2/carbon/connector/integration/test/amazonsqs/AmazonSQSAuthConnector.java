@@ -355,6 +355,8 @@ public class AmazonSQSAuthConnector {
         map.put(AmazonSQSConstants.LABEL, AmazonSQSConstants.API_LABEL);
         map.put(AmazonSQSConstants.PAYLOAD_QUEUE_NAME, AmazonSQSConstants.API_QUEUE_NAME);
         map.put(AmazonSQSConstants.MESSAGE_BODY, AmazonSQSConstants.API_MESSAGE_BODY);
+        map.put(AmazonSQSConstants.MESSAGE_GROUP_ID, AmazonSQSConstants.API_MESSAGE_GROUP_ID);
+        map.put(AmazonSQSConstants.MESSAGE_DEDUPLICATION_ID, AmazonSQSConstants.API_MESSAGE_DEDUPLICATION_ID);
         map.put(AmazonSQSConstants.RECEIPT_HANDLE, AmazonSQSConstants.API_RECEIPT_HANDLE);
         map.put(AmazonSQSConstants.MAX_NO_OF_MESSAGES, AmazonSQSConstants.API_MAX_NO_OF_MESSAGES);
         map.put(AmazonSQSConstants.VISIBILITY_TIMEOUT, AmazonSQSConstants.API_VISIBILITY_TIMEOUT);
@@ -365,8 +367,7 @@ public class AmazonSQSAuthConnector {
         map.put(AmazonSQSConstants.HOST, AmazonSQSConstants.API_HOST);
         map.put(AmazonSQSConstants.CONTENT_TYPE, AmazonSQSConstants.API_CONTENT_TYPE);
         map.put(AmazonSQSConstants.AMZ_DATE, AmazonSQSConstants.API_AMZ_DATE);
-
-
+        
         return map;
     }
 

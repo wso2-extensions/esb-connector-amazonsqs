@@ -580,6 +580,26 @@ public class AmazonSQSConstants {
     public static final String API_MESSAGE_BODY = "MessageBody";
 
     /**
+     * Constant for MEssage Body.
+     */
+    public static final String MESSAGE_DEDUPLICATION_ID = "messageDeduplicationId";
+
+    /**
+     * Constant for API variable Message Body.
+     */
+    public static final String API_MESSAGE_DEDUPLICATION_ID = "MessageDeduplicationId";
+
+    /**
+     * Constant for MEssage Body.
+     */
+    public static final String MESSAGE_GROUP_ID = "messageGroupId";
+
+    /**
+     * Constant for API variable Message Body.
+     */
+    public static final String API_MESSAGE_GROUP_ID = "MessageGroupId";
+
+    /**
      * Constant for API variable AWS account Id.
      */
     public static final String API_ACCOUNT_ID = "QueueOwnerAWSAccountId";

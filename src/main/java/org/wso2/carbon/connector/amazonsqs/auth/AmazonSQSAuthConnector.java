@@ -243,8 +243,8 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 AmazonSQSConstants.PAYLOAD_QUEUE_NAME, AmazonSQSConstants.LABEL, AmazonSQSConstants.MESSAGE_BODY,
                 AmazonSQSConstants.LABEL, AmazonSQSConstants.MESSAGE_BODY, AmazonSQSConstants.RECEIPT_HANDLE,
                 AmazonSQSConstants.MAX_NO_OF_MESSAGES, AmazonSQSConstants.VISIBILITY_TIMEOUT,
-                AmazonSQSConstants.WAIT_TIME_SECONDS, AmazonSQSConstants.DELAY_SECONDS, AmazonSQSConstants.AWS_ACCOUNT_ID
-
+                AmazonSQSConstants.WAIT_TIME_SECONDS, AmazonSQSConstants.DELAY_SECONDS, AmazonSQSConstants.AWS_ACCOUNT_ID,
+                AmazonSQSConstants.MESSAGE_GROUP_ID, AmazonSQSConstants.MESSAGE_DEDUPLICATION_ID
         };
     }
 
@@ -365,6 +365,8 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
         map.put(AmazonSQSConstants.LABEL, AmazonSQSConstants.API_LABEL);
         map.put(AmazonSQSConstants.PAYLOAD_QUEUE_NAME, AmazonSQSConstants.API_QUEUE_NAME);
         map.put(AmazonSQSConstants.MESSAGE_BODY, AmazonSQSConstants.API_MESSAGE_BODY);
+        map.put(AmazonSQSConstants.MESSAGE_GROUP_ID, AmazonSQSConstants.API_MESSAGE_GROUP_ID);
+        map.put(AmazonSQSConstants.MESSAGE_DEDUPLICATION_ID, AmazonSQSConstants.API_MESSAGE_DEDUPLICATION_ID);
         map.put(AmazonSQSConstants.RECEIPT_HANDLE, AmazonSQSConstants.API_RECEIPT_HANDLE);
         map.put(AmazonSQSConstants.MAX_NO_OF_MESSAGES, AmazonSQSConstants.API_MAX_NO_OF_MESSAGES);
         map.put(AmazonSQSConstants.VISIBILITY_TIMEOUT, AmazonSQSConstants.API_VISIBILITY_TIMEOUT);

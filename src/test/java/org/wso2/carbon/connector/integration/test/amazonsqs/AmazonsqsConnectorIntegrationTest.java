@@ -242,6 +242,32 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
     }
 
     /**
+     * Positive test case for sendMessage method with optional parameters.
+     */
+    @Test(priority = 2, description = "AmazonSQS {sendMessage} integration test with optional parameters")
+    public void testSendMessageToFIFOQueueWithOptionalParameters() throws IOException, InvalidKeyException,
+                                                                          NoSuchAlgorithmException, IllegalStateException,
+                                                                          JSONException, XMLStreamException,
+                                                                          XPathExpressionException, SAXException,
+                                                                          ParserConfigurationException {
+
+        esbRequestHeadersMap.put("Action", "urn:sendMessage");
+        RestResponse< OMElement > esbResponse =
+                sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                                   "esb_sendMessage_toFIFOQueue_optional.xml");
+
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 200);
+        Assert.assertNotNull(getValueByExpression("//*[local-name()='MessageId']/text()",
+                                                  esbResponse.getBody()));
+        Assert.assertNotNull(getValueByExpression("//*[local-name()='SequenceNumber']/text()",
+                                                  esbResponse.getBody()));
+        Assert.assertFalse(getValueByExpression("//*[local-name()='MessageId']/text()",
+                                                esbResponse.getBody()).equals(""));
+        Assert.assertFalse(getValueByExpression("//*[local-name()='SequenceNumber']/text()",
+                                                esbResponse.getBody()).equals(""));
+    }
+
+    /**
      * Negative test case for sendMessage method.
      */
     @Test(priority = 2, dependsOnMethods = {"testSendMessageWithOptionalParameters"}, description = "AmazonSQS {sendMessage} integration test with optional parameters")

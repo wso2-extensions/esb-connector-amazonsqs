@@ -589,7 +589,7 @@ public class AmazonSQSConstants {
     public static final String REQUEST_ENTRIES = "uri.var.requestEntries";
     
     /**
-     * Constant for MEssage Body.
+     * Constant for Message Body.
      */
     public static final String MESSAGE_BODY = "uri.var.messageBody";
     
@@ -597,6 +597,26 @@ public class AmazonSQSConstants {
      * Constant for API variable Message Body.
      */
     public static final String API_MESSAGE_BODY = "MessageBody";
+
+    /**
+     * Constant for Message Group ID.
+     */
+    public static final String MESSAGE_GROUP_ID = "uri.var.messageGroupId";
+
+    /**
+     * Constant for API variable Message Group I.
+     */
+    public static final String API_MESSAGE_GROUP_ID = "MessageGroupId";
+
+    /**
+     * Constant for Message Deduplication ID.
+     */
+    public static final String MESSAGE_DEDUPLICATION_ID = "uri.var.messageDeduplicationId";
+
+    /**
+     * Constant for API variable Deduplication ID.
+     */
+    public static final String API_MESSAGE_DEDUPLICATION_ID = "MessageDeduplicationId";
     
     /**
      * Constant for Attribute Entries.

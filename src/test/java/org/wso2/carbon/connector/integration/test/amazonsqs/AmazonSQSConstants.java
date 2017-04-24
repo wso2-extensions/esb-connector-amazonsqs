@@ -570,7 +570,7 @@ public class AmazonSQSConstants {
     public static final String REQUEST_ENTRIES = "requestEntries";
 
     /**
-     * Constant for MEssage Body.
+     * Constant for Message Body.
      */
     public static final String MESSAGE_BODY = "messageBody";
 
@@ -580,22 +580,22 @@ public class AmazonSQSConstants {
     public static final String API_MESSAGE_BODY = "MessageBody";
 
     /**
-     * Constant for MEssage Body.
+     * Constant for Message Deduplication ID.
      */
     public static final String MESSAGE_DEDUPLICATION_ID = "messageDeduplicationId";
 
     /**
-     * Constant for API variable Message Body.
+     * Constant for API variable Deduplication ID.
      */
     public static final String API_MESSAGE_DEDUPLICATION_ID = "MessageDeduplicationId";
 
     /**
-     * Constant for MEssage Body.
+     * Constant for Message Group ID.
      */
     public static final String MESSAGE_GROUP_ID = "messageGroupId";
 
     /**
-     * Constant for API variable Message Body.
+     * Constant for API variable Group ID.
      */
     public static final String API_MESSAGE_GROUP_ID = "MessageGroupId";
 
@@ -666,7 +666,7 @@ public class AmazonSQSConstants {
     public static final String API_VISIBILITY_TIMEOUT = "VisibilityTimeout";
 
     /**
-     * COnstant for Wait Time Seconds.
+     * Constant for Wait Time Seconds.
      */
     public static final String WAIT_TIME_SECONDS = "waitTimeSeconds";
 

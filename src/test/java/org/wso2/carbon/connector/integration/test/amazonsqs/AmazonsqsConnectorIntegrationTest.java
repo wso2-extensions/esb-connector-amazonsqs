@@ -63,7 +63,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
-        init("amazonsqs-connector-1.0.4-SNAPSHOT");
+        init("amazonsqs-connector-1.0.4");
 
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "");
@@ -257,14 +257,10 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
                                    "esb_sendMessage_toFIFOQueue_optional.xml");
 
         Assert.assertEquals(esbResponse.getHttpStatusCode(), 200);
-        Assert.assertNotNull(getValueByExpression("//*[local-name()='MessageId']/text()",
-                                                  esbResponse.getBody()));
-        Assert.assertNotNull(getValueByExpression("//*[local-name()='SequenceNumber']/text()",
-                                                  esbResponse.getBody()));
-        Assert.assertFalse(getValueByExpression("//*[local-name()='MessageId']/text()",
-                                                esbResponse.getBody()).equals(""));
-        Assert.assertFalse(getValueByExpression("//*[local-name()='SequenceNumber']/text()",
-                                                esbResponse.getBody()).equals(""));
+        Assert.assertNotNull(getValueByExpression("//*[local-name()='MessageId']/text()", esbResponse.getBody()));
+        Assert.assertNotNull(getValueByExpression("//*[local-name()='SequenceNumber']/text()", esbResponse.getBody()));
+        Assert.assertFalse(getValueByExpression("//*[local-name()='MessageId']/text()", esbResponse.getBody()).equals(""));
+        Assert.assertFalse(getValueByExpression("//*[local-name()='SequenceNumber']/text()", esbResponse.getBody()).equals(""));
     }
 
     /**

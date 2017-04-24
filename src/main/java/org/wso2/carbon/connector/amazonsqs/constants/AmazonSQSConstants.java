@@ -604,7 +604,7 @@ public class AmazonSQSConstants {
     public static final String MESSAGE_GROUP_ID = "uri.var.messageGroupId";
 
     /**
-     * Constant for API variable Message Group I.
+     * Constant for API variable Message Group ID.
      */
     public static final String API_MESSAGE_GROUP_ID = "MessageGroupId";
 

@@ -49,6 +49,8 @@
             <property name="version" expression="//version/text()"/>
             <property name="region" expression="//region/text()"/>
             <property name="accountId" expression="//accountId/text()"/>
+            <property name="messageGroupId" expression="//messageGroupId/text()"/>
+            <property name="messageDeduplicationId" expression="//messageDeduplicationId/text()"/>
             <property name="messageRequestEntry" expression="//messageRequestEntry/text()"/>
             <amazonsqs.init>
                 <secretAccessKey>{$ctx:secretAccessKey}</secretAccessKey>
@@ -163,6 +165,8 @@
                         <messageBody>{$ctx:messageBody}</messageBody>
                         <delaySeconds>{$ctx:delaySeconds}</delaySeconds>
                         <messageAttributes>{$ctx:messageAttributes}</messageAttributes>
+                        <messageDeduplicationId>{$ctx:messageDeduplicationId}</messageDeduplicationId>
+                        <messageGroupId>{$ctx:messageGroupId}</messageGroupId>
                     </amazonsqs.sendMessage>
                 </case>
                 <case regex="urn:sendMessageBatch">

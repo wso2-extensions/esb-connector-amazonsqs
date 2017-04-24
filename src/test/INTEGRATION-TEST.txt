@@ -53,5 +53,11 @@ STEPS:
 	xi) 	apiOptionalQueueName	- eg : 123SampleQueu
 	xii)	apiQueueName			- eg : SampleQueqeName
 
+	    The following parameters are used to sendMessage to the FIFO Queue.
+
+	xiii)   fifoQueueName           - FIFO queue name.
+	xiv)    fifoQueueId             - FIFO queue ID.
+	xv)     messageDeduplicationId  - Message deduplication ID.
+	xvi)    messageGroupId          - Message group ID.
  4.Navigate to "<AMAZONSQS_HOME>" and run the following command.
       $ mvn clean install

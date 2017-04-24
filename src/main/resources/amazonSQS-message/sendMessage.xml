@@ -24,6 +24,8 @@
     <parameter name="queueId" description="The unique identifier of the queue"/>
     <parameter name="queueName" description="The name of the queue"/>
     <parameter name="messageBody" description="The body of the message"/>
+    <parameter name="messageGroupId" description="The ID of the message group"/>
+    <parameter name="messageDeduplicationId" description="The ID of the message deduplication"/>
     <sequence>
         <class name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSContext"/>
         <property name="uri.var.delaySeconds" expression="$func:delaySeconds"/>
@@ -31,6 +33,8 @@
         <property name="uri.var.queueId" expression="$func:queueId"/>
         <property name="uri.var.urlQueueName" expression="$func:queueName"/>
         <property name="uri.var.messageBody" expression="$func:messageBody"/>
+        <property name="uri.var.messageGroupId" expression="$func:messageGroupId"/>
+        <property name="uri.var.messageDeduplicationId" expression="$func:messageDeduplicationId"/>
         <property name="uri.var.action" value="SendMessage"/>
         <class
                 name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSAuthConnector"/>

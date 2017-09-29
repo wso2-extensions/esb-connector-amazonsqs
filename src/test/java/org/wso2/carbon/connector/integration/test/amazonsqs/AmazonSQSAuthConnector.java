@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  *  WSO2 Inc. licenses this file to you under the Apache License,
  *  Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ public class AmazonSQSAuthConnector {
     /**
      * Connect method which is generating authentication of the connector for each request.
      *
-     * @param messageContext ESB messageContext.
+     * @param signatureRequestObject ESB messageContext.
      * @throws java.io.UnsupportedEncodingException
      * @throws IllegalStateException 
      * @throws java.security.NoSuchAlgorithmException
@@ -404,7 +404,6 @@ public class AmazonSQSAuthConnector {
     /**
      * Hashes the string contents (assumed to be UTF-8) using the SHA-256 algorithm.
      *
-     * @param messageContext of the connector
      * @param text text to be hashed
      *
      * @return SHA-256 hashed text

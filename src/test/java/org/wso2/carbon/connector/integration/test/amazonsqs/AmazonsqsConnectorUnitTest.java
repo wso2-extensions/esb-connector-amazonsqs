@@ -96,8 +96,8 @@ public class AmazonsqsConnectorUnitTest {
     /**
      * Test case to remove that is not exist in messageContext.
      */
-    @Test (expectedExceptions = Exception.class)
-    public void testAmazonSQSContextNegative(){
+    @Test(expectedExceptions = Exception.class)
+    public void testAmazonSQSContextNegative() {
         ctx.setProperty(null, "Test");
         amazonSQSContext.connect(ctx);
     }

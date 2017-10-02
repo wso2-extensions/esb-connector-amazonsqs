@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <!--
- ~  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  ~
  ~  WSO2 Inc. licenses this file to you under the Apache License,
  ~  Version 2.0 (the "License"); you may not use this file except
@@ -24,13 +24,14 @@
         <listener class-name="org.wso2.carbon.automation.core.PlatformTestManager"/>
         <listener class-name="org.wso2.carbon.automation.core.PlatformReportManager"/>
     </listeners>
-
-	<test name="AmazonSQS-Connector-Test" preserve-order="true" verbose="2">
-        <packages>
-            <package name="org.wso2.carbon.connector.integration.test.amazonsqs"/>
-        </packages>
+    <test name="AmazonSQS-Integration-Test" preserve-order="true" verbose="2">
+        <classes>
+            <class name="org.wso2.carbon.connector.integration.test.amazonsqs.AmazonsqsConnectorIntegrationTest"/>
+        </classes>
     </test>
-
+    <test name="AmazonSQS-Unit-Test">
+        <classes>
+            <class name="org.wso2.carbon.connector.integration.test.amazonsqs.AmazonsqsConnectorUnitTest"/>
+        </classes>
+    </test>
 </suite>
-
-

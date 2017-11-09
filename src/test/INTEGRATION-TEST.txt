@@ -11,9 +11,8 @@ Pre-requisites:
 
 Tested Platform:
 
- - Microsoft WINDOWS V-7
- - UBUNTU 13.04, Mac OSx 10.9
- - WSO2 ESB 4.9.0-ALPHA
+ - Mac OSx 10.12.6
+ - WSO2 EI 6.1.1
 
 STEPS:
 

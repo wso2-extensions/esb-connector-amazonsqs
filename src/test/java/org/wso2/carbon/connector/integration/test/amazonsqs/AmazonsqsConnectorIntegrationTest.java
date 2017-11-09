@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.automation.core.ProductConstant;
 import org.wso2.connector.integration.test.base.ConnectorIntegrationTestBase;
 import org.wso2.connector.integration.test.base.RestResponse;
 import org.xml.sax.SAXException;
@@ -34,11 +33,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -63,7 +62,9 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
-        init("amazonsqs-connector-1.0.6-SNAPSHOT");
+        String connectorName = System.getProperty("connector_name") + "-connector-" +
+                System.getProperty("connector_version") + ".zip";
+        init(connectorName);
 
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "");
@@ -877,11 +878,8 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         Map< String, String > responseMap;
         AmazonSQSAuthConnector authConnector = new AmazonSQSAuthConnector();
 
-        String signatureRequestFilePath =
-                ProductConstant.SYSTEM_TEST_SETTINGS_LOCATION + File.separator + "artifacts" + File.separator + "ESB"
-                        + File.separator + "config" + File.separator + "restRequests" + File.separator + "amazonsqs"
-                        + File.separator + signatureRequestFile;
-
+        String signatureRequestFilePath = Paths.get(System.getProperty("framework.resource.location"),
+                "artifacts" , "ESB", "config", "restRequests", "amazonsqs", signatureRequestFile).toString();
         requestData = loadRequestFromFile(signatureRequestFilePath);
         JSONObject signatureRequestObject = new JSONObject(requestData);
         responseMap = authConnector.getRequestPayload(signatureRequestObject);

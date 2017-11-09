@@ -146,7 +146,8 @@ public class AmazonsqsConnectorUnitTest {
      */
     private Properties getConnectorConfigProperties() throws IOException {
         String connectorConfigFile;
-        connectorConfigFile = Paths.get(System.getProperty("file_location"), "src", "test", "resources", "artifacts", "ESB", "connector", "config", "amazonsqs.properties").toString();
+        connectorConfigFile = Paths.get(System.getProperty("framework.resource.location"), "artifacts", "ESB",
+                "connector", "config", "amazonsqs.properties").toString();
         File ignored = new File(connectorConfigFile);
         FileInputStream inputStream = null;
         if (ignored.exists()) {
@@ -170,7 +171,8 @@ public class AmazonsqsConnectorUnitTest {
     private void generateSignatureRequestObject() throws Exception {
         String requestData;
         Map<String, String> responseMap;
-        String signatureRequestFilePath = Paths.get(System.getProperty("file_location"), "src", "test", "resources", "artifacts", "ESB", "config", "restRequests", "amazonsqs", "unitTestParameters.json").toString();
+        String signatureRequestFilePath = Paths.get(System.getProperty("framework.resource.location"),
+                "artifacts", "ESB", "config", "restRequests", "amazonsqs", "unitTestParameters.json").toString();
         requestData = loadRequestFromFile(signatureRequestFilePath);
         JSONObject signatureRequestObject = new JSONObject(requestData);
         responseMap = amazonSQSAuthConnectorTest.getRequestPayload(signatureRequestObject);

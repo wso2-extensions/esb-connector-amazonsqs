@@ -27,7 +27,7 @@
     <url>http://wso2.org</url>
     <properties>
         <connector.name>amazonsqs</connector.name>
-        <product.ei.version>6.1.1</product.ei.version>
+        <product.ei.version>6.2.0</product.ei.version>
         <carbon.kernel.version>4.4.17</carbon.kernel.version>
         <automation.framework.utils.version>4.4.2</automation.framework.utils.version>
         <automation.framework.version>4.4.3</automation.framework.version>
@@ -42,6 +42,7 @@
         <rampart.wso2.version>1.6.1.wso2v18</rampart.wso2.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <integration.base.version>1.0.2</integration.base.version>
+        <skip-tests>true</skip-tests>
     </properties>
     <dependencies>
         <dependency>
@@ -295,6 +296,7 @@
                 <version>2.12.4</version>
                 <inherited>false</inherited>
                 <configuration>
+                    <skipTests>${skip-tests}</skipTests>
                     <argLine>${surefireArgLine} -ea -Xmx512m</argLine>
                     <!--<argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=128m</argLine>-->
                     <disableXmlReport>false</disableXmlReport>

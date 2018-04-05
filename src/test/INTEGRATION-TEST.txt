@@ -56,4 +56,4 @@ STEPS:
 	xv)     messageDeduplicationId  - Message deduplication ID.
 	xvi)    messageGroupId          - Message group ID.
  4.Navigate to "<AMAZONSQS_HOME>" and run the following command.
-      $ mvn clean install
+      $ mvn clean install -Dskip-tests=false

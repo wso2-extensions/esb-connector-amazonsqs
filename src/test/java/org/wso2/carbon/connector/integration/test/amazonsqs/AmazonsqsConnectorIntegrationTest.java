@@ -62,9 +62,11 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
+        addCertificatesToEIKeyStore("client-truststore.jks", "wso2carbon");
         String connectorName = System.getProperty("connector_name") + "-connector-" +
                 System.getProperty("connector_version") + ".zip";
         init(connectorName);
+        getApiConfigProperties();
 
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "");
@@ -252,10 +254,19 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
                                                                           XPathExpressionException, SAXException,
                                                                           ParserConfigurationException {
 
+        // Create fifo queue
+        generateApiRequest("api_createFIFOQueue.json");
+        RestResponse< OMElement > apiRestResponse =
+                sendXmlRestRequest(apiEndPoint, "POST", apiRequestHeadersMap, "common_api_request.txt");
+        String queueUrl =getValueByExpression("//*[local-name()='QueueUrl']/text()", apiRestResponse.getBody());
+        int endIndex = queueUrl.lastIndexOf("/");
+        int startIndex = queueUrl.substring(0, endIndex-1).lastIndexOf("/");
+        String fifoQueueId = queueUrl.substring(startIndex + 1, endIndex);
+        connectorProperties.put("fifoQueueId", fifoQueueId);
+
         esbRequestHeadersMap.put("Action", "urn:sendMessage");
         RestResponse< OMElement > esbResponse =
-                sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
-                                   "esb_sendMessage_toFIFOQueue_optional.xml");
+                sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_sendMessage_toFIFOQueue_optional.xml");
 
         Assert.assertEquals(esbResponse.getHttpStatusCode(), 200);
         Assert.assertNotNull(getValueByExpression("//*[local-name()='MessageId']/text()", esbResponse.getBody()));

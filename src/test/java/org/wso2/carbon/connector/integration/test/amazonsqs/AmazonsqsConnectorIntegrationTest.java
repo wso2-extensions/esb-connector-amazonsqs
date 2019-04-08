@@ -288,7 +288,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
 
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_sendMessage_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -357,7 +357,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
 
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_receiveMessage_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -395,7 +395,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
 
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_changeMessageVisibility_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -424,7 +424,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
 
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_changeMessageVisibilityBatch_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -463,7 +463,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
 
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteMessage_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -512,7 +512,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_setQueueAttributes_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -580,7 +580,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getQueueAttributes_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -627,7 +627,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listDeadLetterSourceQueues_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
     /**
      * Positive test case for getQueueUrl method with mandatory parameters.
@@ -724,7 +724,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
                 sendXmlRestRequest(apiUrl, "POST", apiRequestHeadersMap, "common_api_request.txt");
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_addPermission_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
     }
 
@@ -766,7 +766,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
                 sendXmlRestRequest(apiUrl, "POST", apiRequestHeadersMap, "common_api_request.txt");
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_removePermission_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
     }
 
@@ -818,7 +818,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         Assert.assertEquals(apiResponse.getHttpStatusCode(), 400);
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteQueue_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     /**
@@ -861,7 +861,7 @@ public class AmazonsqsConnectorIntegrationTest extends ConnectorIntegrationTestB
         esbRequestHeadersMap.put("Action", "urn:purgeQueue");
         RestResponse< OMElement > esbResponse =
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_purgeQueue_negative.xml");
-        Assert.assertEquals(esbResponse.getHttpStatusCode(), 403);
+        Assert.assertEquals(esbResponse.getHttpStatusCode(), 400);
     }
 
     @AfterClass(alwaysRun = true)

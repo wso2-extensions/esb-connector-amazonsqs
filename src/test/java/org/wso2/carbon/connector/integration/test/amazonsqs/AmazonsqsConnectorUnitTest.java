@@ -145,9 +145,8 @@ public class AmazonsqsConnectorUnitTest {
      * @throws IOException
      */
     private Properties getConnectorConfigProperties() throws IOException {
-        String connectorConfigFile;
-        connectorConfigFile = Paths.get(System.getProperty("framework.resource.location"), "artifacts", "ESB",
-                "connector", "config", "amazonsqs.properties").toString();
+        String connectorConfigFile = Paths.get(System.getProperty("basedir", "."), "repository",
+                "esb-connector-amazonsqs.properties").toString();
         File ignored = new File(connectorConfigFile);
         FileInputStream inputStream = null;
         if (ignored.exists()) {
@@ -189,10 +188,8 @@ public class AmazonsqsConnectorUnitTest {
      * @throws Exception
      */
     private String loadRequestFromFile(String requestFileName) throws Exception {
-        String requestFilePath;
-        String requestData;
-        requestFilePath = requestFileName;
-        requestData = getFileContent(requestFilePath);
+        // String requestFilePath;
+        String requestData = getFileContent(requestFileName);
         Properties prop = (Properties) connectorProperties.clone();
 
         Matcher matcher = Pattern.compile("%s\\(([A-Za-z0-9]*)\\)", Pattern.DOTALL).matcher(requestData);
@@ -207,7 +204,7 @@ public class AmazonsqsConnectorUnitTest {
         ctx.setProperty(amazonSQSConstants.HTTP_METHOD, amazonSQSConstants.POST);
         ctx.setProperty(amazonSQSConstants.TERMINATION_STRING, "aws4_request");
         ctx.setProperty(amazonSQSConstants.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        ctx.setProperty(amazonSQSConstants.HOST, "sqs.us-east-1.amazonaws.com");
+        ctx.setProperty(amazonSQSConstants.HOST, "sqs." + ctx.getProperty("uri.var.region") + ".amazonaws.com");
 
         return requestData;
     }

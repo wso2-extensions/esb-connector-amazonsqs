@@ -1,0 +1,83 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "sendMessageBatch",
+  "title": "Send Message Batch",
+  "help": "<h1>Send Message Batch</h1> <b>This operation delivers batch messages to the specified queue.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageAttributes",
+                    "displayName": "Message Attributes",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "List of SendMessageBatchRequestEntry items."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "delaySeconds",
+                    "displayName": "Delay Seconds",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The number of seconds (0 to 900, which is 15 minutes) to delay a specific message."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

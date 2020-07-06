@@ -1,0 +1,72 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "removePermission",
+  "title": "Remove Permission",
+  "help": "<h1>Remove Permission</h1> <b>This operation revokes any permissions in the queue policy.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "label",
+                    "displayName": "Label",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identification of the permission to remove"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "connectorName": "amazonsqs",
+  "connectionName": "amazonsqs",
+  "title": "Amazon SQS Connection",
+  "help": "<h1>Amazon SQS Connection</h1> <b>The WSO2 Amazon SQS connector allows you to access the exposed Amazon SQS API through the WSO2 EI.</b>",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "connectionName",
+        "displayName": "Connection Name",
+        "inputType": "string",
+        "defaultValue": "AMAZON_SQS_CONNECTION_1",
+        "required": "true",
+        "helpTip": "The name for the AmazonSQS connection",
+        "validation": "nameWithoutSpecialCharactors"
+      }
+    },
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessKeyId",
+                    "displayName": "Access Key ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The access key ID that corresponds to the secret access key that you used to sign the request."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "secretAccessKey",
+                    "displayName": "Secret Access Key",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "AWS secret access key."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "region",
+                    "displayName": "Region",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Region which is used select a regional endpoint to make requests."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "version",
+                    "displayName": "Version",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The version of the API."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "blocking",
+                    "displayName": "Blocking",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "This property helps the connector perform blocking invocations to Amazon SQS."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "enableSSL",
+                    "displayName": "Enable SSL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "false",
+                    "required": "true",
+                    "helpTip": "Whether the Amazon AWS URL should be HTTP or HTTPS. Set to true if you want the URL to be HTTPS."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "contentType",
+                    "displayName": "Content Type",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The content type that is used to generate the signature."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

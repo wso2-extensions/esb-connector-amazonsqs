@@ -1,0 +1,50 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "listQueues",
+  "title": "List Queues",
+  "help": "<h1>List Queues</h1> <b>This operation returns a list of queues.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueNamePrefix",
+                    "displayName": "Queue Name Prefix",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "A string to use for filtering the list results."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

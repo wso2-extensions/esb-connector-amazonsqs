@@ -1,0 +1,83 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "changeMessageVisibility",
+  "title": "Change Message Visibility",
+  "help": "<h1>Change Message Visibility</h1> <b>This operation changes the visibility timeout of a specified message in a queue to a new value.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "receiptHandle",
+                    "displayName": "Receipt Handle",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The receipt handle associated with the message to be deleted."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "visibilityTimeout",
+                    "displayName": "Visibility Timeout",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The new value (in seconds from 0 to 43200, which is 12 hours) for the message's visibility timeout."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

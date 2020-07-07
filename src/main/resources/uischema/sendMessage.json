@@ -1,0 +1,116 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "sendMessage",
+  "title": "Send Message",
+  "help": "<h1>Receive Message</h1> <b>This operation retrieves one or more messages, with a maximum limit of 10 messages, from the specified queue.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageBody",
+                    "displayName": "Message Body",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The message to be sent."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "delaySeconds",
+                    "displayName": "Delay Seconds",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The number of seconds (0 to 900, which is 15 minutes) to delay a specific message."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageAttributes",
+                    "displayName": "Message Attributes",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Each message attribute consists of a Name, Type, and Value."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageDeduplicationId",
+                    "displayName": "Message Deduplication ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The ID used for deduplication of sent messages."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageGroupId",
+                    "displayName": "Message Group ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The ID that specifies that a message belongs to a specific message group."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "addPermission",
+  "title": "Add Permission",
+  "help": "<h1>Add Permission</h1> <b>This operation adds a permission to a queue for a specific principal, enabling you to share access to the queue.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "awsAccountNumbers",
+                    "displayName": "AWS Account Numbers",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The AWS account number of the principal who will be given permission."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "actionName",
+                    "displayName": "Action Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The action the client wants to allow for the specified principal."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "label",
+                    "displayName": "Label",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identification of the permission you are setting (e.g., AliceSendMessage)"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

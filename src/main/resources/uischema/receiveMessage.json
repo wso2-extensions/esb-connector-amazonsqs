@@ -1,0 +1,116 @@
+{
+  "connectorName": "amazonsqs",
+  "operationName": "receiveMessage",
+  "title": "Receive Message",
+  "help": "<h1>Receive Message</h1> <b>This operation retrieves one or more messages, with a maximum limit of 10 messages, from the specified queue.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/7.1.0/micro-integrator/references/connectors/amazonsqs-connector/amazonsqs-connector-reference/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "amazonsqs"
+              ],
+              "defaultType": "connection.amazonsqs",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueId",
+                    "displayName": "Queue ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The unique identifier of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueName",
+                    "displayName": "Queue Name",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "maxNumberOfMessages",
+                    "displayName": "Max Number of Messages",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "1",
+                    "required": "false",
+                    "helpTip": "The maximum number of messages to be returned."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "waitTimeSeconds",
+                    "displayName": "Wait Time Seconds",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration (in seconds) for which the call will wait for a message to arrive in the queue before returning."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageAttributeNames",
+                    "displayName": "Message Attribute Names",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The name of the message attribute."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "visibilityTimeout",
+                    "displayName": "Visibility Timeout",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration (in seconds) in which the received messages are hidden from subsequent retrieve requests after being retrieved by the request."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "attributes",
+                    "displayName": "Attributes",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "A list of attributes that need to be returned along with each message."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

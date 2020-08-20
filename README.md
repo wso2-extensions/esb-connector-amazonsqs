@@ -6,6 +6,7 @@ The Amazon SQS connector allows you to access the exposed API through the WSO2 E
 
 | Connector version | Supported WSO2 ESB/EI version |
 | ------------- |------------- |
+|  [1.1.0](https://github.com/wso2-extensions/esb-connector-amazonsqs/tree/v1.1.0)        |  EI 7.0.x, EI 6.6.0, EI 6.4.0, EI 6.3.0, EI 6.1.1 |
 |  [1.0.8](https://github.com/wso2-extensions/esb-connector-amazonsqs/tree/v1.0.8)        |  EI 7.0.x, EI 6.6.0, EI 6.4.0, EI 6.3.0, EI 6.1.1 |
 |  [1.0.7](https://github.com/wso2-extensions/esb-connector-amazonsqs/tree/org.wso2.carbon.connector.amazonsqs-1.0.7)        |  EI 7.0.x, EI 6.6.0, EI 6.4.0, EI 6.3.0, EI 6.1.1 |
 |  [1.0.6](https://github.com/wso2-extensions/esb-connector-amazonsqs/tree/org.wso2.carbon.connector.amazonsqs-1.0.6)        |  EI 6.4.0, EI 6.3.0, EI 6.1.1 |

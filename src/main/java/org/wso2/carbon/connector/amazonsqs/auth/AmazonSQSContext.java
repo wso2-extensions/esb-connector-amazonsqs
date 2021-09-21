@@ -54,7 +54,7 @@ public class AmazonSQSContext extends AbstractConnector {
                     && !(key).toString().startsWith(AmazonSQSConstants.SIGNATURE_VERSION) && !(key).toString().startsWith(AmazonSQSConstants.SIGNATURE_METHOD)
                     && !(key).toString().startsWith(AmazonSQSConstants.VERSION) && !(key).toString().startsWith(AmazonSQSConstants.TERMINATION_STRING)
                     && !(key).toString().startsWith(AmazonSQSConstants.REGION) && !(key).toString().startsWith(AmazonSQSConstants.HOST)
-                    && !(key).toString().startsWith(AmazonSQSConstants.HTTP_METHOD)) {
+                    && !(key).toString().startsWith(AmazonSQSConstants.HTTP_METHOD) && !(key).toString().startsWith(AmazonSQSConstants.SECURITY_TOKEN)) {
                 messageContext.getPropertyKeySet().remove(key);
             }
         }

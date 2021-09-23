@@ -20,6 +20,8 @@
     <parameter name="accessKeyId"
                description="The access key ID that corresponds to the secret access key that you used to sign the request"/>
     <parameter name="secretAccessKey" description="The secretAccessKey"/>
+    <parameter name="iamRole" description="The IAM role associated with the instance"/>
+    <parameter name="enableIMDSv1" description="Use IMDSv1 to access instance metadata"/>
     <parameter name="version" description="The API version that the request is written for"/>
     <parameter name="region" description="Region which is used select a regional endpoint to make requests"/>
     <parameter name="enableSSL" description="This uses the enabling https amazon aws URL"/>
@@ -30,6 +32,8 @@
     <sequence>
         <property name="uri.var.accessKeyId" expression="$func:accessKeyId"/>
         <property name="uri.var.secretAccessKey" expression="$func:secretAccessKey"/>
+        <property name="uri.var.iamRole" expression="$func:iamRole"/>
+        <property name="uri.var.enableIMDSv1" expression="$func:enableIMDSv1"/>
         <property name="uri.var.version" expression="$func:version"/>
         <property name="uri.var.region" expression="$func:region"/>
         <property name="uri.var.enableSSL" expression="$func:enableSSL"/>
@@ -71,6 +75,70 @@
                     </else>
                 </filter>
             </else>
+        </filter>
+        <!-- If IAM role is defined, call the EC2 metadata endpoints and get the AccessKeyId, SecretAccessKey and
+        SecurityToken. -->
+        <filter xpath="not(get-property('uri.var.iamRole') = '') and string(get-property('uri.var.iamRole'))">
+            <then>
+                <property name="REST_URL_POSTFIX" scope="axis2" action="remove"/>
+                <!-- By default IMDSv2 will be used to query instance metadata. -->
+                <filter xpath="not(get-property('uri.var.enableIMDSv1') = 'true')">
+                    <then>
+                        <property name="uri.var.tokenUri" value="http://169.254.169.254/latest/api/token"/>
+                        <header name="X-aws-ec2-metadata-token-ttl-seconds"
+                                scope="transport"
+                                value="21600"/>
+                        <filter source="$ctx:amazonSQSBlocking" regex="true">
+                            <then>
+                                <call blocking="true">
+                                    <endpoint>
+                                        <http method="PUT" uri-template="{uri.var.tokenUri}"/>
+                                    </endpoint>
+                                </call>
+                            </then>
+                            <else>
+                                <call>
+                                    <endpoint>
+                                        <http method="PUT" uri-template="{uri.var.tokenUri}"/>
+                                    </endpoint>
+                                </call>
+                            </else>
+                        </filter>
+                        <!-- AWS EC2 metadata endpoint always use the text/plain as content type. Therefore we need
+                        to get the text element from the body.
+                         -->
+                        <header name="X-aws-ec2-metadata-token" scope="transport" expression="json-eval($.text)"/>
+                        <header name="X-aws-ec2-metadata-token-ttl-seconds" scope="transport" action="remove"/>
+                    </then>
+                </filter>
+                <property name="uri.var.securityCredentialsUri"
+                          expression="fn:concat('http://169.254.169.254/latest/meta-data/iam/security-credentials/', get-property('uri.var.iamRole'))"/>
+                <filter source="$ctx:amazonSQSBlocking" regex="true">
+                    <then>
+                        <call blocking="true">
+                            <endpoint>
+                                <http method="GET" uri-template="{uri.var.securityCredentialsUri}"/>
+                            </endpoint>
+                        </call>
+                    </then>
+                    <else>
+                        <call>
+                            <endpoint>
+                                <http method="GET" uri-template="{uri.var.securityCredentialsUri}"/>
+                            </endpoint>
+                        </call>
+                    </else>
+                </filter>
+                <header name="X-aws-ec2-metadata-token" scope="transport" action="remove"/>
+                <property name="bodyJson" expression="json-eval($.text)"/>
+                <enrich>
+                    <source clone="false" xpath="$ctx:bodyJson"/>
+                    <target type="body"/>
+                </enrich>
+                <property name="uri.var.accessKeyId" expression="json-eval($.AccessKeyId)"/>
+                <property name="uri.var.secretAccessKey" expression="json-eval($.SecretAccessKey)"/>
+                <property name="uri.var.securityToken" expression="json-eval($.Token)"/>
+            </then>
         </filter>
         <property name="REQUEST_HOST_HEADER" scope="axis2" expression="$ctx:uri.var.hostName"/>
     </sequence>

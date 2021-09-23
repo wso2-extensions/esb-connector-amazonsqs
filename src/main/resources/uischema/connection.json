@@ -33,7 +33,7 @@
                     "displayName": "Access Key ID",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The access key ID that corresponds to the secret access key that you used to sign the request."
                   }
                 },
@@ -44,8 +44,30 @@
                     "displayName": "Secret Access Key",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "AWS secret access key."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "iamRole",
+                    "displayName": "IAM role",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The IAM role associated with the instance."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "enableIMDSv1",
+                    "displayName": "Enable IMDSv1",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Use IMDSv1 to access instance metadata."
                   }
                 },
                 {

@@ -107,7 +107,8 @@
                         <!-- AWS EC2 metadata endpoint always use the text/plain as content type. Therefore we need
                         to get the text element from the body.
                          -->
-                        <header name="X-aws-ec2-metadata-token" scope="transport" expression="json-eval($.text)"/>
+                        <property name="bodyJson" expression="json-eval($.text)"/>
+                        <header name="X-aws-ec2-metadata-token" scope="transport" expression="get-property('bodyJson')"/>
                         <header name="X-aws-ec2-metadata-token-ttl-seconds" scope="transport" action="remove"/>
                     </then>
                 </filter>

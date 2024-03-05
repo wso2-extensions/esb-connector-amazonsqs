@@ -85,6 +85,7 @@
                 <filter xpath="not(get-property('uri.var.enableIMDSv1') = 'true')">
                     <then>
                         <property name="uri.var.tokenUri" value="http://169.254.169.254/latest/api/token"/>
+                        <property name="FORCE_POST_PUT_NOBODY" value="true" scope="axis2" type="BOOLEAN"/>
                         <header name="X-aws-ec2-metadata-token-ttl-seconds"
                                 scope="transport"
                                 value="21600"/>

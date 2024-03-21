@@ -18,8 +18,12 @@
 
 package org.wso2.carbon.connector.amazonsqs.auth;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseConstants;
+import org.apache.synapse.commons.json.JsonUtil;
+import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.wso2.carbon.connector.amazonsqs.constants.AmazonSQSConstants;
 import org.wso2.carbon.connector.core.AbstractConnector;
 
@@ -102,8 +106,32 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
             for (Map.Entry<String, String> entry : parametersMap.entrySet()) {
                 payloadBuilder.append(URLEncoder.encode(entry.getKey(), charSet));
                 payloadBuilder.append(AmazonSQSConstants.EQUAL);
-                payloadBuilder.append(URLEncoder.encode(entry.getValue().replace(System.lineSeparator(),"").
-                        replace("\\\"", "\""), charSet));
+                if (entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
+                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
+
+                    // Create a JSON string payload as same as the payload we attach to the message context in below
+                    String jsonStr = getJsonString(entry);
+                    // Then mimic the payload factory by getting new JSON payload
+                    JsonUtil.getNewJsonPayload(((Axis2MessageContext) messageContext).
+                            getAxis2MessageContext(), jsonStr, true, true);
+
+                    // Finally get the JSON payload from the message context and encode it as same as in the formatter.
+                    OMElement omElement = messageContext.getEnvelope().getBody().getFirstElement();
+                    if (omElement != null) {
+                        Iterator it = omElement.getChildElements();
+                        while (it.hasNext()) {
+                            OMElement ele1 = (OMElement) it.next();
+                            payloadBuilder.append(URLEncoder.encode(ele1.getText(), charSet));
+                        }
+                    } else {
+                        payloadBuilder.append(URLEncoder.encode
+                                (entry.getValue().replace(System.lineSeparator(), "").
+                                        replace("\\\"", "\""), charSet));
+                    }
+                } else {
+                    payloadBuilder.append(URLEncoder.encode(entry.getValue().replace(System.lineSeparator(), "").
+                            replace("\\\"", "\""), charSet));
+                }
                 payloadBuilder.append(AmazonSQSConstants.AMPERSAND);
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(entry.getKey());
@@ -217,8 +245,27 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
             log.error(AmazonSQSConstants.UNSUPPORTED_ENCORDING_ERROR, exc);
             storeErrorResponseStatus(messageContext, exc, AmazonSQSConstants.UNSUPPORTED_ENCORDING_ERROR_CODE);
             handleException(AmazonSQSConstants.CONNECTOR_ERROR, exc, messageContext);
+        } catch (AxisFault exc) {
+            log.error(AmazonSQSConstants.ILLEGAL_STATE_ERROR, exc);
+            storeErrorResponseStatus(messageContext, exc, AmazonSQSConstants.ILLEGAL_STATE_ERROR_CODE);
+            handleException(AmazonSQSConstants.CONNECTOR_ERROR, exc, messageContext);
         }
 
+    }
+
+    private static String getJsonString(Map.Entry<String, String> entry) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append('"');
+        jsonBuilder.append(entry.getKey());
+        jsonBuilder.append('"');
+        jsonBuilder.append(AmazonSQSConstants.COLON);
+        jsonBuilder.append('"');
+        jsonBuilder.append(entry.getValue().replace(System.lineSeparator(),"").
+                replace("\"", "\\\"").replace("\\\\\"", "\\\""));
+        jsonBuilder.append('"');
+        jsonBuilder.append(AmazonSQSConstants.COMMA);
+        String jsonStr = "{" + jsonBuilder.substring(0, jsonBuilder.length() - 1) + "}";
+        return jsonStr;
     }
 
     /**

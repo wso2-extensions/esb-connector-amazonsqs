@@ -138,8 +138,14 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(AmazonSQSConstants.COLON);
                 payloadStrBuilder.append('"');
-                payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(),"").
-                        replace("\"", "\\\"").replace("\\\\\"", "\\\""));
+                if (entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
+                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
+                    payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "").
+                            replace("\"", "\\\"").replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
+                } else {
+                    payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "").
+                            replace("\"", "\\\"").replace("\\\\\"", "\\\""));
+                }
                 payloadStrBuilder.append('"');
                 payloadStrBuilder.append(AmazonSQSConstants.COMMA);
             }
@@ -261,7 +267,7 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
         jsonBuilder.append(AmazonSQSConstants.COLON);
         jsonBuilder.append('"');
         jsonBuilder.append(entry.getValue().replace(System.lineSeparator(),"").
-                replace("\"", "\\\"").replace("\\\\\"", "\\\""));
+                replace("\"", "\\\"").replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
         jsonBuilder.append('"');
         jsonBuilder.append(AmazonSQSConstants.COMMA);
         String jsonStr = "{" + jsonBuilder.substring(0, jsonBuilder.length() - 1) + "}";

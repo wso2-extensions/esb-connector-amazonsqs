@@ -107,7 +107,7 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadBuilder.append(URLEncoder.encode(entry.getKey(), charSet));
                 payloadBuilder.append(AmazonSQSConstants.EQUAL);
                 if (entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
-                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
+                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().trim().substring(0, 1))) {
 
                     // Create a JSON string payload as same as the payload we attach to the message context in below
                     String jsonStr = getJsonString(entry);
@@ -139,9 +139,10 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append(AmazonSQSConstants.COLON);
                 payloadStrBuilder.append('"');
                 if (entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
-                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().substring(0, 1))) {
+                        && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().trim().substring(0, 1))) {
                     payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "").
-                            replace("\"", "\\\"").replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
+                            replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
+                            replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
                 } else {
                     payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "").
                             replace("\"", "\\\"").replace("\\\\\"", "\\\""));
@@ -267,7 +268,8 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
         jsonBuilder.append(AmazonSQSConstants.COLON);
         jsonBuilder.append('"');
         jsonBuilder.append(entry.getValue().replace(System.lineSeparator(),"").
-                replace("\"", "\\\"").replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
+                replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
+                replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n"));
         jsonBuilder.append('"');
         jsonBuilder.append(AmazonSQSConstants.COMMA);
         String jsonStr = "{" + jsonBuilder.substring(0, jsonBuilder.length() - 1) + "}";

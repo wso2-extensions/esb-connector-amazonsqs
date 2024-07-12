@@ -140,8 +140,9 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
                 payloadStrBuilder.append('"');
                 if (entry.getKey().equals(AmazonSQSConstants.API_MESSAGE_BODY)
                         && AmazonSQSConstants.JSON_START_CHARACTER.contains(entry.getValue().trim().substring(0, 1))) {
-                    payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "").
-                            replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
+                    payloadStrBuilder.append(entry.getValue().replace(System.lineSeparator(), "")
+                            .replaceAll("[\\\\]{2}", "\\\\\\\\\\\\\\\\")
+                            .replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
                             replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n")
                             .replaceAll("(?<!\\\\)\\\\t", "\\\\\\\\t").replaceAll("(?<!\\\\)\\\\b", "\\\\\\\\b")
                             .replaceAll("(?<!\\\\)\\\\f", "\\\\\\\\f").replaceAll("(?<!\\\\)\\\\r", "\\\\\\\\r"));
@@ -269,8 +270,9 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
         jsonBuilder.append('"');
         jsonBuilder.append(AmazonSQSConstants.COLON);
         jsonBuilder.append('"');
-        jsonBuilder.append(entry.getValue().replace(System.lineSeparator(),"").
-                replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
+        jsonBuilder.append(entry.getValue().replace(System.lineSeparator(),"")
+                .replaceAll("[\\\\]{2}", "\\\\\\\\\\\\\\\\")
+                .replaceAll("(?<!\\\\)\\\\\"", "\\\\\\\\\\\\\"").replace("\"", "\\\"").
                 replace("\\\\\"", "\\\"").replaceAll("(?<!\\\\)\\\\n", "\\\\\\\\n")
                 .replaceAll("(?<!\\\\)\\\\t", "\\\\\\\\t").replaceAll("(?<!\\\\)\\\\b", "\\\\\\\\b")
                 .replaceAll("(?<!\\\\)\\\\f", "\\\\\\\\f").replaceAll("(?<!\\\\)\\\\r", "\\\\\\\\r"));

@@ -29,6 +29,7 @@
     <parameter name="blocking"
                description="The blocking parameter is helping connector performs the blocking invocations to
                Amazon SQS."/>
+    <parameter name="timeout" description="End Point timeout of invocations to Amazon SQS."/>
     <sequence>
         <property name="uri.var.accessKeyId" expression="$func:accessKeyId"/>
         <property name="uri.var.secretAccessKey" expression="$func:secretAccessKey"/>
@@ -45,6 +46,14 @@
         <property name="uri.var.httpMethod" value="POST"/>
         <property name="uri.var.terminationString" value="aws4_request"/>
         <property name="amazonSQSBlocking" expression="$func:blocking"/>
+        <filter xpath="$func:timeout = '' or  not(string($func:timeout))">
+            <then>
+                <property name="epTimeout" scope="default" type="INTEGER" value="30000"/>
+            </then>
+            <else>
+                <property name="epTimeout" scope="default" type="INTEGER" expression="$func:timeout"/>
+            </else>
+        </filter>
         <property name="POST_TO_URI" value="true" scope="axis2"/>
         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
         <header name="Content-Type" scope="transport" expression="get-property('uri.var.contentType')" />
@@ -100,7 +109,21 @@
                             <else>
                                 <call>
                                     <endpoint>
-                                        <http method="PUT" uri-template="{uri.var.tokenUri}"/>
+                                        <http method="PUT" uri-template="{uri.var.tokenUri}">
+                                            <timeout>
+                                                <duration>{get-property('epTimeout')}</duration>
+                                                <responseAction>fault</responseAction>
+                                            </timeout>
+                                            <suspendOnFailure>
+                                                <errorCodes>-1</errorCodes>
+                                                <initialDuration>0</initialDuration>
+                                                <progressionFactor>1.0</progressionFactor>
+                                                <maximumDuration>0</maximumDuration>
+                                            </suspendOnFailure>
+                                            <markForSuspension>
+                                                <errorCodes>-1</errorCodes>
+                                            </markForSuspension>
+                                        </http>
                                     </endpoint>
                                 </call>
                             </else>
@@ -125,7 +148,21 @@
                     <else>
                         <call>
                             <endpoint>
-                                <http method="GET" uri-template="{uri.var.securityCredentialsUri}"/>
+                                <http method="GET" uri-template="{uri.var.securityCredentialsUri}">
+                                    <timeout>
+                                        <duration>{get-property('epTimeout')}</duration>
+                                        <responseAction>fault</responseAction>
+                                    </timeout>
+                                    <suspendOnFailure>
+                                        <errorCodes>-1</errorCodes>
+                                        <initialDuration>0</initialDuration>
+                                        <progressionFactor>1.0</progressionFactor>
+                                        <maximumDuration>0</maximumDuration>
+                                    </suspendOnFailure>
+                                    <markForSuspension>
+                                        <errorCodes>-1</errorCodes>
+                                    </markForSuspension>
+                                </http>
                             </endpoint>
                         </call>
                     </else>

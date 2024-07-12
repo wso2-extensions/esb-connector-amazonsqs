@@ -106,6 +106,17 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "timeout",
+                    "displayName": "Timeout",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "30",
+                    "required": "true",
+                    "helpTip": "The end point timeout"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "enableSSL",
                     "displayName": "Enable SSL",
                     "inputType": "stringOrExpression",

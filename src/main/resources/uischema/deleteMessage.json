@@ -36,8 +36,8 @@
                     "displayName": "Queue ID",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The unique identifier of the queue."
+                    "required": "false",
+                    "helpTip": "The AWS account ID without hyphens."
                   }
                 },
                 {
@@ -47,8 +47,19 @@
                     "displayName": "Queue Name",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The URL of the queue to which a message is sent."
                   }
                 },
                 {

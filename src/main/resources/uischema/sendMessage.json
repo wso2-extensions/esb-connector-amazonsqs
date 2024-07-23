@@ -36,8 +36,8 @@
                     "displayName": "Queue ID",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The unique identifier of the queue."
+                    "required": "false",
+                    "helpTip": "The AWS account ID without hyphens."
                   }
                 },
                 {
@@ -47,7 +47,7 @@
                     "displayName": "Queue Name",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The name of the queue."
                   }
                 },
@@ -60,6 +60,17 @@
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "The message to be sent."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The URL of the queue to which a message is sent."
                   }
                 },
                 {
@@ -104,6 +115,17 @@
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "The ID that specifies that a message belongs to a specific message group."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "messageSystemAttributes",
+                    "displayName": "Message System Attributes",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Each message attribute consists of a Name, Type, and Value."
                   }
                 }
               ]

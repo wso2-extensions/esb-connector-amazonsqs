@@ -5,11 +5,18 @@
   "properties": {
     "queueId": {
       "id": "http:\/\/wso2jsonschema.org\/queueId",
-      "type": "number"
+      "type": "number",
+      "nullable": "true"
     },
     "queueName": {
       "id": "http:\/\/wso2jsonschema.org\/queueName",
-      "type": "string"
+      "type": "string",
+      "nullable": "true"
+    },
+    "queueUrl": {
+      "id": "http:\/\/wso2jsonschema.org\/queueUrl",
+      "type": "string",
+      "nullable": "true"
     },
     "receiptHandle": {
       "id": "http:\/\/wso2jsonschema.org\/receiptHandle",

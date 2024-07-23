@@ -22,9 +22,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.amazonsqs.constants.AmazonSQSConstants;
+import org.wso2.carbon.connector.core.AbstractConnector;
 
 public class AmazonSQSContext extends AbstractConnector {
 

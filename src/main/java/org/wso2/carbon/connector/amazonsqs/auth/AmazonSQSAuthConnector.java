@@ -37,7 +37,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.TreeMap;
 
 /**
  * Class AmazonSQSAuthConnector which helps to generate authentication signature for Amazon SQS WSO2 ESB
@@ -518,10 +523,10 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
      * @param regionName region name given to the connector
      * @param serviceName Name of the service being addressed
      * @return Signature key
-     * @throws java.io.UnsupportedEncodingException Unsupported Encoding Exception
+     * @throws UnsupportedEncodingException Unsupported Encoding Exception
      * @throws IllegalStateException Illegal Argument Exception
-     * @throws java.security.NoSuchAlgorithmException No Such Algorithm Exception
-     * @throws java.security.InvalidKeyException Invalid Key Exception
+     * @throws NoSuchAlgorithmException No Such Algorithm Exception
+     * @throws InvalidKeyException Invalid Key Exception
      */
     private byte[] getSignatureKey(final MessageContext ctx, final String key, final String dateStamp,
             final String regionName, final String serviceName) throws UnsupportedEncodingException,
@@ -540,9 +545,9 @@ public class AmazonSQSAuthConnector extends AbstractConnector {
      * @param key to use for encoding
      * @param data to be encoded
      * @return HMAC SHA 256 encoded byte array
-     * @throws java.security.NoSuchAlgorithmException No such algorithm Exception
-     * @throws java.security.InvalidKeyException Invalid key Exception
-     * @throws java.io.UnsupportedEncodingException Unsupported Encoding Exception
+     * @throws NoSuchAlgorithmException No such algorithm Exception
+     * @throws InvalidKeyException Invalid key Exception
+     * @throws UnsupportedEncodingException Unsupported Encoding Exception
      * @throws IllegalStateException Illegal State Exception
      */
     private byte[] hmacSHA256(final byte[] key, final String data) throws NoSuchAlgorithmException,

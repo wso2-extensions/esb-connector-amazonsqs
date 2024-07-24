@@ -42,7 +42,7 @@ public class SqsClientManager {
         SqsClientBuilder sqsClientBuilder = SqsClient.builder().region(Region.of(connectionConfig.getRegion())).
                 httpClient(ApacheHttpClient.builder().build());
         AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.create();
-        if (StringUtils.isNotEmpty(awsAccessKeyId) && StringUtils.isNotEmpty(awsSecretAccessKey)) {
+        if (StringUtils.isNotBlank(awsAccessKeyId) && StringUtils.isNotBlank(awsSecretAccessKey)) {
             credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.
                     create(awsAccessKeyId, awsSecretAccessKey));
         }

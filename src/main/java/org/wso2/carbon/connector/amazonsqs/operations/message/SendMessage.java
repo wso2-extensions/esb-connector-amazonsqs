@@ -43,6 +43,7 @@ public class SendMessage extends AbstractConnector {
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
+        String operationName = "sendMessage";
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -64,32 +65,37 @@ public class SendMessage extends AbstractConnector {
             SendMessageRequest.Builder sendMessageBuilder = SendMessageRequest.builder().
                     queueUrl(queueUrl).messageBody(messageBody);
 
-            if (StringUtils.isNotEmpty(delaySeconds)) {
-                sendMessageBuilder.delaySeconds(Integer.getInteger(delaySeconds));
+            if (StringUtils.isNotBlank(delaySeconds)) {
+                sendMessageBuilder.delaySeconds( Integer.valueOf(delaySeconds));
             }
-            if (StringUtils.isNotEmpty(messageGroupId)) {
+            if (StringUtils.isNotBlank(messageGroupId)) {
                 sendMessageBuilder.messageGroupId(messageGroupId);
             }
-            if (StringUtils.isNotEmpty(messageDeduplicationId)) {
+            if (StringUtils.isNotBlank(messageDeduplicationId)) {
                 sendMessageBuilder.messageDeduplicationId(messageDeduplicationId);
             }
-            Utils.addMessageAttributes(messageAttributes.substring(1, messageAttributes.length()-1), sendMessageBuilder);
-            Utils.addSystemMessageAttributes(messageSystemAttributes, sendMessageBuilder);
-
+            if (StringUtils.isNotBlank(messageAttributes)) {
+                Utils.addMessageAttributes(messageAttributes.substring(1, messageAttributes.length() - 1),
+                        sendMessageBuilder);
+            }
+            if (StringUtils.isNotBlank(messageSystemAttributes)) {
+                Utils.addSystemMessageAttributes(messageSystemAttributes.substring(1,
+                                messageSystemAttributes.length() - 1), sendMessageBuilder);
+            }
             createResponse(sqsConnection.getSqsClient().sendMessage(sendMessageBuilder.build()), messageContext);
         } catch (SqsException e) {
             Utils.addErrorResponse(messageContext, e);
         } catch (SdkClientException e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_INITIALIZATION_ERROR, e.getMessage());
+            Utils.setResultAsPayload(messageContext, operationName , Error.CONNECTION_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
         } catch (MalformedURLException e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_URL, e.getMessage());
+            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_URL, e.getMessage());
             handleException(Constants.RUN_TIME_EXCEPTION_MSG, e, messageContext);
-        } catch (SqsInvalidConfigurationException e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, e.getMessage());
+        } catch (SqsInvalidConfigurationException|NumberFormatException e) {
+            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG, e, messageContext);
         } catch (Exception e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
+            Utils.setResultAsPayload(messageContext, operationName , Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
     }
@@ -100,11 +106,11 @@ public class SendMessage extends AbstractConnector {
         result.addChild(Utils.createOMElement("MessageId", sendMessageResponse.messageId()));
         result.addChild(Utils.createOMElement("MD5OfMessageBody", sendMessageResponse.md5OfMessageBody()));
         String md5OfMessageAttributes = sendMessageResponse.md5OfMessageAttributes();
-        if (StringUtils.isNotEmpty(md5OfMessageAttributes)) {
+        if (StringUtils.isNotBlank(md5OfMessageAttributes)) {
             result.addChild(Utils.createOMElement("MD5OfMessageAttributes", md5OfMessageAttributes));
         }
         String md5OfMessageSystemAttributes = sendMessageResponse.md5OfMessageSystemAttributes();
-        if (StringUtils.isNotEmpty(md5OfMessageSystemAttributes)) {
+        if (StringUtils.isNotBlank(md5OfMessageSystemAttributes)) {
             result.addChild(Utils.createOMElement("MD5OfMessageSystemAttributes",
                     md5OfMessageSystemAttributes));
         }

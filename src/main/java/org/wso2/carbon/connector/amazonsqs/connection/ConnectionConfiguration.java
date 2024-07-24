@@ -39,7 +39,7 @@ public class ConnectionConfiguration {
     }
 
     public void setConnectionName(String connectionName) throws SqsInvalidConfigurationException {
-        if (StringUtils.isNotEmpty(connectionName)) {
+        if (StringUtils.isNotBlank(connectionName)) {
             this.connectionName = connectionName;
         } else {
             throw new SqsInvalidConfigurationException("Mandatory parameter 'connectionName' is not set.");
@@ -47,7 +47,7 @@ public class ConnectionConfiguration {
     }
 
     public void setRegion(String region) throws SqsInvalidConfigurationException {
-        if (StringUtils.isNotEmpty(region)) {
+        if (StringUtils.isNotBlank(region)) {
             this.region = region;
         } else {
             throw new SqsInvalidConfigurationException("Mandatory parameter 'region' is not set.");

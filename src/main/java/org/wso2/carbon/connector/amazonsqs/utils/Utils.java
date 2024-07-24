@@ -60,18 +60,6 @@ public class Utils {
 
     private static final Log log = LogFactory.getLog(Utils.class);
 
-    /**
-     * Sets the error code and error detail in message
-     *
-     * @param messageContext Message Context
-     * @param error          Error to be set
-     */
-    public static void setErrorPropertiesToMessage(MessageContext messageContext, Error error, String errorDetail) {
-        messageContext.setProperty(Constants.PROPERTY_ERROR_CODE, error.getErrorCode());
-        messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, error.getErrorMessage());
-        messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, errorDetail);
-    }
-
     public static OMElement createOMElement(String elementName, Object value) {
         OMElement resultElement = null;
         try {
@@ -96,12 +84,13 @@ public class Utils {
             String queueName = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.QUEUE_NAME);
             String queueId = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.QUEUE_ID);
             String queueUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.QUEUE_URL);
-            if (StringUtils.isEmpty(queueName) && (StringUtils.isEmpty(queueId) || StringUtils.isEmpty(queueUrl))) {
+            if (StringUtils.isNotBlank(queueUrl)) {
+                return queueUrl;
+            }
+            if (StringUtils.isNotBlank(queueName) && (StringUtils.isNotBlank(queueId) ||
+                    StringUtils.isNotBlank(queueUrl))) {
                 throw new SqsInvalidConfigurationException("Missing queue info: Should provide value of queue url or " +
                         "queue name and queue id.");
-            }
-            if (StringUtils.isNotEmpty(queueUrl)) {
-                return queueUrl;
             }
             return new URL(Constants.HTTPS, "sqs".concat(sqsConnection.getConnectionConfig().getRegion()).
                     concat(".amazonaws.com"), Constants.SLASH.concat(queueId).
@@ -152,118 +141,96 @@ public class Utils {
     }
 
     public static void addMessageAttributes(String messageAttributes, SendMessageRequest.Builder sendMessageBuilder) {
-        if (StringUtils.isNotEmpty(messageAttributes)) {
-            JSONObject messageAttributesInJson = new JSONObject(messageAttributes);
-            Iterator<?> keys = messageAttributesInJson.keys();
-            Map<String, MessageAttributeValue> messageAttributeValueMap = new HashMap<>();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
-                Set keySet = messageAttributeInJson.keySet();
-                MessageAttributeValue.Builder messageAttributeValueBuilder = MessageAttributeValue.builder();
+        JSONObject messageAttributesInJson = new JSONObject(messageAttributes);
+        Iterator<?> keys = messageAttributesInJson.keys();
+        Map<String, MessageAttributeValue> messageAttributeValueMap = new HashMap<>();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
+            Set keySet = messageAttributeInJson.keySet();
+            MessageAttributeValue.Builder messageAttributeValueBuilder = MessageAttributeValue.builder();
 
-                if (keySet.contains(Constants.DATA_TYPE)) {
-                    messageAttributeValueBuilder.dataType((String) messageAttributeInJson.get(Constants.DATA_TYPE));
-                }
-
-                if (keySet.contains(Constants.BINARY_VALUE)) {
-                    messageAttributeValueBuilder.binaryValue(SdkBytes.fromUtf8String(
-                            messageAttributeInJson.get(Constants.BINARY_VALUE).toString()));
-                }
-
-                if (keySet.contains(Constants.STRING_VALUE)) {
-                    messageAttributeValueBuilder.stringValue(messageAttributeInJson.get(Constants.STRING_VALUE).
-                            toString());
-                }
-
-                if (keySet.contains(Constants.STRING_LIST_VALUE)) {
-                    JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
-                    List<String> stringList = new ArrayList<>();
-                    for (int i = 0; i < arr.length(); i++) {
-                        stringList.add(arr.get(i).toString());
-                    }
-                    messageAttributeValueBuilder.stringListValues(stringList);
-                }
-                if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
-                    JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
-                    List<SdkBytes> binaryList = new ArrayList<>();
-                    for (int i = 0; i < arr.length(); i++) {
-                        binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
-                    }
-                    messageAttributeValueBuilder.binaryListValues(binaryList);
-                }
-                messageAttributeValueMap.put(key, messageAttributeValueBuilder.build());
+            if (keySet.contains(Constants.DATA_TYPE)) {
+                messageAttributeValueBuilder.dataType((String) messageAttributeInJson.get(Constants.DATA_TYPE));
             }
-            sendMessageBuilder.messageAttributes(messageAttributeValueMap);
+
+            if (keySet.contains(Constants.BINARY_VALUE)) {
+                messageAttributeValueBuilder.binaryValue(SdkBytes.fromUtf8String(
+                        messageAttributeInJson.get(Constants.BINARY_VALUE).toString()));
+            }
+
+            if (keySet.contains(Constants.STRING_VALUE)) {
+                messageAttributeValueBuilder.stringValue(messageAttributeInJson.get(Constants.STRING_VALUE).
+                        toString());
+            }
+
+            if (keySet.contains(Constants.STRING_LIST_VALUE)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
+                List<String> stringList = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    stringList.add(arr.get(i).toString());
+                }
+                messageAttributeValueBuilder.stringListValues(stringList);
+            }
+            if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
+                List<SdkBytes> binaryList = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
+                }
+                messageAttributeValueBuilder.binaryListValues(binaryList);
+            }
+            messageAttributeValueMap.put(key, messageAttributeValueBuilder.build());
         }
+        sendMessageBuilder.messageAttributes(messageAttributeValueMap);
     }
 
     public static void addSystemMessageAttributes(String messageSystemAttributes,
                                                   SendMessageRequest.Builder sendMessageBuilder) {
-        if (StringUtils.isNotEmpty(messageSystemAttributes)) {
-            JSONObject messageAttributesInJson = new JSONObject(messageSystemAttributes);
-            Iterator<?> keys = messageAttributesInJson.keys();
-            Map<MessageSystemAttributeNameForSends, MessageSystemAttributeValue> messageSystemAttributeMap =
-                    new HashMap<>();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
-                Set keySet = messageAttributeInJson.keySet();
-                MessageSystemAttributeValue.Builder messageSystemAttributeValue = MessageSystemAttributeValue.builder();
-                if (keySet.contains(Constants.DATA_TYPE)) {
-                    messageSystemAttributeValue.dataType(messageAttributeInJson.get(Constants.DATA_TYPE).toString());
-                }
-
-                if (keySet.contains(Constants.BINARY_VALUE)) {
-                    messageSystemAttributeValue.binaryValue(SdkBytes.fromUtf8String(
-                            messageAttributeInJson.get(Constants.BINARY_VALUE).toString()));
-                }
-
-                if (keySet.contains(Constants.STRING_VALUE)) {
-                    messageSystemAttributeValue.stringValue(messageAttributeInJson.get(
-                            Constants.STRING_VALUE).toString());
-                }
-
-                if (keySet.contains(Constants.STRING_LIST_VALUE)) {
-                    JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
-                    List<String> stringList = new ArrayList<>();
-                    for (int i = 0; i < arr.length(); i++) {
-                        stringList.add(arr.get(i).toString());
-                    }
-                    messageSystemAttributeValue.stringListValues(stringList);
-                }
-
-                if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
-                    JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
-                    List<SdkBytes> binaryList = new ArrayList<>();
-                    for (int i = 0; i < arr.length(); i++) {
-                        binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
-                    }
-                    messageSystemAttributeValue.binaryListValues(binaryList);
-                }
-                messageSystemAttributeMap.put(MessageSystemAttributeNameForSends.fromValue(key),
-                        messageSystemAttributeValue.build());
+        JSONObject messageAttributesInJson = new JSONObject(messageSystemAttributes);
+        Iterator<?> keys = messageAttributesInJson.keys();
+        Map<MessageSystemAttributeNameForSends, MessageSystemAttributeValue> messageSystemAttributeMap =
+                new HashMap<>();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
+            Set keySet = messageAttributeInJson.keySet();
+            MessageSystemAttributeValue.Builder messageSystemAttributeValue = MessageSystemAttributeValue.builder();
+            if (keySet.contains(Constants.DATA_TYPE)) {
+                messageSystemAttributeValue.dataType(messageAttributeInJson.get(Constants.DATA_TYPE).toString());
             }
-            sendMessageBuilder.messageSystemAttributes(messageSystemAttributeMap);
-        }
-    }
 
-    public static List<String> convertToStringArray(String string) {
-        JSONArray arr = new JSONArray(string);
-        List<String> stringList = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++) {
-            stringList.add(arr.get(i).toString());
-        }
-        return stringList;
-    }
+            if (keySet.contains(Constants.BINARY_VALUE)) {
+                messageSystemAttributeValue.binaryValue(SdkBytes.fromUtf8String(
+                        messageAttributeInJson.get(Constants.BINARY_VALUE).toString()));
+            }
 
-    public static List<MessageSystemAttributeName> convertToMsgSysAttributeArray(String string) {
-        JSONArray arr = new JSONArray(string);
-        List<MessageSystemAttributeName> msgSysAttributeList = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++) {
-            msgSysAttributeList.add(MessageSystemAttributeName.fromValue(arr.get(i).toString()));
+            if (keySet.contains(Constants.STRING_VALUE)) {
+                messageSystemAttributeValue.stringValue(messageAttributeInJson.get(
+                        Constants.STRING_VALUE).toString());
+            }
+
+            if (keySet.contains(Constants.STRING_LIST_VALUE)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
+                List<String> stringList = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    stringList.add(arr.get(i).toString());
+                }
+                messageSystemAttributeValue.stringListValues(stringList);
+            }
+
+            if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
+                List<SdkBytes> binaryList = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
+                }
+                messageSystemAttributeValue.binaryListValues(binaryList);
+            }
+            messageSystemAttributeMap.put(MessageSystemAttributeNameForSends.fromValue(key),
+                    messageSystemAttributeValue.build());
         }
-        return msgSysAttributeList;
+        sendMessageBuilder.messageSystemAttributes(messageSystemAttributeMap);
     }
 
     /**
@@ -279,5 +246,44 @@ public class Utils {
             throw new SqsInvalidConfigurationException("Mandatory parameter 'connectionName' is not set.");
         }
         return connectionName;
+    }
+
+    public static void setResultAsPayload(MessageContext msgContext, String operationName, Error error,
+                                          String errorMsg) {
+        OMElement resultElement = createOMElement(operationName + "Result", null);
+
+        OMElement statusCodeElement = createOMElement("success", "false");
+        resultElement.addChild(statusCodeElement);
+
+        setErrorPropertiesToMessage(msgContext, error, errorMsg);
+
+        //set error code and detail to the message
+        OMElement errorEle = createOMElement("error", null);
+        OMElement errorTyoe = createOMElement("Type", error.toString());
+        OMElement errorCodeEle = createOMElement("code", error.getErrorCode());
+        OMElement errorMessageEle = createOMElement("message", errorMsg);
+        errorEle.addChild(errorTyoe);
+        errorEle.addChild(errorCodeEle);
+        errorEle.addChild(errorMessageEle);
+        resultElement.addChild(errorEle);
+
+        SOAPBody soapBody = msgContext.getEnvelope().getBody();
+        JsonUtil.removeJsonPayload(((Axis2MessageContext)msgContext).getAxis2MessageContext());
+        ((Axis2MessageContext)msgContext).getAxis2MessageContext().
+                removeProperty(PassThroughConstants.NO_ENTITY_BODY);
+        soapBody.addChild(resultElement);
+    }
+
+    /**
+     * Sets the error code and error detail in message
+     *
+     * @param messageContext Message Context
+     * @param error          Error to be set
+     */
+    public static void setErrorPropertiesToMessage(MessageContext messageContext, Error error, String errorDetail) {
+        messageContext.setProperty(Constants.PROPERTY_ERROR_CODE, error.getErrorCode());
+        messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, error.getErrorMessage());
+        messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, errorDetail);
+        setStatusCode(messageContext, "400");
     }
 }

@@ -21,14 +21,14 @@
                description="Integer, The number of seconds (0 to 900 - 15 minutes) to delay a specific message"/>
     <parameter name="messageAttributes" description="The message attributes to send.
     The value should be a string in JSON format.
-        ' Eg:
-        '{ attributeName :
-            {
-                 BinaryValue: value,
-                 DataType: value,
-                 StringValue: value
-            }
-        }'"/>
+    ' Eg:
+    { attributeName :
+        {
+             BinaryValue: value,
+             DataType: value,
+             StringValue: value
+        }
+    }'"/>
     <parameter name="queueId" description="The AWS account ID without hyphens"/>
     <parameter name="queueName" description="The name of the queue"/>
     <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
@@ -37,8 +37,8 @@
     <parameter name="messageDeduplicationId" description="The ID of the message deduplication"/>
     <parameter name="messageSystemAttributes" description="The message system attributes to send.
     The value should be a string in JSON format.
-    Eg:
-    '{ systemAttributeName :
+    'Eg:
+    { systemAttributeName :
         {
              BinaryValue: value,
              DataType: value,

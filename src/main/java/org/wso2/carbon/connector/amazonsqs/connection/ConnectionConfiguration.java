@@ -75,7 +75,7 @@ public class ConnectionConfiguration {
             ConnectionConfiguration connectionConfiguration = (ConnectionConfiguration) obj;
             return StringUtils.equals(this.connectionName, connectionConfiguration.getConnectionName()) &&
                     StringUtils.equals(this.region, connectionConfiguration.getRegion()) &&
-                    StringUtils.equals(this.awsAccessKeyId, connectionConfiguration.awsAccessKeyId) &&
+                    StringUtils.equals(this.awsAccessKeyId, connectionConfiguration.getAwsAccessKeyId()) &&
                     StringUtils.equals(this.awsSecretAccessKey, connectionConfiguration.getAwsSecretAccessKey());
         }
         return false;

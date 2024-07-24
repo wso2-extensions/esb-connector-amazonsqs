@@ -87,8 +87,8 @@ public class Utils {
             if (StringUtils.isNotBlank(queueUrl)) {
                 return queueUrl;
             }
-            if (StringUtils.isNotBlank(queueName) && (StringUtils.isNotBlank(queueId) ||
-                    StringUtils.isNotBlank(queueUrl))) {
+            if (!StringUtils.isNotBlank(queueName) && (!StringUtils.isNotBlank(queueId) ||
+                    !StringUtils.isNotBlank(queueUrl))) {
                 throw new SqsInvalidConfigurationException("Missing queue info: Should provide value of queue url or " +
                         "queue name and queue id.");
             }

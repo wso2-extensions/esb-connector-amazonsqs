@@ -91,9 +91,13 @@ public class SendMessage extends AbstractConnector {
         } catch (MalformedURLException e) {
             Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_URL, e.getMessage());
             handleException(Constants.RUN_TIME_EXCEPTION_MSG, e, messageContext);
-        } catch (SqsInvalidConfigurationException|NumberFormatException e) {
+        } catch (SqsInvalidConfigurationException e) {
             Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG, e, messageContext);
+        } catch (NumberFormatException e) {
+            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_CONFIGURATION,
+                    Constants.NUMBER_FORMAT_ERROR_MSG + e.getMessage());
+            handleException(Constants.NUMBER_FORMAT_ERROR_MSG, e, messageContext);
         } catch (Exception e) {
             Utils.setResultAsPayload(messageContext, operationName , Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);

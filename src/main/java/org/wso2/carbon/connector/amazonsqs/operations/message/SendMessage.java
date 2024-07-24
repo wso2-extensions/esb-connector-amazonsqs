@@ -66,7 +66,7 @@ public class SendMessage extends AbstractConnector {
                     queueUrl(queueUrl).messageBody(messageBody);
 
             if (StringUtils.isNotBlank(delaySeconds)) {
-                sendMessageBuilder.delaySeconds( Integer.valueOf(delaySeconds));
+                sendMessageBuilder.delaySeconds(Integer.valueOf(delaySeconds));
             }
             if (StringUtils.isNotBlank(messageGroupId)) {
                 sendMessageBuilder.messageGroupId(messageGroupId);

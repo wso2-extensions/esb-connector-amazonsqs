@@ -58,7 +58,83 @@
                     "required": "true",
                     "helpTip": "Region which is used select a regional endpoint to make requests."
                   }
-                }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "iamRole",
+                    "displayName": "IAM role",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The IAM role associated with the instance."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "enableIMDSv1",
+                    "displayName": "Enable IMDSv1",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Use IMDSv1 to access instance metadata."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "version",
+                    "displayName": "Version",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The version of the API."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "blocking",
+                    "displayName": "Blocking",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "This property helps the connector perform blocking invocations to Amazon SQS."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "timeout",
+                    "displayName": "Timeout",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "30",
+                    "required": "true",
+                    "helpTip": "The end point timeout"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "enableSSL",
+                    "displayName": "Enable SSL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "false",
+                    "required": "true",
+                    "helpTip": "Whether the Amazon AWS URL should be HTTP or HTTPS. Set to true if you want the URL to be HTTPS."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "contentType",
+                    "displayName": "Content Type",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The content type that is used to generate the signature."
+                  }
               ]
             }
           }

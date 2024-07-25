@@ -109,7 +109,10 @@ public class Utils {
 
     public static void createResponseMetaDataElement(SqsResponseMetadata responseMetadata,
                                                      MessageContext messageContext, OMElement resultElement) {
-        resultElement.addChild(Utils.createOMElement("ResponseMetadata", responseMetadata.requestId()));
+
+        OMElement responseMetadataElement = Utils.createOMElement("ResponseMetadata", null);
+        responseMetadataElement.addChild(Utils.createOMElement("RequestId", responseMetadata.requestId()));
+        resultElement.addChild(responseMetadataElement);
         SOAPBody soapBody = messageContext.getEnvelope().getBody();
         JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
         ((Axis2MessageContext) messageContext).getAxis2MessageContext().

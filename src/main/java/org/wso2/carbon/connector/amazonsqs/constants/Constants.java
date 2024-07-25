@@ -72,7 +72,7 @@ public class Constants {
      */
     public static final String RUN_TIME_EXCEPTION_MSG = "Error occurred while performing the operation: ";
 
-    public static final String GENERAL_ERROR_MSG = "Aws SQS connector encountered an error: ";
+    public static final String GENERAL_ERROR_MSG = "AWS SQS connector encountered an error: ";
     public static final String NUMBER_FORMAT_ERROR_MSG = "Error occurred while converting string to integer : ";
 
     /**

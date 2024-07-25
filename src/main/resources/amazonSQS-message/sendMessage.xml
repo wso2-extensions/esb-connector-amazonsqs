@@ -19,73 +19,33 @@
 <template name="sendMessage" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="delaySeconds"
                description="Integer, The number of seconds (0 to 900 - 15 minutes) to delay a specific message"/>
-    <parameter name="messageAttributes"
-               description="Message attributes consisting a Name, Type, and Value per each attribute"/>
-    <parameter name="queueId" description="The unique identifier of the queue"/>
+    <parameter name="messageAttributes" description="The message attributes to send.
+    The value should be a string in JSON format.
+    ' Eg:
+    { attributeName :
+        {
+             BinaryValue: value,
+             DataType: value,
+             StringValue: value
+        }
+    }'"/>
+    <parameter name="queueId" description="The AWS account ID without hyphens"/>
     <parameter name="queueName" description="The name of the queue"/>
+    <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
     <parameter name="messageBody" description="The body of the message"/>
     <parameter name="messageGroupId" description="The ID of the message group"/>
     <parameter name="messageDeduplicationId" description="The ID of the message deduplication"/>
+    <parameter name="messageSystemAttributes" description="The message system attributes to send.
+    The value should be a string in JSON format.
+    'Eg:
+    { systemAttributeName :
+        {
+             BinaryValue: value,
+             DataType: value,
+             StringValue: value
+        }
+    }'"/>
     <sequence>
-        <class name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSContext"/>
-        <property name="uri.var.delaySeconds" expression="$func:delaySeconds"/>
-        <property name="uri.var.messageAttributes" expression="$func:messageAttributes"/>
-        <property name="uri.var.queueId" expression="$func:queueId"/>
-        <property name="uri.var.urlQueueName" expression="$func:queueName"/>
-        <property name="uri.var.messageBody" expression="$func:messageBody"/>
-        <property name="uri.var.messageGroupId" expression="$func:messageGroupId"/>
-        <property name="uri.var.messageDeduplicationId" expression="$func:messageDeduplicationId"/>
-        <property name="uri.var.action" value="SendMessage"/>
-        <class
-                name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSAuthConnector"/>
-        <!-- Add authorization and date header parameters -->
-        <header name="Authorization" scope="transport"
-                expression="get-property('uri.var.authorizationHeader')"/>
-        <header name="x-amz-date" scope="transport"
-                expression="get-property('uri.var.amzDate')"/>
-        <payloadFactory media-type="json">
-            <format>
-                $1
-            </format>
-            <args>
-                <arg expression="get-property('uri.var.requestPayload')"/>
-            </args>
-        </payloadFactory>
-        <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
-        <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
-        <filter source="$ctx:amazonSQSBlocking" regex="true">
-            <then>
-                <call blocking="true">
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}"/>
-                    </endpoint>
-                </call>
-            </then>
-            <else>
-                <call>
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}">
-                            <timeout>
-                                <duration>{get-property('epTimeout')}</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <errorCodes>-1</errorCodes>
-                                <initialDuration>0</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>0</maximumDuration>
-                            </suspendOnFailure>
-                            <markForSuspension>
-                                <errorCodes>-1</errorCodes>
-                            </markForSuspension>
-                        </http>
-                    </endpoint>
-                </call>
-            </else>
-        </filter>
-        <!-- Remove custom header information -->
-        <header name="Proxy-Connection" scope="transport" action="remove"/>
-        <header name="x-amzn-RequestId" scope="transport" action="remove"/>
-        <header name="Via" scope="transport" action="remove"/>
+        <class name="org.wso2.carbon.connector.amazonsqs.operations.message.SendMessage"/>
     </sequence>
 </template>

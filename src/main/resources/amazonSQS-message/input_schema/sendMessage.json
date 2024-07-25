@@ -11,6 +11,11 @@
       "id": "http:\/\/wso2jsonschema.org\/queueName",
       "type": "string"
     },
+    "queueUrl": {
+      "id": "http:\/\/wso2jsonschema.org\/queueUrl",
+      "type": "string",
+      "nullable": "true"
+    },
     "messageBody": {
       "id": "http:\/\/wso2jsonschema.org\/messageBody",
       "type": "string"
@@ -23,6 +28,11 @@
     "delaySeconds": {
       "id": "http:\/\/wso2jsonschema.org\/delaySeconds",
       "type": "number",
+      "nullable": "true"
+    },
+    "messageSystemAttributes": {
+      "id": "http:\/\/wso2jsonschema.org\/messageSystemAttributes",
+      "type": "string",
       "nullable": "true"
     }
   },

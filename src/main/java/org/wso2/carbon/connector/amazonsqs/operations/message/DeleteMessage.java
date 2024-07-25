@@ -58,20 +58,20 @@ public class DeleteMessage extends AbstractConnector {
         } catch (SqsException e) {
             Utils.addErrorResponse(messageContext, e);
         } catch (SdkClientException e) {
-            Utils.setResultAsPayload(messageContext, operationName , Error.CONNECTION_ERROR, e.getMessage());
+            Utils.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
         } catch (MalformedURLException e) {
-            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_URL, e.getMessage());
+            Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_URL, e.getMessage());
             handleException(Constants.RUN_TIME_EXCEPTION_MSG, e, messageContext);
         } catch (SqsInvalidConfigurationException e) {
-            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_CONFIGURATION, e.getMessage());
+            Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG, e, messageContext);
         } catch (NumberFormatException e) {
-            Utils.setResultAsPayload(messageContext, operationName , Error.INVALID_CONFIGURATION,
+            Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION,
                     Constants.NUMBER_FORMAT_ERROR_MSG + e.getMessage());
             handleException(Constants.NUMBER_FORMAT_ERROR_MSG, e, messageContext);
         } catch (Exception e) {
-            Utils.setResultAsPayload(messageContext, operationName , Error.GENERAL_ERROR, e.getMessage());
+            Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
     }

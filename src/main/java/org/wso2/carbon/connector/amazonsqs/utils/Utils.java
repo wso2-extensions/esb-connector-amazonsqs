@@ -248,32 +248,6 @@ public class Utils {
         return connectionName;
     }
 
-    public static void setResultAsPayload(MessageContext msgContext, String operationName, Error error,
-                                          String errorMsg) {
-        OMElement resultElement = createOMElement(operationName + "Result", null);
-
-        OMElement statusCodeElement = createOMElement("success", "false");
-        resultElement.addChild(statusCodeElement);
-
-        setErrorPropertiesToMessage(msgContext, error, errorMsg);
-
-        //set error code and detail to the message
-        OMElement errorEle = createOMElement("error", null);
-        OMElement errorTyoe = createOMElement("Type", error.toString());
-        OMElement errorCodeEle = createOMElement("code", error.getErrorCode());
-        OMElement errorMessageEle = createOMElement("message", errorMsg);
-        errorEle.addChild(errorTyoe);
-        errorEle.addChild(errorCodeEle);
-        errorEle.addChild(errorMessageEle);
-        resultElement.addChild(errorEle);
-
-        SOAPBody soapBody = msgContext.getEnvelope().getBody();
-        JsonUtil.removeJsonPayload(((Axis2MessageContext)msgContext).getAxis2MessageContext());
-        ((Axis2MessageContext)msgContext).getAxis2MessageContext().
-                removeProperty(PassThroughConstants.NO_ENTITY_BODY);
-        soapBody.addChild(resultElement);
-    }
-
     /**
      * Sets the error code and error detail in message
      *
@@ -283,7 +257,6 @@ public class Utils {
     public static void setErrorPropertiesToMessage(MessageContext messageContext, Error error, String errorDetail) {
         messageContext.setProperty(Constants.PROPERTY_ERROR_CODE, error.getErrorCode());
         messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, error.getErrorMessage());
-        messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, errorDetail);
-        setStatusCode(messageContext, "400");
+        messageContext.setProperty(Constants.PROPERTY_ERROR_DETAIL, errorDetail);
     }
 }

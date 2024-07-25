@@ -124,4 +124,6 @@ public class Constants {
      * Constant for https.
      */
     public static final String HTTPS = "https";
+
+    public static final String PROPERTY_ERROR_DETAIL = "ERROR_DETAIL";
 }

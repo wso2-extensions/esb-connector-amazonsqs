@@ -58,7 +58,7 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
                         .getConnection(Constants.CONNECTOR_NAME, connectionName);
                 if (!sqsConnection.getConnectionConfig().equals(configuration)) {
                     sqsConnection.setConnectionConfig(configuration);
-                    sqsConnection.setSqsInstance();
+                    sqsConnection.setSqsClient(configuration);
                 }
             }
         } catch (SqsInvalidConfigurationException e) {

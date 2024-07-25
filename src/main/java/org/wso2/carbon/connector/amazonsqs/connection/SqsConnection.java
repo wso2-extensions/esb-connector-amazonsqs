@@ -17,9 +17,16 @@
  */
 package org.wso2.carbon.connector.amazonsqs.connection;
 
-import org.wso2.carbon.connector.amazonsqs.object.SqsClientManager;
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.connector.core.connection.Connection;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.http.apache.ApacheHttpClient;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.SqsClientBuilder;
 
 /**
  * This class manages connections to Amazon SQS using the AWS SDK.
@@ -27,11 +34,10 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 public class SqsConnection implements Connection {
 
     private ConnectionConfiguration connectionConfig;
-    private SqsClientManager sqsClientManager;
+    private SqsClient sqsClient;
 
     public SqsConnection(ConnectionConfiguration connectionConfig) {
         this.connectionConfig = connectionConfig;
-        this.sqsClientManager = SqsClientManager.getInstance(connectionConfig);
     }
 
     public ConnectionConfiguration getConnectionConfig() {
@@ -42,11 +48,27 @@ public class SqsConnection implements Connection {
         this.connectionConfig = connectionConfig;
     }
 
-    public SqsClient getSqsClient() {
-        return this.sqsClientManager.getSqsClient();
+    public void setSqsClient(ConnectionConfiguration connectionConfig) {
+        this.sqsClient = createNewClientInstance(connectionConfig);
     }
 
-    public void setSqsInstance() {
-        this.sqsClientManager = SqsClientManager.createNewInstance(this.connectionConfig);
+    public SqsClient getSqsClient() {
+        if (sqsClient == null) {
+            this.sqsClient = createNewClientInstance(this.connectionConfig);
+        }
+        return this.sqsClient;
+    }
+
+    private SqsClient createNewClientInstance(ConnectionConfiguration connectionConfig) {
+        String awsAccessKeyId = connectionConfig.getAwsAccessKeyId();
+        String awsSecretAccessKey = connectionConfig.getAwsSecretAccessKey();
+        SqsClientBuilder sqsClientBuilder = SqsClient.builder().region(Region.of(connectionConfig.getRegion())).
+                httpClient(ApacheHttpClient.builder().build());
+        AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.create();
+        if (StringUtils.isNotBlank(awsAccessKeyId) && StringUtils.isNotBlank(awsSecretAccessKey)) {
+            credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.
+                    create(awsAccessKeyId, awsSecretAccessKey));
+        }
+        return sqsClientBuilder.credentialsProvider(credentialsProvider).build();
     }
 }

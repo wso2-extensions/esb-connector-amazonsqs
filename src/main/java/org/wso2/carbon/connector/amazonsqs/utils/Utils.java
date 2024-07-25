@@ -79,7 +79,7 @@ public class Utils {
     }
 
     public static String createUrl(MessageContext messageContext, SqsConnection sqsConnection)
-            throws MalformedURLException, SqsInvalidConfigurationException {
+            throws SqsInvalidConfigurationException {
         try {
             String queueName = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.QUEUE_NAME);
             String queueId = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.QUEUE_ID);
@@ -96,7 +96,7 @@ public class Utils {
                     concat(".amazonaws.com"), Constants.SLASH.concat(queueId).
                     concat(Constants.SLASH).concat(queueName)).toString();
         } catch (MalformedURLException e) {
-            throw new MalformedURLException(e.getMessage());
+            throw new SqsInvalidConfigurationException(e.getMessage());
         }
     }
 

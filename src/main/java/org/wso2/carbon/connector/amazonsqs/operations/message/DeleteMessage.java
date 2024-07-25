@@ -41,7 +41,6 @@ public class DeleteMessage extends AbstractConnector {
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
-        String operationName = "deleteMessage";
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -58,11 +57,8 @@ public class DeleteMessage extends AbstractConnector {
         } catch (SqsException e) {
             Utils.addErrorResponse(messageContext, e);
         } catch (SdkClientException e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
+            Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
-        } catch (MalformedURLException e) {
-            Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_URL, e.getMessage());
-            handleException(Constants.RUN_TIME_EXCEPTION_MSG, e, messageContext);
         } catch (SqsInvalidConfigurationException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG, e, messageContext);

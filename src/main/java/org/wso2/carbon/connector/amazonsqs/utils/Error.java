@@ -18,10 +18,9 @@
 package org.wso2.carbon.connector.amazonsqs.utils;
 
 public enum Error {
-    CONNECTION_ERROR("700901", "AWS_SQS:CONNECTION_ERROR"),
+    CLIENT_SDK_ERROR("700901", "AWS_SQS:CLIENT_SDK_ERROR"),
     INVALID_CONFIGURATION("700902", "AWS_SQS:INVALID_CONFIGURATION"),
-    INVALID_URL("700903", "AWS_SQS:INVALID_URL"),
-    GENERAL_ERROR("700904", "AWS_SQS:GENERAL_ERROR");
+    GENERAL_ERROR("700903", "AWS_SQS:GENERAL_ERROR");
 
     private final String code;
     private final String message;

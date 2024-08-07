@@ -17,6 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.config;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.ManagedLifecycle;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.SynapseEnvironment;
@@ -61,14 +62,17 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
                     sqsConnection.setSqsClient(configuration);
                 }
             }
-        } catch (SqsInvalidConfigurationException e) {
+        } catch (SqsInvalidConfigurationException|NumberFormatException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
+            handleException("Failed to initiate sqs connector configuration.", e, messageContext);
+        } catch (Exception e) {
+            Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException("Failed to initiate sqs connector configuration.", e, messageContext);
         }
     }
 
     private ConnectionConfiguration getConnectionConfigFromContext(MessageContext msgContext)
-            throws SqsInvalidConfigurationException {
+            throws SqsInvalidConfigurationException, NumberFormatException {
         String connectionName = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, Constants.CONNECTION_NAME);
         String region = (String) ConnectorUtils.
@@ -77,12 +81,46 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
                 lookupTemplateParamater(msgContext, Constants.AWS_ACCESS_KEY_ID);
         String awsSecretAccessKey = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, Constants.AWS_SECRET_ACCESS_KEY);
+        String socketTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext, Constants.SOCKET_TIMEOUT);
+        String connectionAcquisitionTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.CONNECTION_ACQUISITION_TIMEOUT);
+        String connectionTimeToLive = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.CONNECTION_TIME_TO_LIVE);
+        String connectionTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.CONNECTION_TIMEOUT);
+        String connectionMaxIdleTime = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.CONNECTION_MAX_IDLE_TIME);
+        String apiCallTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.API_CALL_TIMEOUT);
+        String apiCallAttemptTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
+                Constants.API_CALL_ATTEMPT_TIMEOUT);
 
         ConnectionConfiguration connectionConfig = new ConnectionConfiguration();
         connectionConfig.setConnectionName(connectionName);
         connectionConfig.setRegion(region);
         connectionConfig.setAwsAccessKeyId(awsAccessKeyId);
         connectionConfig.setAwsSecretAccessKey(awsSecretAccessKey);
+        if (StringUtils.isNotEmpty(socketTimeout)) {
+            connectionConfig.setSocketTimeout(Integer.valueOf(socketTimeout));
+        }
+        if (StringUtils.isNotEmpty(connectionTimeout)) {
+            connectionConfig.setConnectionTimeout(Integer.valueOf(connectionTimeout));
+        }
+        if (StringUtils.isNotEmpty(connectionMaxIdleTime)) {
+            connectionConfig.setConnectionMaxIdleTime(Integer.valueOf(connectionMaxIdleTime));
+        }
+        if (StringUtils.isNotEmpty(connectionTimeToLive)) {
+            connectionConfig.setConnectionTimeToLive(Integer.valueOf(connectionTimeToLive));
+        }
+        if (StringUtils.isNotEmpty(connectionAcquisitionTimeout)) {
+            connectionConfig.setConnectionAcquisitionTimeout(Integer.valueOf(connectionAcquisitionTimeout));
+        }
+        if (StringUtils.isNotEmpty(apiCallTimeout)) {
+            connectionConfig.setApiCallTimeout(Integer.valueOf(apiCallTimeout));
+        }
+        if (StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            connectionConfig.setApiCallAttemptTimeout(Integer.valueOf(apiCallAttemptTimeout));
+        }
         return connectionConfig;
     }
 }

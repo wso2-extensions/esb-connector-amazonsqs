@@ -1,0 +1,4 @@
+<Queue>
+    <queueUrl>%s(deadLetterQueueUrl)</queueUrl>
+    <attributes>%s(setQueueAttributes)</attributes>
+</Queue>

@@ -5,10 +5,16 @@
   "properties": {
     "queueName": {
       "id": "http:\/\/wso2jsonschema.org\/queueName",
-      "type": "string"
+      "type": "string",
+      "nullable": "false"
     },
     "attributeEntries": {
       "id": "http:\/\/wso2jsonschema.org\/attributeEntries",
+      "type": "string",
+      "nullable": "true"
+    },
+    "tags": {
+      "id": "http:\/\/wso2jsonschema.org\/tags",
       "type": "string",
       "nullable": "true"
     }

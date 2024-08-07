@@ -34,8 +34,6 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
 import software.amazon.awssdk.services.sqs.model.SqsException;
 
-import java.net.MalformedURLException;
-
 /**
  * Implements send message operation.
  */
@@ -49,18 +47,21 @@ public class SendMessage extends AbstractConnector {
                     .getConnection(Constants.CONNECTOR_NAME, Utils.getConnectionName(messageContext));
             String queueUrl = Utils.createUrl(messageContext, sqsConnection);
             String delaySeconds = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "delaySeconds");
+                    Constants.DELAY_SECONDS);
             String messageAttributes = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "messageAttributes");
+                    Constants.MESSAGE_ATTRIBUTES);
             String messageBody = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "messageBody");
+                    Constants.MESSAGE_BODY);
             String messageGroupId = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "messageGroupId");
+                    Constants.MESSAGE_GROUP_ID);
             String messageDeduplicationId = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "messageDeduplicationId");
+                    Constants.MESSAGE_DEDUPLICATION_ID);
             String messageSystemAttributes = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "messageSystemAttributes");
-
+                    Constants.MESSAGE_SYSTEM_ATTRIBUTES);
+            String apiCallTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                    Constants.API_CALL_TIMEOUT);
+            String apiCallAttemptTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                    Constants.API_CALL_ATTEMPT_TIMEOUT);
             SendMessageRequest.Builder sendMessageBuilder = SendMessageRequest.builder().
                     queueUrl(queueUrl).messageBody(messageBody);
 
@@ -74,12 +75,14 @@ public class SendMessage extends AbstractConnector {
                 sendMessageBuilder.messageDeduplicationId(messageDeduplicationId);
             }
             if (StringUtils.isNotBlank(messageAttributes)) {
-                Utils.addMessageAttributes(messageAttributes.substring(1, messageAttributes.length() - 1),
-                        sendMessageBuilder);
+                sendMessageBuilder.messageAttributes(Utils.addMessageAttributes(messageAttributes));
             }
             if (StringUtils.isNotBlank(messageSystemAttributes)) {
-                Utils.addSystemMessageAttributes(messageSystemAttributes.substring(1,
-                                messageSystemAttributes.length() - 1), sendMessageBuilder);
+                sendMessageBuilder.messageSystemAttributes(Utils.addSystemMessageAttributes(messageSystemAttributes));
+            }
+            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+                sendMessageBuilder.overrideConfiguration(
+                        Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }
             createResponse(sqsConnection.getSqsClient().sendMessage(sendMessageBuilder.build()), messageContext);
         } catch (SqsException e) {
@@ -102,15 +105,15 @@ public class SendMessage extends AbstractConnector {
     private void createResponse(SendMessageResponse sendMessageResponse, MessageContext messageContext) {
         OMElement resultElement = Utils.createOMElement("SendMessageResponse", null);
         OMElement result = Utils.createOMElement("SendMessageResult", null);
-        result.addChild(Utils.createOMElement("MessageId", sendMessageResponse.messageId()));
-        result.addChild(Utils.createOMElement("MD5OfMessageBody", sendMessageResponse.md5OfMessageBody()));
+        result.addChild(Utils.createOMElement(Constants.MESSAGE_ID, sendMessageResponse.messageId()));
+        result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_BODY, sendMessageResponse.md5OfMessageBody()));
         String md5OfMessageAttributes = sendMessageResponse.md5OfMessageAttributes();
         if (StringUtils.isNotBlank(md5OfMessageAttributes)) {
-            result.addChild(Utils.createOMElement("MD5OfMessageAttributes", md5OfMessageAttributes));
+            result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_ATTRIBUTES, md5OfMessageAttributes));
         }
         String md5OfMessageSystemAttributes = sendMessageResponse.md5OfMessageSystemAttributes();
         if (StringUtils.isNotBlank(md5OfMessageSystemAttributes)) {
-            result.addChild(Utils.createOMElement("MD5OfMessageSystemAttributes",
+            result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES,
                     md5OfMessageSystemAttributes));
         }
         resultElement.addChild(result);

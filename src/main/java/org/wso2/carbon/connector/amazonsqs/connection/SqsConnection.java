@@ -23,10 +23,13 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.awscore.AwsRequestOverrideConfiguration;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.SqsClientBuilder;
+
+import java.time.Duration;
 
 /**
  * This class manages connections to Amazon SQS using the AWS SDK.
@@ -62,12 +65,42 @@ public class SqsConnection implements Connection {
     private SqsClient createNewClientInstance(ConnectionConfiguration connectionConfig) {
         String awsAccessKeyId = connectionConfig.getAwsAccessKeyId();
         String awsSecretAccessKey = connectionConfig.getAwsSecretAccessKey();
+        Integer connectionTimeout = connectionConfig.getConnectionTimeout();
+        Integer connectionAcquisitionTimeout = connectionConfig.getConnectionAcquisitionTimeout();
+        Integer socketTimeout = connectionConfig.getSocketTimeout();
+        Integer connectionTimeToLive = connectionConfig.getConnectionTimeToLive();
+        Integer connectionMaxIdleTime = connectionConfig.getConnectionMaxIdleTime();
+        Integer apiCallTimeout = connectionConfig.getApiCallTimeout();
+        Integer apiCallAttemptTimeout = connectionConfig.getApiCallAttemptTimeout();
+        ApacheHttpClient.Builder apacheHttpClientBuilder = ApacheHttpClient.builder();
+        if (connectionTimeout != -1) {
+            apacheHttpClientBuilder.connectionTimeout(Duration.ofSeconds(connectionTimeout));
+        }
+        if (connectionAcquisitionTimeout != -1) {
+            apacheHttpClientBuilder.connectionAcquisitionTimeout(Duration.ofSeconds(connectionAcquisitionTimeout));
+        }
+        if (socketTimeout != -1) {
+            apacheHttpClientBuilder.socketTimeout(Duration.ofSeconds(socketTimeout));
+        }
+        if (connectionTimeToLive != -1) {
+            apacheHttpClientBuilder.connectionTimeToLive(Duration.ofSeconds(connectionTimeToLive));
+        }
+        if (connectionMaxIdleTime != -1) {
+            apacheHttpClientBuilder.connectionMaxIdleTime(Duration.ofSeconds(connectionMaxIdleTime));
+        }
         SqsClientBuilder sqsClientBuilder = SqsClient.builder().region(Region.of(connectionConfig.getRegion())).
-                httpClient(ApacheHttpClient.builder().build());
+                httpClient(apacheHttpClientBuilder.build());
         AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.create();
         if (StringUtils.isNotBlank(awsAccessKeyId) && StringUtils.isNotBlank(awsSecretAccessKey)) {
             credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.
                     create(awsAccessKeyId, awsSecretAccessKey));
+        }
+        if (apiCallTimeout != -1) {
+            sqsClientBuilder.overrideConfiguration(b -> b.apiCallTimeout(Duration.ofSeconds(apiCallTimeout)));
+        }
+        if (apiCallAttemptTimeout != -1) {
+            sqsClientBuilder.overrideConfiguration(b -> b.apiCallAttemptTimeout(
+                    Duration.ofSeconds(apiCallAttemptTimeout)));
         }
         return sqsClientBuilder.credentialsProvider(credentialsProvider).build();
     }

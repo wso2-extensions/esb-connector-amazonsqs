@@ -11,8 +11,8 @@
       "id": "http:\/\/wso2jsonschema.org\/queueName",
       "type": "string"
     },
-    "messageRequestEntry": {
-      "id": "http:\/\/wso2jsonschema.org\/messageRequestEntry",
+    "messageRequestEntries": {
+      "id": "http:\/\/wso2jsonschema.org\/messageRequestEntries",
       "type": "string"
     }
   },

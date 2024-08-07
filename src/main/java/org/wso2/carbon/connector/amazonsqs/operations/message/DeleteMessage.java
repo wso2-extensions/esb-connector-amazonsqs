@@ -17,6 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.message;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
 import org.wso2.carbon.connector.amazonsqs.constants.Constants;
@@ -32,8 +33,6 @@ import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageResponse;
 import software.amazon.awssdk.services.sqs.model.SqsException;
 
-import java.net.MalformedURLException;
-
 /**
  * Implements delete message operation.
  */
@@ -47,11 +46,19 @@ public class DeleteMessage extends AbstractConnector {
                     .getConnection(Constants.CONNECTOR_NAME, Utils.getConnectionName(messageContext));
             String queueUrl = Utils.createUrl(messageContext, sqsConnection);
             String receiptHandle = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    "receiptHandle");
-            DeleteMessageRequest deleteQueueRequest = DeleteMessageRequest.builder().queueUrl(queueUrl).
-                    receiptHandle(receiptHandle).build();
+                    Constants.RECEIPT_HANDLE_CONFIG);
+            String apiCallTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                    Constants.API_CALL_TIMEOUT);
+            String apiCallAttemptTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                    Constants.API_CALL_ATTEMPT_TIMEOUT);
+            DeleteMessageRequest.Builder deleteQueueRequest = DeleteMessageRequest.builder().queueUrl(queueUrl).
+                    receiptHandle(receiptHandle);
+            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+                deleteQueueRequest.overrideConfiguration(
+                        Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
+            }
             DeleteMessageResponse deleteMessageResponse = sqsConnection.getSqsClient().
-                    deleteMessage(deleteQueueRequest);
+                    deleteMessage(deleteQueueRequest.build());
             Utils.add200ResponseWithOutBody(deleteMessageResponse.responseMetadata(), messageContext,
                     "DeleteMessageResponse");
         } catch (SqsException e) {

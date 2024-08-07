@@ -3,22 +3,30 @@
   "title": "root",
   "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
   "properties": {
+    "queueUrl": {
+      "id": "http:\/\/wso2jsonschema.org\/queueUrl",
+      "type": "string",
+      "nullable": "true"
+    },
     "queueId": {
       "id": "http:\/\/wso2jsonschema.org\/queueId",
-      "type": "number"
+      "type": "number",
+      "nullable": "true"
     },
     "queueName": {
       "id": "http:\/\/wso2jsonschema.org\/queueName",
-      "type": "string"
+      "type": "string",
+      "nullable": "true"
     },
     "receiptHandle": {
       "id": "http:\/\/wso2jsonschema.org\/receiptHandle",
-      "type": "string"
+      "type": "string",
+      "nullable": "false"
     },
     "visibilityTimeout": {
       "id": "http:\/\/wso2jsonschema.org\/visibilityTimeout",
       "type": "number",
-      "nullable": "true"
+      "nullable": "false"
     }
   },
   "type": "object"

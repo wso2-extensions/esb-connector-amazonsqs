@@ -32,23 +32,34 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "awsAccountNumbers",
-                    "displayName": "AWS Account Numbers",
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The AWS account number of the principal who will be given permission."
+                    "helpTip": "The URL of the queue to which permissions are added."
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "actionName",
-                    "displayName": "Action Name",
+                    "name": "awsAccountNumbers",
+                    "displayName": "AWS Account Numbers",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The action the client wants to allow for the specified principal."
+                    "helpTip": "The AWS account numbers of the principal who will be given permission.(e.g., 111111111234, 111111111111)"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "actionNames",
+                    "displayName": "Action Names",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The action the client wants to allow for the specified principal. (e.g., SendMessage, DeleteMessage)"
                   }
                 },
                 {
@@ -61,27 +72,35 @@
                     "required": "true",
                     "helpTip": "The unique identification of the permission you are setting (e.g., AliceSendMessage)"
                   }
-                },
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueId",
-                    "displayName": "Queue ID",
-                    "inputType": "stringOrExpression",
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The unique identifier of the queue."
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueName",
-                    "displayName": "Queue Name",
-                    "inputType": "stringOrExpression",
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The name of the queue."
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

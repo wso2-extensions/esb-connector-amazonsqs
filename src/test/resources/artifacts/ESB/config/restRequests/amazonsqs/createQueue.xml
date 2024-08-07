@@ -1,0 +1,5 @@
+<Queue>
+    <queueName>%s(queueName)</queueName>
+    <attributeEntries>%s(queueAttributes)</attributeEntries>
+<!--    <tags>%s(tags)</tags>-->
+</Queue>

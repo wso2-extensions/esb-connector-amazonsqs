@@ -1,0 +1,7 @@
+<Message>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <delaySeconds>%s(delaySeconds)</delaySeconds>
+    <messageBody>%s(messageBody)</messageBody>
+    <messageAttributes>%s(messageAttributes)</messageAttributes>
+    <messageSystemAttributes>%s(messageSystemAttributes)</messageSystemAttributes>
+</Message>

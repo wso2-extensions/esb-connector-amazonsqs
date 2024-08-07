@@ -1,0 +1,4 @@
+<Message>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <messageRequestEntries>%s(changeMessageVisibilityRequestEntries)</messageRequestEntries>
+</Message>

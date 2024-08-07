@@ -1,0 +1,4 @@
+<Queue>
+    <queueName>%s(queueName)</queueName>
+    <queueId>%s(queueId)</queueId>
+</Queue>

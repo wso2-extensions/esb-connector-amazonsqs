@@ -32,23 +32,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueId",
-                    "displayName": "Queue ID",
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The unique identifier of the queue."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "queueName",
-                    "displayName": "Queue Name",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The name of the queue."
+                    "helpTip": "The URL of the queue whose attributes are set."
                   }
                 },
                 {
@@ -59,7 +48,37 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "A map of attributes to set."
+                    "helpTip": "A map of attributes to set.(e.g., {'RedrivePolicy': {'deadLetterTargetArn': 'arn:aws:sqs:us-east-1:844555590511:TestQueue', 'maxReceiveCount': 10}})"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

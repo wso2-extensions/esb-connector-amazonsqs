@@ -36,8 +36,60 @@
                     "displayName": "Queue Name Prefix",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "A string to use for filtering the list results."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "maxResults",
+                    "displayName": "Maximum Result",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Maximum number of results to include in the response."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "nextToken",
+                    "displayName": "Next Token",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Pagination token to request the next set of results."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

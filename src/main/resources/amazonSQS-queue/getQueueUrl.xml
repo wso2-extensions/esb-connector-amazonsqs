@@ -19,63 +19,12 @@
 <template name="getQueueUrl" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="queueName" description="The name of the queue"/>
     <parameter name="accountId"
-               description="ID of the account that created the queue"/>
+               description="The AWS account ID without hyphens of the account that created the queue"/>
+    <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
+                the execution of an API call"/>
+    <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
+                to complete before giving up and timing out"/>
     <sequence>
-        <class name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSContext"/>
-        <property name="uri.var.payloadQueueName" expression="$func:queueName"/>
-        <property name="uri.var.accountId" expression="$func:accountId"/>
-        <property name="uri.var.httpRequestUri" value="/"/>
-        <property name="uri.var.action" value="GetQueueUrl"/>
-        <class
-                name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSAuthConnector"/>
-        <!-- Add authorization and date header parameters -->
-        <header name="Authorization" scope="transport"
-                expression="get-property('uri.var.authorizationHeader')"/>
-        <header name="x-amz-date" scope="transport"
-                expression="get-property('uri.var.amzDate')"/>
-        <payloadFactory media-type="json">
-            <format>
-                $1
-            </format>
-            <args>
-                <arg expression="get-property('uri.var.requestPayload')"/>
-            </args>
-        </payloadFactory>
-        <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
-        <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
-        <filter source="$ctx:amazonSQSBlocking" regex="true">
-            <then>
-                <call blocking="true">
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}"/>
-                    </endpoint>
-                </call>
-            </then>
-            <else>
-                <call>
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}">
-                            <timeout>
-                                <duration>{get-property('epTimeout')}</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <errorCodes>-1</errorCodes>
-                                <initialDuration>0</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>0</maximumDuration>
-                            </suspendOnFailure>
-                            <markForSuspension>
-                                <errorCodes>-1</errorCodes>
-                            </markForSuspension>
-                        </http>
-                    </endpoint>
-                </call>
-            </else>
-        </filter>
-        <!-- Remove custom header information -->
-        <header name="Proxy-Connection" scope="transport" action="remove"/>
-        <header name="x-amzn-RequestId" scope="transport" action="remove"/>
-        <header name="Via" scope="transport" action="remove"/>
+        <class name="org.wso2.carbon.connector.amazonsqs.operations.queue.GetQueueUrl"/>
     </sequence>
 </template>

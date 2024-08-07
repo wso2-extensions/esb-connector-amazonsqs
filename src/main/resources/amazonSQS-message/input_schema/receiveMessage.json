@@ -11,6 +11,11 @@
       "id": "http:\/\/wso2jsonschema.org\/queueName",
       "type": "string"
     },
+    "queueUrl": {
+      "id": "http:\/\/wso2jsonschema.org\/queueUrl",
+      "type": "string",
+      "nullable": "true"
+    },
     "messageAttributeNames": {
       "id": "http:\/\/wso2jsonschema.org\/messageAttributeNames",
       "type": "string",
@@ -32,7 +37,7 @@
       "nullable": "true"
     },
     "attributes": {
-      "id": "http:\/\/wso2jsonschema.org\/attributes",
+      "id": "http:\/\/wso2jsonschema.org\/messageSystemAttributes",
       "type": "string",
       "nullable": "true"
     }

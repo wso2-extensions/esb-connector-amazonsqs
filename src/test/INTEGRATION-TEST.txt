@@ -1,55 +1,28 @@
-Product: Integration tests for WSO2 ESB AmazonSQS connector
+Product: Integration tests for WSO2 MI AmazonSQS connector
 
 Pre-requisites:
 
- - Maven 3.x
- - Java 1.8
+ - Maven 3.9.4
+ - Java 17.0.8
 
 
 Tested Platform:
 
  - Mac OSx 10.12.6
- - WSO2 EI 6.5.0
+ - WSO2 Mi 4.3.0
 
 STEPS:
 
- 1. Download EI 6.5.0 from official website and place it to {EI_Connector_Home}/repositiry.
+ 1. Download Mi 4.3.0 from official website and place it to {Connector_Home}/repository.
 
  2. Follow these steps before start testing.
 
     a)  Create a fresh account in Amazon AWS and Log on to http://aws.amazon.com/sqs/ with the web browser.
     b)  Save the AWSAccessKeyId and AWSSecretKey while continuing the registration process.
-	c)  Update the esb-connector-amazonsqs.properties file at location "{Connector_Home}/repository with the below credentials.
+	c)  Update the following properties in the local entry at the location "{Connector_Home}/src/test/resources/artifacts/ESB/server/repository/deployment/server/synapse-configs/default/local-entries/AMAZON_SQS_CONNECTION_1.xml with the below credentials.
              accessKeyId
              secretAccessKey
-             version
              region
-             accountId
-    d)  Update the amazonsqs.properties file at location "<AMAZONSQS_HOME>/src/test/resources/artifacts/ESB/connector/config".
-    e)  Following are the AmazonSQS properties used in esb-connector-amazonsqs.properties and amazonsqs.properties
 
-	i) 		accessKeyId 			- Your AWS account is identified by your Access Key ID. Use the saved Access Key ID in step b).
-	ii) 	secretAccessKey         - Secret access key given in the account. Use the saved Secret Access Key in step b).
-	iii) 	version 				- Version of the API. The tested version of the API is 2009-02-01.
-    iv) 	region 					- regional endpoint to make your requests(Eg: us-east-1).
-	v) 	    negativeQueueName 		- An invalid value for queueName. Eg: '@'.
-	vi) 	accountId				- The AWS account number of the principal who will be given permission. The principal must have an AWS account, but does not need to be signed up for Amazon SQS.
-	vii) 	esbLabel				- The unique identification of the permission you're setting (Eg: AliceSendMessage). Constraints: Maximum 80 characters; alphanumeric characters, hyphens (-), and underscores (_) are allowed.
-	viii) 	apiLabel				- The unique identification of the permission you're setting (Eg: AliceSendMessage). Constraints: Maximum 80 characters; alphanumeric characters, hyphens (-), and underscores (_) are allowed.
-
-		The following parameters are used for the mandatory and optional test cases of createQueue method. Parameter value will be set as the name of the queue.
-		Parameter values can be alphanumeric.
-
-	ix)		queueName 				- Name of the queqe eg : queqe
-	x) 	    optionalQueueName 		- eg : queue1
-	xi) 	apiOptionalQueueName	- eg : 123SampleQueu
-	xii)	apiQueueName			- eg : SampleQueqeName
-
-	    The following parameters are used to sendMessage to the FIFO Queue.
-
-	xiii)   fifoQueueName           - FIFO queue name.
-	xiv)    fifoQueueId             - FIFO queue ID.
-	xv)     messageDeduplicationId  - Message deduplication ID.
-	xvi)    messageGroupId          - Message group ID.
- 3.Navigate to "<AMAZONSQS_HOME>" and run the following command.
+ 3.Navigate to "{Connector_Home}" and run the following command.
       $ mvn clean install -Dskip-tests=false

@@ -18,10 +18,24 @@
 -->
 <template name="init" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="name" description="Unique name to identify the connection"/>
+    <parameter name="region" description="Region which is used select a regional endpoint to make requests"/>
     <parameter name="accessKeyId"
                description="The access key ID that corresponds to the secret access key that you used to sign the request"/>
     <parameter name="secretAccessKey" description="The secret access key"/>
-    <parameter name="region" description="Region which is used select a regional endpoint to make requests"/>
+    <parameter name="connectionMaxIdleTime" description="The maximum amount of time(In Seconds) that a connection should be
+                allowed to remain open while idle"/>
+    <parameter name="connectionTimeout" description="The amount of time(In Seconds) to wait when initially establishing
+                a connection before giving up and timing out"/>
+    <parameter name="connectionTimeToLive" description="The maximum amount of time(In Seconds) that a connection should be
+                allowed to remain open, regardless of usage frequency"/>
+    <parameter name="connectionAcquisitionTimeout" description="The amount of time(In Seconds) to wait when acquiring
+                a connection from the pool before giving up and timing out"/>
+    <parameter name="socketTimeout" description="The amount of time(In Seconds) to wait for data to be transferred
+                over an established, open connection before the connection is timed out"/>
+    <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
+                the execution of an API call"/>
+    <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
+                to complete before giving up and timing out"/>
     <sequence>
         <property name="name" expression="$func:name"/>
         <class name="org.wso2.carbon.connector.amazonsqs.config.Init"/>

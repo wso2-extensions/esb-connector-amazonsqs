@@ -1,34 +1,18 @@
 {
   "id": "http:\/\/wso2jsonschema.org",
-  "title": "CreateQueueResponse",
+  "title": "root",
   "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
   "properties": {
-    "CreateQueueResult": {
-      "id": "http:\/\/wso2jsonschema.org\/CreateQueueResult",
-      "type": "object",
-      "properties": {
-        "QueueUrl": {
-          "id": "http:\/\/wso2jsonschema.org\/CreateQueueResult\/QueueUrl",
-          "type": "string"
-        }
-      }
+    "queueName": {
+      "id": "http:\/\/wso2jsonschema.org\/queueName",
+      "type": "string",
+      "nullable": "false"
     },
-    "ResponseMetadata": {
-      "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata",
-      "type": "object",
-      "properties": {
-        "RequestId": {
-          "id": "http:\/\/wso2jsonschema.org\/ResponseMetadata\/RequestId",
-          "type": "string"
-        }
-      }
+    "queueId": {
+      "id": "http:\/\/wso2jsonschema.org\/accountId",
+      "type": "number",
+      "nullable": "false"
     }
   },
-  "type": "object",
-  "namespaces": [
-    {
-      "prefix": "axis2ns6",
-      "url": "http:\/\/queue.amazonaws.com\/doc\/2009-02-01\/"
-    }
-  ]
+  "type": "object"
 }

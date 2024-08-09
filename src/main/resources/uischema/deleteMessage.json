@@ -32,34 +32,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueId",
-                    "displayName": "Queue ID",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The AWS account ID without hyphens."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "queueName",
-                    "displayName": "Queue Name",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The name of the queue."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
                     "name": "queueUrl",
                     "displayName": "Queue Url",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The URL of the queue to which a message is sent."
+                    "required": "true",
+                    "helpTip": "The URL of the queue from which messages are deleted."
                   }
                 },
                 {
@@ -71,6 +49,36 @@
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "The receipt handle associated with the message to be deleted."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

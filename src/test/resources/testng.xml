@@ -16,6 +16,7 @@
  ~  specific language governing permissions and limitations
  ~  under the License.
 -->
+
 <suite name="ESBTestSuite" parallel="false">
     <listeners>
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestExecutionListener"/>
@@ -24,14 +25,11 @@
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestManagerListener"/>
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestReportListener"/>
     </listeners>
+
     <test name="AmazonSQS-Integration-Test" preserve-order="true" verbose="2">
-        <classes>
-            <class name="org.wso2.carbon.connector.integration.test.amazonsqs.AmazonsqsConnectorIntegrationTest"/>
-        </classes>
+        <packages>
+            <package name="org.wso2.carbon.connector.integration.test.amazonsqs"/>
+        </packages>
     </test>
-    <test name="AmazonSQS-Unit-Test">
-        <classes>
-            <class name="org.wso2.carbon.connector.integration.test.amazonsqs.AmazonsqsConnectorUnitTest"/>
-        </classes>
-    </test>
+
 </suite>

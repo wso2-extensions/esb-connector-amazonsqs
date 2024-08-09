@@ -32,23 +32,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueId",
-                    "displayName": "Queue ID",
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The unique identifier of the queue."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "queueName",
-                    "displayName": "Queue Name",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The name of the queue."
+                    "helpTip": "The URL of the queue to which a message is sent."
                   }
                 },
                 {
@@ -56,7 +45,7 @@
                   "value": {
                     "name": "maxNumberOfMessages",
                     "displayName": "Max Number of Messages",
-                    "inputType": "stringOrExpression",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "1",
                     "required": "false",
                     "helpTip": "The maximum number of messages to be returned."
@@ -67,7 +56,7 @@
                   "value": {
                     "name": "waitTimeSeconds",
                     "displayName": "Wait Time Seconds",
-                    "inputType": "stringOrExpression",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "The duration (in seconds) for which the call will wait for a message to arrive in the queue before returning."
@@ -81,7 +70,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "The name of the message attribute."
+                    "helpTip": "The name of the message attribute.(e.g., attributeName1, attributeName2)"
                   }
                 },
                 {
@@ -89,7 +78,7 @@
                   "value": {
                     "name": "visibilityTimeout",
                     "displayName": "Visibility Timeout",
-                    "inputType": "stringOrExpression",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "The duration (in seconds) in which the received messages are hidden from subsequent retrieve requests after being retrieved by the request."
@@ -98,12 +87,42 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "attributes",
-                    "displayName": "Attributes",
+                    "name": "messageSystemAttributeNames",
+                    "displayName": "Message System Attribute Names",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "A list of attributes that need to be returned along with each message."
+                    "helpTip": "A list of attributes that need to be returned along with each message.e.g., systemAttributeName1, systemAttributeName2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

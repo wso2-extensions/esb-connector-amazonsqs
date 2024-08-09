@@ -1,0 +1,3 @@
+<Queue>
+    <deadLetterQueue>%s(deadLetterQueueName)</deadLetterQueue>
+</Queue>

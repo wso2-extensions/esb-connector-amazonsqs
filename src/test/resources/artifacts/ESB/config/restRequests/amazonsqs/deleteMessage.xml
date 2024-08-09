@@ -1,0 +1,4 @@
+<Message>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <receiptHandle>%s(receiptHandle)</receiptHandle>
+</Message>

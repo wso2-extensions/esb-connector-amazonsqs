@@ -11,6 +11,11 @@
       "id": "http:\/\/wso2jsonschema.org\/queueId",
       "type": "number"
     },
+    "queueUrl": {
+      "id": "http:\/\/wso2jsonschema.org\/queueUrl",
+      "type": "string",
+      "nullable": "true"
+    },
     "awsAccountNumbers": {
       "id": "http:\/\/wso2jsonschema.org\/awsAccountNumbers",
       "type": "string"

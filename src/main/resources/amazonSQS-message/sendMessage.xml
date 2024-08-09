@@ -17,6 +17,7 @@
  ~  under the License.
 -->
 <template name="sendMessage" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
     <parameter name="delaySeconds"
                description="Integer, The number of seconds (0 to 900 - 15 minutes) to delay a specific message"/>
     <parameter name="messageAttributes" description="The message attributes to send.
@@ -24,14 +25,10 @@
     ' Eg:
     { attributeName :
         {
-             BinaryValue: value,
              DataType: value,
              StringValue: value
         }
     }'"/>
-    <parameter name="queueId" description="The AWS account ID without hyphens"/>
-    <parameter name="queueName" description="The name of the queue"/>
-    <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
     <parameter name="messageBody" description="The body of the message"/>
     <parameter name="messageGroupId" description="The ID of the message group"/>
     <parameter name="messageDeduplicationId" description="The ID of the message deduplication"/>
@@ -40,11 +37,16 @@
     'Eg:
     { systemAttributeName :
         {
-             BinaryValue: value,
              DataType: value,
              StringValue: value
         }
     }'"/>
+    <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
+                the execution of an API call"/>
+    <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
+                to complete before giving up and timing out"/>
+    <parameter name="queueId" description="The AWS account ID without hyphens"/>
+    <parameter name="queueName" description="The name of the queue"/>
     <sequence>
         <class name="org.wso2.carbon.connector.amazonsqs.operations.message.SendMessage"/>
     </sequence>

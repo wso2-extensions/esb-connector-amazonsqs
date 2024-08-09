@@ -17,66 +17,18 @@
  ~  under the License.
 -->
 <template name="createQueue" xmlns="http://ws.apache.org/ns/synapse">
-    <parameter name="attributeEntries"
-               description="A map of attributes with their corresponding values"/>
     <parameter name="queueName"
-               description="The URL of the Amazon SQS queue to take action on"/>
+               description="The name of the new queue"/>
+    <parameter name="attributeEntries"
+               description="A map of attributes with their corresponding values.
+               The value should be a string in JSON format. Eg: {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1' }}"/>
+    <parameter name="tags"
+               description="The cost allocation tags to the specified Amazon SQS queue. Eg: {QueueType: Testing}"/>
+    <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
+                the execution of an API call"/>
+    <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
+                to complete before giving up and timing out"/>
     <sequence>
-        <class name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSContext"/>
-        <property name="uri.var.attributeEntries" expression="$func:attributeEntries"/>
-        <property name="uri.var.payloadQueueName" expression="$func:queueName"/>
-        <property name="uri.var.httpRequestUri" value="/"/>
-        <property name="uri.var.action" value="CreateQueue"/>
-        <class
-                name="org.wso2.carbon.connector.amazonsqs.auth.AmazonSQSAuthConnector"/>
-        <!-- Add authorization and date header parameters -->
-        <header name="Authorization" scope="transport"
-                expression="get-property('uri.var.authorizationHeader')"/>
-        <header name="x-amz-date" scope="transport"
-                expression="get-property('uri.var.amzDate')"/>
-        <payloadFactory media-type="json">
-            <format>
-                $1
-            </format>
-            <args>
-                <arg expression="get-property('uri.var.requestPayload')"/>
-            </args>
-        </payloadFactory>
-        <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
-        <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
-        <filter source="$ctx:amazonSQSBlocking" regex="true">
-            <then>
-                <call blocking="true">
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}"/>
-                    </endpoint>
-                </call>
-            </then>
-            <else>
-                <call>
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.apiUrl}{+uri.var.httpRequestUri}">
-                            <timeout>
-                                <duration>{get-property('epTimeout')}</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <errorCodes>-1</errorCodes>
-                                <initialDuration>0</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>0</maximumDuration>
-                            </suspendOnFailure>
-                            <markForSuspension>
-                                <errorCodes>-1</errorCodes>
-                            </markForSuspension>
-                        </http>
-                    </endpoint>
-                </call>
-            </else>
-        </filter>
-        <!-- Remove custom header information -->
-        <header name="Proxy-Connection" scope="transport" action="remove"/>
-        <header name="x-amzn-RequestId" scope="transport" action="remove"/>
-        <header name="Via" scope="transport" action="remove"/>
+        <class name="org.wso2.carbon.connector.amazonsqs.operations.queue.CreateQueue"/>
     </sequence>
 </template>

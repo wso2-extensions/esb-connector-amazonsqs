@@ -32,23 +32,64 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "attributeEntries",
-                    "displayName": "Attribute Entries",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "A map of attributes with their corresponding values."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
                     "name": "queueName",
                     "displayName": "Queue Name",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "The name of the queue."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "attributeEntries",
+                    "displayName": "Attribute Entries",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "A map of attributes with their corresponding values. (e.g., {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1' }}"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "tags",
+                    "displayName": "Tags",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The cost allocation tags to the specified Amazon SQS queue. (e.g., {QueueType: Testing})"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

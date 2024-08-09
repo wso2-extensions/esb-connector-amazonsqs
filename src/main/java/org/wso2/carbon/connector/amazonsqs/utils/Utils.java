@@ -25,27 +25,34 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.commons.json.JsonBuilder;
+import org.apache.synapse.commons.json.JsonFormatter;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.transport.passthru.PassThroughConstants;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
 import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import software.amazon.awssdk.awscore.AwsRequestOverrideConfiguration;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.sqs.endpoints.internal.Value;
+import software.amazon.awssdk.services.sqs.model.BatchResultErrorEntry;
 import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
 import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
 import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeNameForSends;
 import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeValue;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
+import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
 import software.amazon.awssdk.services.sqs.model.SqsResponseMetadata;
 
 import javax.xml.stream.XMLStreamException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -143,7 +150,7 @@ public class Utils {
         axis2MessageCtx.setProperty(Constants.STATUS_CODE, statusCode);
     }
 
-    public static void addMessageAttributes(String messageAttributes, SendMessageRequest.Builder sendMessageBuilder) {
+    public static Map<String, MessageAttributeValue> addMessageAttributes(String messageAttributes) throws JSONException {
         JSONObject messageAttributesInJson = new JSONObject(messageAttributes);
         Iterator<?> keys = messageAttributesInJson.keys();
         Map<String, MessageAttributeValue> messageAttributeValueMap = new HashMap<>();
@@ -167,16 +174,16 @@ public class Utils {
                         toString());
             }
 
-            if (keySet.contains(Constants.STRING_LIST_VALUE)) {
-                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
+            if (keySet.contains(Constants.STRING_LIST_VALUES)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUES).toString());
                 List<String> stringList = new ArrayList<>();
                 for (int i = 0; i < arr.length(); i++) {
                     stringList.add(arr.get(i).toString());
                 }
                 messageAttributeValueBuilder.stringListValues(stringList);
             }
-            if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
-                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
+            if (keySet.contains(Constants.BINARY_LIST_VALUES)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUES).toString());
                 List<SdkBytes> binaryList = new ArrayList<>();
                 for (int i = 0; i < arr.length(); i++) {
                     binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
@@ -185,11 +192,11 @@ public class Utils {
             }
             messageAttributeValueMap.put(key, messageAttributeValueBuilder.build());
         }
-        sendMessageBuilder.messageAttributes(messageAttributeValueMap);
+        return messageAttributeValueMap;
     }
 
-    public static void addSystemMessageAttributes(String messageSystemAttributes,
-                                                  SendMessageRequest.Builder sendMessageBuilder) {
+    public static Map<MessageSystemAttributeNameForSends, MessageSystemAttributeValue> addSystemMessageAttributes(
+            String messageSystemAttributes) throws JSONException {
         JSONObject messageAttributesInJson = new JSONObject(messageSystemAttributes);
         Iterator<?> keys = messageAttributesInJson.keys();
         Map<MessageSystemAttributeNameForSends, MessageSystemAttributeValue> messageSystemAttributeMap =
@@ -213,8 +220,8 @@ public class Utils {
                         Constants.STRING_VALUE).toString());
             }
 
-            if (keySet.contains(Constants.STRING_LIST_VALUE)) {
-                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUE).toString());
+            if (keySet.contains(Constants.STRING_LIST_VALUES)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.STRING_LIST_VALUES).toString());
                 List<String> stringList = new ArrayList<>();
                 for (int i = 0; i < arr.length(); i++) {
                     stringList.add(arr.get(i).toString());
@@ -222,8 +229,8 @@ public class Utils {
                 messageSystemAttributeValue.stringListValues(stringList);
             }
 
-            if (keySet.contains(Constants.BINARY_LIST_VALUE)) {
-                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUE).toString());
+            if (keySet.contains(Constants.BINARY_LIST_VALUES)) {
+                JSONArray arr = new JSONArray(messageAttributeInJson.get(Constants.BINARY_LIST_VALUES).toString());
                 List<SdkBytes> binaryList = new ArrayList<>();
                 for (int i = 0; i < arr.length(); i++) {
                     binaryList.add(SdkBytes.fromUtf8String(arr.get(i).toString()));
@@ -233,7 +240,41 @@ public class Utils {
             messageSystemAttributeMap.put(MessageSystemAttributeNameForSends.fromValue(key),
                     messageSystemAttributeValue.build());
         }
-        sendMessageBuilder.messageSystemAttributes(messageSystemAttributeMap);
+        return messageSystemAttributeMap;
+    }
+
+    public static Map<QueueAttributeName, String> addAttributes(String messageAttributes) throws JSONException {
+        JSONObject messageAttributesInJson = new JSONObject(messageAttributes);
+        Iterator<?> keys = messageAttributesInJson.keys();
+        Map<QueueAttributeName, String> messageAttributeValueMap = new HashMap<>();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            if (messageAttributesInJson.get(key) instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) messageAttributesInJson.get(key);
+                messageAttributeValueMap.put(QueueAttributeName.fromValue(key), jsonObject.toString());
+            } else {
+                messageAttributeValueMap.put(QueueAttributeName.fromValue(key), messageAttributesInJson.get(key).toString());
+            }
+        }
+        return messageAttributeValueMap;
+    }
+
+    public static Map<String, String> addTags(String messageAttributes) throws JSONException {
+        JSONObject messageAttributesInJson = new JSONObject(messageAttributes);
+        Iterator<?> keys = messageAttributesInJson.keys();
+        Map<String, String> messageAttributeValueMap = new HashMap<>();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            messageAttributeValueMap.put(key, messageAttributesInJson.get(key).toString());
+        }
+        return messageAttributeValueMap;
+    }
+
+    public static String removeDoubleQuotes(String value) {
+        if (value.startsWith("\"")) {
+            return value.substring(1, value.length() - 1);
+        }
+        return value;
     }
 
     /**
@@ -261,5 +302,44 @@ public class Utils {
         messageContext.setProperty(Constants.PROPERTY_ERROR_CODE, error.getErrorCode());
         messageContext.setProperty(Constants.PROPERTY_ERROR_MESSAGE, error.getErrorMessage());
         messageContext.setProperty(Constants.PROPERTY_ERROR_DETAIL, errorDetail);
+    }
+
+    public static Map<String, String> getAttributeMap(String attributes) {
+        JSONObject messageAttributesInJson = new JSONObject(attributes);
+        Iterator<?> keys = messageAttributesInJson.keys();
+        Map<String, String> attributeMap = new HashMap<>();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            attributeMap.put (key.trim(), messageAttributesInJson.get(key).toString().trim());
+        }
+        return attributeMap;
+    }
+
+    public static void createBatchResultErrorEntryResponse(List<BatchResultErrorEntry> failedResponse,
+                                                           OMElement batchResultElement) {
+        for (
+                BatchResultErrorEntry entry : failedResponse) {
+            OMElement batchResultEntryElement = Utils.createOMElement("BatchResultErrorEntry ",
+                    null);
+            batchResultEntryElement.addChild(Utils.createOMElement(Constants.ID_KEY, entry.id()));
+            batchResultEntryElement.addChild(Utils.createOMElement("Code", entry.code()));
+            batchResultEntryElement.addChild(Utils.createOMElement("MESSAGE", entry.message()));
+            batchResultEntryElement.addChild(Utils.createOMElement("SenderFault",
+                    entry.senderFault()));
+            batchResultElement.addChild(batchResultEntryElement);
+        }
+    }
+
+    public static AwsRequestOverrideConfiguration.Builder getOverrideConfiguration(String apiCallTimeout,
+                                                                                   String apiCallAttemptTimeout)
+            throws NumberFormatException {
+        AwsRequestOverrideConfiguration.Builder overrideConfiguration = AwsRequestOverrideConfiguration.builder();
+        if (StringUtils.isNotBlank(apiCallTimeout)) {
+            overrideConfiguration.apiCallTimeout(Duration.ofSeconds(Integer.parseInt(apiCallTimeout)));
+        }
+        if (StringUtils.isNotBlank(apiCallAttemptTimeout)) {
+            overrideConfiguration.apiCallAttemptTimeout(Duration.ofSeconds(Integer.parseInt(apiCallAttemptTimeout)));
+        }
+        return overrideConfiguration;
     }
 }

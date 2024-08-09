@@ -32,23 +32,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "queueId",
-                    "displayName": "Queue ID",
+                    "name": "queueUrl",
+                    "displayName": "Queue Url",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The AWS account ID without hyphens."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "queueName",
-                    "displayName": "Queue Name",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The name of the queue."
+                    "required": "true",
+                    "helpTip": "The URL of the queue to which a message is sent."
                   }
                 },
                 {
@@ -60,17 +49,6 @@
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "The message to be sent."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "queueUrl",
-                    "displayName": "Queue Url",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The URL of the queue to which a message is sent."
                   }
                 },
                 {
@@ -92,7 +70,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Each message attribute consists of a Name, Type, and Value."
+                    "helpTip": "Each message attribute consists of a Name, Type, and Value. (e.g., { 'attributeName' :{ DataType: value, StringValue: value}}"
                   }
                 },
                 {
@@ -125,7 +103,37 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "Each message attribute consists of a Name, Type, and Value."
+                    "helpTip": "Each message attribute consists of a Name, Type, and Value.(e.g., {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

@@ -1,0 +1,4 @@
+<Queue>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <label>%s(label)</label>
+</Queue>

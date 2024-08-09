@@ -29,12 +29,31 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "region",
+                    "displayName": "Region",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Region which is used select a regional endpoint to make requests."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Authentication",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "accessKeyId",
                     "displayName": "Access Key ID",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "The access key ID that corresponds to the secret access key that you used to sign the request."
+                    "helpTip": "The access key ID that corresponds to the secret access key."
                   }
                 },
                 {
@@ -47,16 +66,90 @@
                     "required": "false",
                     "helpTip": "AWS secret access key."
                   }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Advanced Configuration",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "connectionMaxIdleTime",
+                    "displayName": "Connection Max Idle Time",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The timeout (in seconds) after which an idle connection should be closed."
+                  }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "region",
-                    "displayName": "Region",
-                    "inputType": "stringOrExpression",
+                    "name": "connectionTimeout",
+                    "displayName": "Connection Timeout",
+                    "inputType": "integerOrExpression",
                     "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "Region which is used select a regional endpoint to make requests."
+                    "required": "false",
+                    "helpTip": "The timeout (in seconds) for establishing a connection to a remote service."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "connectionTimeToLive",
+                    "displayName": "Connection Time to Live",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The timeout(in seconds) after which a connection should be closed."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "connectionAcquisitionTimeout",
+                    "displayName": "Connection Acquisition Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The timeout(in seconds) for acquiring an established connection from the pool."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "socketTimeout",
+                    "displayName": "Socket Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The timeout(in seconds) for each read to the underlying socket."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallTimeout",
+                    "displayName": "API Call Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The total execution time(in seconds), including all retry attempts."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiCallAttemptTimeout",
+                    "displayName": "API Call Attempt Timeout",
+                    "inputType": "integerOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
                   }
                 }
               ]

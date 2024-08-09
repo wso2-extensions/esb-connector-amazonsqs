@@ -1,0 +1,5 @@
+<Message>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <receiptHandle>%s(receiptHandle)</receiptHandle>
+    <visibilityTimeout>%s(visibilityTimeout)</visibilityTimeout>
+</Message>

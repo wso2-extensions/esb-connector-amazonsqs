@@ -1,0 +1,4 @@
+<Message>
+    <queueUrl>%s(queueUrl)</queueUrl>
+    <messageRequestEntries>%s(deleteMessageRequestEntries)</messageRequestEntries>
+</Message>

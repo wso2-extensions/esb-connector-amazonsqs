@@ -29,6 +29,14 @@ public class ConnectionConfiguration {
     private String awsSecretAccessKey;
 
     private String connectionName;
+    private Integer connectionAcquisitionTimeout = -1;
+    private Integer socketTimeout = -1;
+    private Integer connectionTimeToLive = -1;
+    private Integer connectionTimeout = -1;
+    private Integer connectionMaxIdleTime = -1;
+
+    private Integer apiCallAttemptTimeout = -1;
+    private Integer apiCallTimeout = -1;
 
     public String getRegion() {
         return region;
@@ -63,11 +71,67 @@ public class ConnectionConfiguration {
     }
 
     public String getAwsSecretAccessKey() {
-        return awsSecretAccessKey;
+        return this.awsSecretAccessKey;
     }
 
     public void setAwsSecretAccessKey(String awsSecretAccessKey) {
         this.awsSecretAccessKey = awsSecretAccessKey;
+    }
+
+    public Integer getConnectionAcquisitionTimeout() {
+        return this.connectionAcquisitionTimeout;
+    }
+
+    public void setConnectionAcquisitionTimeout(Integer connectionAcquisitionTimeout) {
+        this.connectionAcquisitionTimeout = connectionAcquisitionTimeout;
+    }
+
+    public Integer getSocketTimeout() {
+        return this.socketTimeout;
+    }
+
+    public void setSocketTimeout(Integer socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    public Integer getConnectionTimeToLive() {
+        return this.connectionTimeToLive;
+    }
+
+    public void setConnectionTimeToLive(Integer connectionTimeToLive) {
+        this.connectionTimeToLive = connectionTimeToLive;
+    }
+
+    public Integer getConnectionTimeout() {
+        return this.connectionTimeout;
+    }
+
+    public void setConnectionTimeout(Integer connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public Integer getConnectionMaxIdleTime() {
+        return this.connectionMaxIdleTime;
+    }
+
+    public void setConnectionMaxIdleTime(Integer connectionMaxIdleTime) {
+        this.connectionMaxIdleTime = connectionMaxIdleTime;
+    }
+
+    public Integer getApiCallTimeout() {
+        return this.apiCallTimeout;
+    }
+
+    public void setApiCallTimeout(Integer apiCallTimeout) {
+        this.apiCallTimeout = apiCallTimeout;
+    }
+
+    public Integer getApiCallAttemptTimeout() {
+        return this.apiCallAttemptTimeout;
+    }
+
+    public void setApiCallAttemptTimeout(Integer apiCallAttemptTimeout) {
+        this.apiCallAttemptTimeout = apiCallAttemptTimeout;
     }
 
     public boolean equals(Object obj) {
@@ -76,7 +140,21 @@ public class ConnectionConfiguration {
             return StringUtils.equals(this.connectionName, connectionConfiguration.getConnectionName()) &&
                     StringUtils.equals(this.region, connectionConfiguration.getRegion()) &&
                     StringUtils.equals(this.awsAccessKeyId, connectionConfiguration.getAwsAccessKeyId()) &&
-                    StringUtils.equals(this.awsSecretAccessKey, connectionConfiguration.getAwsSecretAccessKey());
+                    StringUtils.equals(this.awsSecretAccessKey, connectionConfiguration.getAwsSecretAccessKey()) &&
+                    StringUtils.equals(this.connectionTimeout.toString(), connectionConfiguration.
+                            getConnectionTimeout().toString()) &&
+                    StringUtils.equals(this.socketTimeout.toString(), connectionConfiguration.getSocketTimeout().
+                            toString()) &&
+                    StringUtils.equals(this.connectionAcquisitionTimeout.toString(), connectionConfiguration.
+                            getConnectionAcquisitionTimeout().toString()) &&
+                    StringUtils.equals(this.connectionTimeToLive.toString(),
+                            connectionConfiguration.getConnectionTimeToLive().toString()) &&
+                    StringUtils.equals(this.apiCallTimeout.toString(), connectionConfiguration.
+                            getApiCallTimeout().toString()) &&
+                    StringUtils.equals(this.apiCallAttemptTimeout.toString(),
+                            connectionConfiguration.getApiCallAttemptTimeout().toString()) &&
+                    StringUtils.equals(this.connectionMaxIdleTime.toString(),
+                            connectionConfiguration.getConnectionMaxIdleTime().toString());
         }
         return false;
     }

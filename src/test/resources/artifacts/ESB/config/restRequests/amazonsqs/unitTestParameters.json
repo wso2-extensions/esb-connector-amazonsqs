@@ -1,8 +1,0 @@
-{
-  "accessKeyId": "%s(accessKeyId)",
-  "secretAccessKey": "%s(secretAccessKey)",
-  "signatureVersion": "4",
-  "signatureMethod": "HmacSHA256",
-  "version": "%s(version)",
-  "region": "%s(region)"
-}

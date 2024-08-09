@@ -54,16 +54,16 @@ public class ListQueues extends AbstractConnector {
             String nextToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.NEXT_TOKEN);
             String maxResults = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.MAX_RESULT);
             ListQueuesRequest.Builder listQueuesRequestBuilder = ListQueuesRequest.builder();
-            if (StringUtils.isNotEmpty(queueNamePrefix)) {
+            if (StringUtils.isNotBlank(queueNamePrefix)) {
                 listQueuesRequestBuilder.queueNamePrefix(queueNamePrefix);
             }
-            if (StringUtils.isNotEmpty(nextToken)) {
+            if (StringUtils.isNotBlank(nextToken)) {
                 listQueuesRequestBuilder.nextToken(nextToken);
             }
-            if (StringUtils.isNotEmpty(maxResults)) {
+            if (StringUtils.isNotBlank(maxResults)) {
                 listQueuesRequestBuilder.maxResults(Integer.getInteger(maxResults));
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 listQueuesRequestBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

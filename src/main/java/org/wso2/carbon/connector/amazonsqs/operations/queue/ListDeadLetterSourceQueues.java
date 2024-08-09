@@ -54,14 +54,14 @@ public class ListDeadLetterSourceQueues extends AbstractConnector {
             String maxResults = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.MAX_RESULT);
             ListDeadLetterSourceQueuesRequest.Builder listDeadLetterSourceQueuesBuilder =
                     ListDeadLetterSourceQueuesRequest.builder();
-            if (StringUtils.isNotEmpty(nextToken)) {
+            if (StringUtils.isNotBlank(nextToken)) {
                 listDeadLetterSourceQueuesBuilder.nextToken(nextToken);
             }
-            if (StringUtils.isNotEmpty(maxResults)) {
+            if (StringUtils.isNotBlank(maxResults)) {
                 listDeadLetterSourceQueuesBuilder.maxResults(Integer.getInteger(maxResults));
             }
             listDeadLetterSourceQueuesBuilder.queueUrl(queueUrl);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 listDeadLetterSourceQueuesBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

@@ -22,7 +22,7 @@
                description="A list of attributes that need to be returned along with each message. The attribute should be separated by ','. Eg:  'SenderId, SentTimestamp'"/>
     <parameter name="maxNumberOfMessages" description="The maximum number of messages to return"/>
     <parameter name="messageAttributeNames"
-               description="The name of the message attribute, where N is the index. The attribute should be separated by ','. Eg:  'attributeName1, attributeName2'"/>
+               description="The names of the message attributes. The attributes should be separated by ','. Eg:  'attributeName1, attributeName2'"/>
     <parameter name="visibilityTimeout"
                description="The duration (in seconds) that the received messages are hidden from subsequent retrieve requests after being retrieved by a ReceiveMessage request"/>
     <parameter name="waitTimeSeconds"

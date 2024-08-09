@@ -60,14 +60,14 @@ public class CreateQueue extends AbstractConnector {
                     Constants.API_CALL_TIMEOUT);
             String apiCallAttemptTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
-            if (StringUtils.isNotEmpty(attributeEntries)) {
-                createQueueRequest.attributes(Utils.addAttributes(attributeEntries));
+            if (StringUtils.isNotBlank(attributeEntries)) {
+                createQueueRequest.attributes(Utils.addAttributes(Utils.removeDoubleQuotes(attributeEntries.trim())));
             }
             String tags = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.TAGS);
-            if (StringUtils.isNotEmpty(tags)) {
-                createQueueRequest.tags(Utils.addTags(tags));
+            if (StringUtils.isNotBlank(tags)) {
+                createQueueRequest.tags(Utils.addTags(Utils.removeDoubleQuotes(tags.trim())));
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 createQueueRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

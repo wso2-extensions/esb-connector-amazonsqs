@@ -13,9 +13,35 @@ Tested Platform:
 
 STEPS:
 
- 1. Download Mi 4.3.0 from official website and place it to {Connector_Home}/repository.
+1. Download Mi 4.3.0 from official website, unzip it and place the following client libraries in to the <PRODUCT_HOME>/lib directory.
+        - apache-client-2.20.26.jar
+        - auth-2.26.20.jar
+        - aws-core-2.26.20.jar
+        - checksums-2.26.20.jar
+        - checksums-spi-2.26.20.jar
+        - endpoints-spi-2.26.20.jar
+        - http-auth-aws-2.26.20.jar
+        - http-auth-spi-2.26.20.jar
+        - http-client-spi-2.26.20.jar
+        - identity-spi-2.26.20.jar
+        - json-utils-2.20.26.jar
+        - metrics-spi-2.20.26.jar
+        - profiles-2.26.20.jar
+        - protocol-core-2.20.26.jar
+        - reactive-streams-1.0.4.jar
+        - regions-2.26.20.jar
+        - retries-spi-2.26.20.jar
+        - sqs-2.26.20.jar
+        - third-party-jackson-core-2.20.26.jar
+        - utils-2.26.20.jar
+        - aws-json-protocol-2.26.20.jar
+        - http-auth-2.26.20.jar
+        - sdk-core-2.26.20.jar
+        - retries_2.26.20.jar
 
- 2. Follow these steps before start testing.
+2. Zip the pack and place it to {Connector_Home}/repository.
+
+3. Follow these steps before start testing.
 
     a)  Create a fresh account in Amazon AWS and Log on to http://aws.amazon.com/sqs/ with the web browser.
     b)  Save the AWSAccessKeyId and AWSSecretKey while continuing the registration process.
@@ -24,5 +50,5 @@ STEPS:
              secretAccessKey
              region
 
- 3.Navigate to "{Connector_Home}" and run the following command.
+4. Navigate to "{Connector_Home}" and run the following command.
       $ mvn clean install -Dskip-tests=false

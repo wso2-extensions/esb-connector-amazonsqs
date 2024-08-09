@@ -50,8 +50,8 @@ public class SendMessage extends AbstractConnector {
                     Constants.DELAY_SECONDS);
             String messageAttributes = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                     Constants.MESSAGE_ATTRIBUTES);
-            String messageBody = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                    Constants.MESSAGE_BODY);
+            String messageBody = ConnectorUtils.lookupTemplateParamater(messageContext,
+                    Constants.MESSAGE_BODY).toString();
             String messageGroupId = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                     Constants.MESSAGE_GROUP_ID);
             String messageDeduplicationId = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
@@ -75,12 +75,14 @@ public class SendMessage extends AbstractConnector {
                 sendMessageBuilder.messageDeduplicationId(messageDeduplicationId);
             }
             if (StringUtils.isNotBlank(messageAttributes)) {
-                sendMessageBuilder.messageAttributes(Utils.addMessageAttributes(messageAttributes));
+                sendMessageBuilder.messageAttributes(Utils.addMessageAttributes(
+                        Utils.removeDoubleQuotes(messageAttributes.trim())));
             }
             if (StringUtils.isNotBlank(messageSystemAttributes)) {
-                sendMessageBuilder.messageSystemAttributes(Utils.addSystemMessageAttributes(messageSystemAttributes));
+                sendMessageBuilder.messageSystemAttributes(Utils.addSystemMessageAttributes(
+                        Utils.removeDoubleQuotes(messageSystemAttributes.trim())));
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 sendMessageBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

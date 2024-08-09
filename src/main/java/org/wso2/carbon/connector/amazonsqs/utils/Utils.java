@@ -270,22 +270,11 @@ public class Utils {
         return messageAttributeValueMap;
     }
 
-    public static List<String> convertToStringArray(String string) {
-        JSONArray arr = new JSONArray(string);
-        List<String> stringList = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++){
-            stringList.add(arr.get(i).toString());
+    public static String removeDoubleQuotes(String value) {
+        if (value.startsWith("\"")) {
+            return value.substring(1, value.length() - 1);
         }
-        return stringList;
-    }
-
-    public static List<MessageSystemAttributeName> convertToMsgSysAttributeArray(String string) {
-        JSONArray arr = new JSONArray(string);
-        List<MessageSystemAttributeName> msgSysAttributeList = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++){
-            msgSysAttributeList.add(MessageSystemAttributeName.fromValue(arr.get(i).toString()));
-        }
-        return msgSysAttributeList;
+        return value;
     }
 
     /**
@@ -345,10 +334,10 @@ public class Utils {
                                                                                    String apiCallAttemptTimeout)
             throws NumberFormatException {
         AwsRequestOverrideConfiguration.Builder overrideConfiguration = AwsRequestOverrideConfiguration.builder();
-        if (StringUtils.isNotEmpty(apiCallTimeout)) {
+        if (StringUtils.isNotBlank(apiCallTimeout)) {
             overrideConfiguration.apiCallTimeout(Duration.ofSeconds(Integer.parseInt(apiCallTimeout)));
         }
-        if (StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+        if (StringUtils.isNotBlank(apiCallAttemptTimeout)) {
             overrideConfiguration.apiCallAttemptTimeout(Duration.ofSeconds(Integer.parseInt(apiCallAttemptTimeout)));
         }
         return overrideConfiguration;

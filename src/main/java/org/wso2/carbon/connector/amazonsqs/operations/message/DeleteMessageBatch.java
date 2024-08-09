@@ -88,7 +88,7 @@ public class DeleteMessageBatch extends AbstractConnector {
                 entries.add(batchEntryBuilder.build());
             }
             deleteMessageBatchRequest.entries(entries);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 deleteMessageBatchRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

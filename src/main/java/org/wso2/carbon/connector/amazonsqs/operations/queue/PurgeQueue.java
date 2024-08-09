@@ -51,7 +51,7 @@ public class PurgeQueue extends AbstractConnector {
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
             PurgeQueueRequest.Builder purgeQueueRequest = PurgeQueueRequest.builder().queueUrl(
                     Utils.createUrl(messageContext, sqsConnection));
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 purgeQueueRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

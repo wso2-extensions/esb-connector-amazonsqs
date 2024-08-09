@@ -44,7 +44,7 @@
         <skip-tests>true</skip-tests>
         <software.amazon.awssdk.version>2.26.20</software.amazon.awssdk.version>
         <product.name>wso2mi</product.name>
-        <product.version>4.1.0</product.version>
+        <product.version>4.3.0</product.version>
         <startup.script>micro-integrator</startup.script>
     </properties>
     <dependencies>

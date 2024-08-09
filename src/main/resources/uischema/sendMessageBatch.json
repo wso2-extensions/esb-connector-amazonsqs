@@ -48,7 +48,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "List of SendMessageBatchRequestEntry items.(e.g., [{'delaySeconds': 0, 'id': 'id1', 'messageBody': 'hi', 'messageAttributes': {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1'}}, messageSystemAttributes: {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}}])"
+                    "helpTip": "The list of messages to be sent.(e.g., [{'delaySeconds': 0, 'id': 'id1', 'messageBody': 'hi', 'messageAttributes': {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1'}}, messageSystemAttributes: {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}}])"
                   }
                 }
               ]

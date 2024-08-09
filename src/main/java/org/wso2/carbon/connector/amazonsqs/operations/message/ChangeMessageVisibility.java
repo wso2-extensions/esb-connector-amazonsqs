@@ -61,7 +61,7 @@ public class ChangeMessageVisibility extends AbstractConnector {
                     ChangeMessageVisibilityRequest.builder().
                     queueUrl(queueUrl).visibilityTimeout(Integer.valueOf(visibilityTimeout)).
                     receiptHandle(receiptHandle);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 changeMessageVisibilityRequestBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

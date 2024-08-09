@@ -116,7 +116,7 @@ public class SendMessageBatch extends AbstractConnector {
                 entries.add(SendMessageBatchEntryBuilder.build());
             }
             sendMessageBatchBuilder.entries(entries);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 sendMessageBatchBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

@@ -71,7 +71,7 @@ public class AddPermission extends AbstractConnector {
                 accountNumbers.add(key.trim());
             }
             addPermissionRequestBuilder.awsAccountIds(accountNumbers);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 addPermissionRequestBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

@@ -100,25 +100,25 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
         connectionConfig.setRegion(region);
         connectionConfig.setAwsAccessKeyId(awsAccessKeyId);
         connectionConfig.setAwsSecretAccessKey(awsSecretAccessKey);
-        if (StringUtils.isNotEmpty(socketTimeout)) {
+        if (StringUtils.isNotBlank(socketTimeout)) {
             connectionConfig.setSocketTimeout(Integer.valueOf(socketTimeout));
         }
-        if (StringUtils.isNotEmpty(connectionTimeout)) {
+        if (StringUtils.isNotBlank(connectionTimeout)) {
             connectionConfig.setConnectionTimeout(Integer.valueOf(connectionTimeout));
         }
-        if (StringUtils.isNotEmpty(connectionMaxIdleTime)) {
+        if (StringUtils.isNotBlank(connectionMaxIdleTime)) {
             connectionConfig.setConnectionMaxIdleTime(Integer.valueOf(connectionMaxIdleTime));
         }
-        if (StringUtils.isNotEmpty(connectionTimeToLive)) {
+        if (StringUtils.isNotBlank(connectionTimeToLive)) {
             connectionConfig.setConnectionTimeToLive(Integer.valueOf(connectionTimeToLive));
         }
-        if (StringUtils.isNotEmpty(connectionAcquisitionTimeout)) {
+        if (StringUtils.isNotBlank(connectionAcquisitionTimeout)) {
             connectionConfig.setConnectionAcquisitionTimeout(Integer.valueOf(connectionAcquisitionTimeout));
         }
-        if (StringUtils.isNotEmpty(apiCallTimeout)) {
+        if (StringUtils.isNotBlank(apiCallTimeout)) {
             connectionConfig.setApiCallTimeout(Integer.valueOf(apiCallTimeout));
         }
-        if (StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+        if (StringUtils.isNotBlank(apiCallAttemptTimeout)) {
             connectionConfig.setApiCallAttemptTimeout(Integer.valueOf(apiCallAttemptTimeout));
         }
         return connectionConfig;

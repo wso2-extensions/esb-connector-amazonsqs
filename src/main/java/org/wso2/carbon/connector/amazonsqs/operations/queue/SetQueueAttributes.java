@@ -60,10 +60,11 @@ public class SetQueueAttributes extends AbstractConnector  {
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
             SetQueueAttributesRequest.Builder setQueueAttributesBuilder = SetQueueAttributesRequest.builder().queueUrl(
                     queueUrl);
-            if (StringUtils.isNotEmpty(attributeEntries)) {
-                setQueueAttributesBuilder.attributes(Utils.addAttributes(attributeEntries));
+            if (StringUtils.isNotBlank(attributeEntries)) {
+                setQueueAttributesBuilder.attributes(Utils.addAttributes(
+                        Utils.removeDoubleQuotes(attributeEntries.trim())));
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 setQueueAttributesBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

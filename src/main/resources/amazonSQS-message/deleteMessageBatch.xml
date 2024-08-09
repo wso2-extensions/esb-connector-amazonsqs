@@ -19,7 +19,7 @@
 <template name="deleteMessageBatch" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="queueUrl" description="The URL of the queue from which messages are deleted"/>
     <parameter name="messageRequestEntries"
-               description="A list of receipt handles for the messages to be deleted"/>
+               description="A list of receipt handles for the messages to be deleted. Eg: [{'receiptHandle': '122324343', 'id': 'id1' }]"/>
     <parameter name="queueId" description="The unique identifier of the queue"/>
     <parameter name="queueName" description="The name of the queue"/>
     <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete

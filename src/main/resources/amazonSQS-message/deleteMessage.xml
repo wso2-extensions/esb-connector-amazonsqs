@@ -17,7 +17,7 @@
  ~  under the License.
 -->
 <template name="deleteMessage" xmlns="http://ws.apache.org/ns/synapse">
-    <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
+    <parameter name="queueUrl" description="The URL of the queue from which messages are deleted"/>
     <parameter name="receiptHandle"
                description="A list of receipt handles for the messages to be deleted"/>
     <parameter name="queueId" description="The AWS account ID without hyphens"/>

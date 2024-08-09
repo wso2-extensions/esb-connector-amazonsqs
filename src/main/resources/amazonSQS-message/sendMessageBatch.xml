@@ -19,7 +19,7 @@
 <template name="sendMessageBatch" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
     <parameter name="messageRequestEntries"
-               description="List of SendMessageBatchRequestEntry items. Eg: [{'delaySeconds': 0, 'id': 'id1', 'messageBody': 'hi', 'messageAttributes': {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1'}}, messageSystemAttributes: {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}}]"/>
+               description="The list of messages to be sent. Eg: [{'delaySeconds': 0, 'id': 'id1', 'messageBody': 'hi', 'messageAttributes': {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1'}}, messageSystemAttributes: {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}}]"/>
     <parameter name="apiCallTimeout" description="The amount of time(in seconds) to allow the client to complete the execution of an API call"/>
     <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
                 to complete before giving up and timing out"/>

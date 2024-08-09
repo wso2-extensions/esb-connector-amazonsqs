@@ -17,9 +17,9 @@
  ~  under the License.
 -->
 <template name="addPermission" xmlns="http://ws.apache.org/ns/synapse">
-    <parameter name="queueUrl" description="The URL of the queue to which a message is sent"/>
+    <parameter name="queueUrl" description="The URL of the queue to which permissions are added"/>
     <parameter name="awsAccountNumbers"
-               description="The AWS account number of the principal who will be given permission.
+               description="The AWS account numbers of the principal who will be given permission.
                The account ids should be separated by ','. Eg: 111111111234, 111111111111"/>
     <parameter name="actionNames"
                description="The actions the client wants to allow for the specified principal.

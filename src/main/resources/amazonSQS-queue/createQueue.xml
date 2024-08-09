@@ -18,7 +18,7 @@
 -->
 <template name="createQueue" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="queueName"
-               description="The URL of the Amazon SQS queue to take action on"/>
+               description="The name of the new queue"/>
     <parameter name="attributeEntries"
                description="A map of attributes with their corresponding values.
                The value should be a string in JSON format. Eg: {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1' }}"/>

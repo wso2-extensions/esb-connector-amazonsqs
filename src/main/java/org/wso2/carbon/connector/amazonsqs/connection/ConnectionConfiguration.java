@@ -71,7 +71,7 @@ public class ConnectionConfiguration {
     }
 
     public String getAwsSecretAccessKey() {
-        return this. awsSecretAccessKey;
+        return this.awsSecretAccessKey;
     }
 
     public void setAwsSecretAccessKey(String awsSecretAccessKey) {

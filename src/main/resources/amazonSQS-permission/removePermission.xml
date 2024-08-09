@@ -17,9 +17,9 @@
  ~  under the License.
 -->
 <template name="removePermission" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="queueUrl" description="The URL of the queue from which permissions are removed"/>
     <parameter name="label"
                description="The identification of the permission to remove"/>
-    <parameter name="queueUrl" description="The URL of the queue from which permissions are removed"/>
     <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
                 the execution of an API call"/>
     <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request

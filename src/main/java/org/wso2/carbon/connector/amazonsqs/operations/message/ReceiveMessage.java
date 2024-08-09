@@ -70,30 +70,30 @@ public class ReceiveMessage extends AbstractConnector {
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
             ReceiveMessageRequest.Builder receiveMessageBuilder = ReceiveMessageRequest.builder().
                     queueUrl(queueUrl);
-            if (StringUtils.isNotEmpty(maxNumberOfMessages)) {
+            if (StringUtils.isNotBlank(maxNumberOfMessages)) {
                 receiveMessageBuilder.maxNumberOfMessages(Integer.getInteger(maxNumberOfMessages));
             }
-            if (StringUtils.isNotEmpty(waitTimeSeconds)) {
+            if (StringUtils.isNotBlank(waitTimeSeconds)) {
                 receiveMessageBuilder.waitTimeSeconds(Integer.getInteger(waitTimeSeconds));
             }
-            if (StringUtils.isNotEmpty(messageAttributeNames)) {
+            if (StringUtils.isNotBlank(messageAttributeNames)) {
                 List<String> names = new ArrayList<String>();
                 for (String key : messageAttributeNames.split(",")) {
                     names.add(key.trim());
                 }
                 receiveMessageBuilder.messageAttributeNames(names);
             }
-            if (StringUtils.isNotEmpty(visibilityTimeout)) {
+            if (StringUtils.isNotBlank(visibilityTimeout)) {
                 receiveMessageBuilder.visibilityTimeout(Integer.getInteger(visibilityTimeout));
             }
-            if (StringUtils.isNotEmpty(messageSystemAttributes)) {
+            if (StringUtils.isNotBlank(messageSystemAttributes)) {
                 List<String> names = new ArrayList<String>();
                 for (String key : messageSystemAttributes.split(",")) {
                     names.add(key.trim());
                 }
                 receiveMessageBuilder.messageSystemAttributeNamesWithStrings(names);
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 receiveMessageBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }
@@ -129,7 +129,7 @@ public class ReceiveMessage extends AbstractConnector {
             message.addChild(Utils.createOMElement(Constants.BODY, msg.body()));
             message.addChild(Utils.createOMElement(Constants.RECEIPT_HANDLE, msg.receiptHandle()));
             String md5OfMessageAttributes = msg.md5OfMessageAttributes();
-            if (StringUtils.isNotEmpty(md5OfMessageAttributes)) {
+            if (StringUtils.isNotBlank(md5OfMessageAttributes)) {
                 message.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_ATTRIBUTES,
                         msg.md5OfMessageAttributes()));
             }
@@ -152,11 +152,11 @@ public class ReceiveMessage extends AbstractConnector {
                     value.addChild(Utils.createOMElement(Constants.BINARY_VALUE, binaryValue));
                 }
                 String dataType = values.dataType();
-                if (StringUtils.isNotEmpty(dataType)) {
+                if (StringUtils.isNotBlank(dataType)) {
                     value.addChild(Utils.createOMElement(Constants.DATA_TYPE, dataType));
                 }
                 String stringValue = values.stringValue();
-                if (StringUtils.isNotEmpty(stringValue)) {
+                if (StringUtils.isNotBlank(stringValue)) {
                     value.addChild(Utils.createOMElement(Constants.STRING_VALUE, stringValue));
                 }
                 List<String> stringListValues = values.stringListValues();

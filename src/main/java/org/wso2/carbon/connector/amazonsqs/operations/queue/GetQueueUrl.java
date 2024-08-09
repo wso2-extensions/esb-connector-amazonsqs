@@ -53,7 +53,7 @@ public class GetQueueUrl extends AbstractConnector {
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
             GetQueueUrlRequest.Builder getQueueUrlRequestBuilder = GetQueueUrlRequest.builder().queueName(queueName).
                     queueOwnerAWSAccountId(accountId);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 getQueueUrlRequestBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

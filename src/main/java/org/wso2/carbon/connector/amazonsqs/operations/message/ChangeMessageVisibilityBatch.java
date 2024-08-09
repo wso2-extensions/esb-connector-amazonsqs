@@ -95,7 +95,7 @@ public class ChangeMessageVisibilityBatch extends AbstractConnector {
                     Constants.API_CALL_TIMEOUT);
             String apiCallAttemptTimeout = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 changeMessageVisibilityBatchRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

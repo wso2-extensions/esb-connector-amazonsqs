@@ -50,7 +50,7 @@ public class DeleteQueue extends AbstractConnector {
                     Constants.API_CALL_ATTEMPT_TIMEOUT);
             DeleteQueueRequest.Builder deleteQueueRequest = DeleteQueueRequest.builder().queueUrl(
                     Utils.createUrl(messageContext, sqsConnection));
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 deleteQueueRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

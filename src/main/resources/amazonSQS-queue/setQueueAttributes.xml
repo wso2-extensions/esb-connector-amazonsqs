@@ -19,7 +19,7 @@
 <template name="setQueueAttributes" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="queueUrl" description="The URL of the queue whose attributes are set"/>
     <parameter name="attributeEntries" description="A map of attributes with their corresponding values.
-               The value should be a string in JSON format. Eg: {'RedrivePolicy': {'deadLetterTargetArn': 'arn:aws:sqs:us-east-1:844783390511:TestQueue', 'maxReceiveCount': 10}}"/>
+               The value should be a string in JSON format. Eg: {'RedrivePolicy': {'deadLetterTargetArn': 'arn:aws:sqs:us-east-1:884783870511:TestQueue', 'maxReceiveCount': 10}}"/>
     <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
                 the execution of an API call"/>
     <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request

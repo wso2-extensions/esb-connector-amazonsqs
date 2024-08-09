@@ -69,7 +69,7 @@ public class GetQueueAttributes extends AbstractConnector  {
             } else {
                 getQueueAttributesBuilder.attributeNamesWithStrings("All");
             }
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 getQueueAttributesBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

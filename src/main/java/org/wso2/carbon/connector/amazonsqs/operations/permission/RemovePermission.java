@@ -52,7 +52,7 @@ public class RemovePermission extends AbstractConnector {
             String label = (String) ConnectorUtils.lookupTemplateParamater(messageContext, Constants.LABEL);
             RemovePermissionRequest.Builder deleteQueueRequest = RemovePermissionRequest.builder().queueUrl(queueUrl).
                     label(label);
-            if (StringUtils.isNotEmpty(apiCallTimeout) || StringUtils.isNotEmpty(apiCallAttemptTimeout)) {
+            if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 deleteQueueRequest.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }

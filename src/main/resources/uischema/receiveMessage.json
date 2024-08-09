@@ -87,8 +87,8 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "attributes",
-                    "displayName": "messageSystemAttributeNames",
+                    "name": "messageSystemAttributeNames",
+                    "displayName": "Message System Attribute Names",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",

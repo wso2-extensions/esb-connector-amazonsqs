@@ -5,26 +5,7 @@
     "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/amazonsqs-connector/amazonsqs-connector-overview/",
     "description": "Amazon SQS offers reliable and scalable hosted queues for storing messages as they travel between computers. By using Amazon SQS, you can move data between distributed components of your applications that perform different tasks without losing messages or requiring each component to be always available. The Amazon SQS connector for WSO2 EI uses the Amazon SQS API and allows you to send and receive messages, facilitating asynchronous messaging between integrated systems.",
     "status": "Active",
-    "labels": [
-        "queues",
-        "AWS sqs",
-        "SQS"
-    ],
-    "releases": [
-        {
-            "tagName": "v2.0.0",
-            "products": [
-                "MI 4.x.x"
-            ],
-            "isHidden": false
-        },
-        {
-            "tagName": "v1.1.7",
-            "products": [
-                "MI 1.2.0",
-                "MI 4.x.x"
-            ],
-            "isHidden": false
-        }
-    ]
+    "labels": "['integration', 'AWS', 'communication']",
+    "releases": "[{'tagName': 'v2.0.0', 'products': ['MI 4.x.x'], 'isHidden': False}, {'tagName': 'v1.1.7', 'products': ['MI 1.2.0', 'MI 4.x.x'], 'isHidden': False}]",
+    "repo_name": "esb-connector-amazonsqs"
 }

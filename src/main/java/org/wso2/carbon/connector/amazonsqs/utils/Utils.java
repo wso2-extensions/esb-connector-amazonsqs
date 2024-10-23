@@ -50,6 +50,7 @@ import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
 import software.amazon.awssdk.services.sqs.model.SqsResponseMetadata;
 
 import javax.xml.stream.XMLStreamException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -335,11 +336,22 @@ public class Utils {
             throws NumberFormatException {
         AwsRequestOverrideConfiguration.Builder overrideConfiguration = AwsRequestOverrideConfiguration.builder();
         if (StringUtils.isNotBlank(apiCallTimeout)) {
-            overrideConfiguration.apiCallTimeout(Duration.ofSeconds(Integer.parseInt(apiCallTimeout)));
+            overrideConfiguration.apiCallTimeout(Duration.ofMillis(convertToMillis(apiCallTimeout)));
         }
         if (StringUtils.isNotBlank(apiCallAttemptTimeout)) {
-            overrideConfiguration.apiCallAttemptTimeout(Duration.ofSeconds(Integer.parseInt(apiCallAttemptTimeout)));
+            overrideConfiguration.apiCallAttemptTimeout(Duration.ofMillis(convertToMillis(apiCallAttemptTimeout)));
         }
         return overrideConfiguration;
+    }
+
+    /**
+     * Convert given duration in seconds to milliseconds
+     *
+     * @param duration - duration in seconds
+     * @return integer
+     */
+    public static Integer convertToMillis(String duration) {
+        double seconds = Double.parseDouble(duration);
+        return (int) (seconds * 1000);
     }
 }

@@ -74,19 +74,19 @@ public class SqsConnection implements Connection {
         Integer apiCallAttemptTimeout = connectionConfig.getApiCallAttemptTimeout();
         ApacheHttpClient.Builder apacheHttpClientBuilder = ApacheHttpClient.builder();
         if (connectionTimeout != -1) {
-            apacheHttpClientBuilder.connectionTimeout(Duration.ofSeconds(connectionTimeout));
+            apacheHttpClientBuilder.connectionTimeout(Duration.ofMillis(connectionTimeout));
         }
         if (connectionAcquisitionTimeout != -1) {
-            apacheHttpClientBuilder.connectionAcquisitionTimeout(Duration.ofSeconds(connectionAcquisitionTimeout));
+            apacheHttpClientBuilder.connectionAcquisitionTimeout(Duration.ofMillis(connectionAcquisitionTimeout));
         }
         if (socketTimeout != -1) {
-            apacheHttpClientBuilder.socketTimeout(Duration.ofSeconds(socketTimeout));
+            apacheHttpClientBuilder.socketTimeout(Duration.ofMillis(socketTimeout));
         }
         if (connectionTimeToLive != -1) {
-            apacheHttpClientBuilder.connectionTimeToLive(Duration.ofSeconds(connectionTimeToLive));
+            apacheHttpClientBuilder.connectionTimeToLive(Duration.ofMillis(connectionTimeToLive));
         }
         if (connectionMaxIdleTime != -1) {
-            apacheHttpClientBuilder.connectionMaxIdleTime(Duration.ofSeconds(connectionMaxIdleTime));
+            apacheHttpClientBuilder.connectionMaxIdleTime(Duration.ofMillis(connectionMaxIdleTime));
         }
         SqsClientBuilder sqsClientBuilder = SqsClient.builder().region(Region.of(connectionConfig.getRegion())).
                 httpClient(apacheHttpClientBuilder.build());
@@ -96,11 +96,11 @@ public class SqsConnection implements Connection {
                     create(awsAccessKeyId, awsSecretAccessKey));
         }
         if (apiCallTimeout != -1) {
-            sqsClientBuilder.overrideConfiguration(b -> b.apiCallTimeout(Duration.ofSeconds(apiCallTimeout)));
+            sqsClientBuilder.overrideConfiguration(b -> b.apiCallTimeout(Duration.ofMillis(apiCallTimeout)));
         }
         if (apiCallAttemptTimeout != -1) {
             sqsClientBuilder.overrideConfiguration(b -> b.apiCallAttemptTimeout(
-                    Duration.ofSeconds(apiCallAttemptTimeout)));
+                    Duration.ofMillis(apiCallAttemptTimeout)));
         }
         return sqsClientBuilder.credentialsProvider(credentialsProvider).build();
     }

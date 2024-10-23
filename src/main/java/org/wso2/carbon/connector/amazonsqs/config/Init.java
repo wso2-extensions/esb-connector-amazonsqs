@@ -101,25 +101,25 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
         connectionConfig.setAwsAccessKeyId(awsAccessKeyId);
         connectionConfig.setAwsSecretAccessKey(awsSecretAccessKey);
         if (StringUtils.isNotBlank(socketTimeout)) {
-            connectionConfig.setSocketTimeout(Integer.valueOf(socketTimeout));
+            connectionConfig.setSocketTimeout(Utils.convertToMillis(socketTimeout));
         }
         if (StringUtils.isNotBlank(connectionTimeout)) {
-            connectionConfig.setConnectionTimeout(Integer.valueOf(connectionTimeout));
+            connectionConfig.setConnectionTimeout(Utils.convertToMillis(connectionTimeout));
         }
         if (StringUtils.isNotBlank(connectionMaxIdleTime)) {
-            connectionConfig.setConnectionMaxIdleTime(Integer.valueOf(connectionMaxIdleTime));
+            connectionConfig.setConnectionMaxIdleTime(Utils.convertToMillis(connectionMaxIdleTime));
         }
         if (StringUtils.isNotBlank(connectionTimeToLive)) {
-            connectionConfig.setConnectionTimeToLive(Integer.valueOf(connectionTimeToLive));
+            connectionConfig.setConnectionTimeToLive(Utils.convertToMillis(connectionTimeToLive));
         }
         if (StringUtils.isNotBlank(connectionAcquisitionTimeout)) {
-            connectionConfig.setConnectionAcquisitionTimeout(Integer.valueOf(connectionAcquisitionTimeout));
+            connectionConfig.setConnectionAcquisitionTimeout(Utils.convertToMillis(connectionAcquisitionTimeout));
         }
         if (StringUtils.isNotBlank(apiCallTimeout)) {
-            connectionConfig.setApiCallTimeout(Integer.valueOf(apiCallTimeout));
+            connectionConfig.setApiCallTimeout(Utils.convertToMillis(apiCallTimeout));
         }
         if (StringUtils.isNotBlank(apiCallAttemptTimeout)) {
-            connectionConfig.setApiCallAttemptTimeout(Integer.valueOf(apiCallAttemptTimeout));
+            connectionConfig.setApiCallAttemptTimeout(Utils.convertToMillis(apiCallAttemptTimeout));
         }
         return connectionConfig;
     }

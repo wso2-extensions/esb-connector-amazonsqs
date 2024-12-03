@@ -8,7 +8,7 @@
     "mavenArtifactId": "org.wso2.carbon.connector.amazonsqs",
     "description": "Amazon SQS offers reliable and scalable hosted queues for storing messages as they travel between computers. By using Amazon SQS, you can move data between distributed components of your applications that perform different tasks without losing messages or requiring each component to be always available. The Amazon SQS connector for WSO2 EI uses the Amazon SQS API and allows you to send and receive messages, facilitating asynchronous messaging between integrated systems.",
     "status": "Active",
-    "connectorRank": 22,
+    "rank": 22,
     "type": "Connector",
     "labels": [
         "integration",

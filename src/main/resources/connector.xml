@@ -24,5 +24,6 @@
         <dependency component="amazonSQS-queue"/>
         <description>amazonsqs connector libraries</description>
     </component>
+    <displayName>Amazon Simple Queue Service</displayName>
     <icon>icon/icon-small.gif</icon>
 </connector>

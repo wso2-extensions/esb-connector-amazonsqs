@@ -1,0 +1,76 @@
+# Connector Descriptor File
+# Specifies the dependencies and repositories required for the connector.
+
+dependencies:
+  - groupId: software.amazon.awssdk
+    artifactId: apache-client
+    version: 2.20.26
+  - groupId: software.amazon.awssdk
+    artifactId: auth
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: aws-core
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: checksums
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: checksums-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: endpoints-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: http-auth-aws
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: http-auth-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: http-client-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: identity-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: json-utils
+    version: 2.20.26
+  - groupId: software.amazon.awssdk
+    artifactId: metrics-spi
+    version: 2.20.26
+  - groupId: software.amazon.awssdk
+    artifactId: profiles
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: protocol-core
+    version: 2.20.26
+  - groupId: org.reactivestreams
+    artifactId: reactive-streams
+    version: 1.0.4
+  - groupId: software.amazon.awssdk
+    artifactId: regions
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: retries-spi
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: sqs
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: third-party-jackson-core
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: utils
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: aws-json-protocol
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: http-auth
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: sdk-core
+    version: 2.26.20
+  - groupId: software.amazon.awssdk
+    artifactId: retries
+    version: 2.26.20

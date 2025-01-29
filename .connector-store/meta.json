@@ -8,7 +8,7 @@
     "mavenArtifactId": "mi-connector-amazonsqs",
     "description": "Amazon SQS offers reliable and scalable hosted queues for storing messages as they travel between computers. By using Amazon SQS, you can move data between distributed components of your applications that perform different tasks without losing messages or requiring each component to be always available. The Amazon SQS connector for WSO2 EI uses the Amazon SQS API and allows you to send and receive messages, facilitating asynchronous messaging between integrated systems.",
     "status": "Active",
-    "rank": 22,
+    "rank": 22.0,
     "type": "Connector",
     "labels": [
         "integration",
@@ -19,6 +19,7 @@
         {
             "tagName": "v2.0.2",
             "products": [
+                "MI 4.4.0",
                 "MI 4.3.0",
                 "MI 4.2.0",
                 "MI 4.1.0",
@@ -26,94 +27,94 @@
             ],
             "operations": [
                 {
-                    "name":"init",
-                    "description":"Config operation",
-                    "isHidden":true
+                    "name": "init",
+                    "description": "Config operation",
+                    "isHidden": true
                 },
                 {
-                    "name":"sendMessage",
-                    "description":"Delivers a message to the specified queue",
-                    "isHidden":false
+                    "name": "sendMessage",
+                    "description": "Delivers a message to the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"sendMessageBatch",
-                    "description":"Delivers batch messages to the specified queue",
-                    "isHidden":false
+                    "name": "sendMessageBatch",
+                    "description": "Delivers batch messages to the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"receiveMessage",
-                    "description":"Retrieves one or more messages from the specified queue",
-                    "isHidden":false
+                    "name": "receiveMessage",
+                    "description": "Retrieves one or more messages from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"changeMessageVisibility",
-                    "description":"Changes the visibility timeout of a specified message in a queue",
-                    "isHidden":false
+                    "name": "changeMessageVisibility",
+                    "description": "Changes the visibility timeout of a specified message in a queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"changeMessageVisibilityBatch",
-                    "description":"Changes the visibility timeout of multiple messages",
-                    "isHidden":false
+                    "name": "changeMessageVisibilityBatch",
+                    "description": "Changes the visibility timeout of multiple messages",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteMessage",
-                    "description":"Deletes the specified message from the specified queue",
-                    "isHidden":false
+                    "name": "deleteMessage",
+                    "description": "Deletes the specified message from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteMessageBatch",
-                    "description":"Deletes multiple messages from the specified queue",
-                    "isHidden":false
+                    "name": "deleteMessageBatch",
+                    "description": "Deletes multiple messages from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"addPermission",
-                    "description":"Adds a permission to a queue for a specific principal which allows access sharing to the queue",
-                    "isHidden":false
+                    "name": "addPermission",
+                    "description": "Adds a permission to a queue for a specific principal which allows access sharing to the queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"removePermission",
-                    "description":"Revokes any permissions in the queue policy",
-                    "isHidden":false
+                    "name": "removePermission",
+                    "description": "Revokes any permissions in the queue policy",
+                    "isHidden": false
                 },
                 {
-                    "name":"createQueue",
-                    "description":"Creates a new queue, or returns the URL of an existing one",
-                    "isHidden":false
+                    "name": "createQueue",
+                    "description": "Creates a new queue, or returns the URL of an existing one",
+                    "isHidden": false
                 },
                 {
-                    "name":"getQueueAttributes",
-                    "description":"Gets attributes for the specified queue",
-                    "isHidden":false
+                    "name": "getQueueAttributes",
+                    "description": "Gets attributes for the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"setQueueAttributes",
-                    "description":"Sets the value of one or more queue attributes",
-                    "isHidden":false
+                    "name": "setQueueAttributes",
+                    "description": "Sets the value of one or more queue attributes",
+                    "isHidden": false
                 },
                 {
-                    "name":"getQueueUrl",
-                    "description":"Returns the URL of an existing queue",
-                    "isHidden":false
+                    "name": "getQueueUrl",
+                    "description": "Returns the URL of an existing queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"listQueues",
-                    "description":"Returns a list of queues",
-                    "isHidden":false
+                    "name": "listQueues",
+                    "description": "Returns a list of queues",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteQueue",
-                    "description":"Deletes the queue specified by the queue URL",
-                    "isHidden":false
+                    "name": "deleteQueue",
+                    "description": "Deletes the queue specified by the queue URL",
+                    "isHidden": false
                 },
                 {
-                    "name":"purgeQueue",
-                    "description":"Deletes the messages in a queue specified by the queue URL",
-                    "isHidden":false
+                    "name": "purgeQueue",
+                    "description": "Deletes the messages in a queue specified by the queue URL",
+                    "isHidden": false
                 },
                 {
-                    "name":"listDeadLetterSourceQueues",
-                    "description":"Returns a list of your queues that have the RedrivePolicy queue attribute",
-                    "isHidden":false
+                    "name": "listDeadLetterSourceQueues",
+                    "description": "Returns a list of your queues that have the RedrivePolicy queue attribute",
+                    "isHidden": false
                 }
             ],
             "connections": [
@@ -134,94 +135,94 @@
             ],
             "operations": [
                 {
-                    "name":"init",
-                    "description":"Config operation",
-                    "isHidden":true
+                    "name": "init",
+                    "description": "Config operation",
+                    "isHidden": true
                 },
                 {
-                    "name":"sendMessage",
-                    "description":"Delivers a message to the specified queue",
-                    "isHidden":false
+                    "name": "sendMessage",
+                    "description": "Delivers a message to the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"sendMessageBatch",
-                    "description":"Delivers batch messages to the specified queue",
-                    "isHidden":false
+                    "name": "sendMessageBatch",
+                    "description": "Delivers batch messages to the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"receiveMessage",
-                    "description":"Retrieves one or more messages from the specified queue",
-                    "isHidden":false
+                    "name": "receiveMessage",
+                    "description": "Retrieves one or more messages from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"changeMessageVisibility",
-                    "description":"Changes the visibility timeout of a specified message in a queue",
-                    "isHidden":false
+                    "name": "changeMessageVisibility",
+                    "description": "Changes the visibility timeout of a specified message in a queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"changeMessageVisibilityBatch",
-                    "description":"Changes the visibility timeout of multiple messages",
-                    "isHidden":false
+                    "name": "changeMessageVisibilityBatch",
+                    "description": "Changes the visibility timeout of multiple messages",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteMessage",
-                    "description":"Deletes the specified message from the specified queue",
-                    "isHidden":false
+                    "name": "deleteMessage",
+                    "description": "Deletes the specified message from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteMessageBatch",
-                    "description":"Deletes multiple messages from the specified queue",
-                    "isHidden":false
+                    "name": "deleteMessageBatch",
+                    "description": "Deletes multiple messages from the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"addPermission",
-                    "description":"Adds a permission to a queue for a specific principal which allows access sharing to the queue",
-                    "isHidden":false
+                    "name": "addPermission",
+                    "description": "Adds a permission to a queue for a specific principal which allows access sharing to the queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"removePermission",
-                    "description":"Revokes any permissions in the queue policy",
-                    "isHidden":false
+                    "name": "removePermission",
+                    "description": "Revokes any permissions in the queue policy",
+                    "isHidden": false
                 },
                 {
-                    "name":"createQueue",
-                    "description":"Creates a new queue, or returns the URL of an existing one",
-                    "isHidden":false
+                    "name": "createQueue",
+                    "description": "Creates a new queue, or returns the URL of an existing one",
+                    "isHidden": false
                 },
                 {
-                    "name":"getQueueAttributes",
-                    "description":"Gets attributes for the specified queue",
-                    "isHidden":false
+                    "name": "getQueueAttributes",
+                    "description": "Gets attributes for the specified queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"setQueueAttributes",
-                    "description":"Sets the value of one or more queue attributes",
-                    "isHidden":false
+                    "name": "setQueueAttributes",
+                    "description": "Sets the value of one or more queue attributes",
+                    "isHidden": false
                 },
                 {
-                    "name":"getQueueUrl",
-                    "description":"Returns the URL of an existing queue",
-                    "isHidden":false
+                    "name": "getQueueUrl",
+                    "description": "Returns the URL of an existing queue",
+                    "isHidden": false
                 },
                 {
-                    "name":"listQueues",
-                    "description":"Returns a list of queues",
-                    "isHidden":false
+                    "name": "listQueues",
+                    "description": "Returns a list of queues",
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteQueue",
-                    "description":"Deletes the queue specified by the queue URL",
-                    "isHidden":false
+                    "name": "deleteQueue",
+                    "description": "Deletes the queue specified by the queue URL",
+                    "isHidden": false
                 },
                 {
-                    "name":"purgeQueue",
-                    "description":"Deletes the messages in a queue specified by the queue URL",
-                    "isHidden":false
+                    "name": "purgeQueue",
+                    "description": "Deletes the messages in a queue specified by the queue URL",
+                    "isHidden": false
                 },
                 {
-                    "name":"listDeadLetterSourceQueues",
-                    "description":"Returns a list of your queues that have the RedrivePolicy queue attribute",
-                    "isHidden":false
+                    "name": "listDeadLetterSourceQueues",
+                    "description": "Returns a list of your queues that have the RedrivePolicy queue attribute",
+                    "isHidden": false
                 }
             ],
             "connections": [

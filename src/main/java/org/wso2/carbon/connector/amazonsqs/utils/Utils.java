@@ -100,7 +100,7 @@ public class Utils {
                 throw new SqsInvalidConfigurationException("Missing queue info: Should provide value of queue url or " +
                         "queue name and queue id.");
             }
-            return new URL(Constants.HTTPS, "sqs".concat(sqsConnection.getConnectionConfig().getRegion()).
+            return new URL(Constants.HTTPS, "sqs.".concat(sqsConnection.getConnectionConfig().getRegion()).
                     concat(".amazonaws.com"), Constants.SLASH.concat(queueId).
                     concat(Constants.SLASH).concat(queueName)).toString();
         } catch (MalformedURLException e) {

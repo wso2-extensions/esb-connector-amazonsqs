@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "GetQueueAttributes Response Schema",
+  "description": "Output schema for getQueueAttributes operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "GetQueueAttributesResult": {
+          "type": "object",
+          "properties": {
+            "Attributes": {
+              "type": "array",
+              "description": "Array of queue attributes",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string",
+                    "description": "The attribute name"
+                  },
+                  "Value": {
+                    "type": "string",
+                    "description": "The attribute value"
+                  }
+                },
+                "required": ["Name", "Value"]
+              }
+            }
+          },
+          "required": ["Attributes"]
+        }
+      },
+      "required": ["ResponseMetadata", "GetQueueAttributesResult"]
+    }
+  },
+  "required": ["payload"]
+}

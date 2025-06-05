@@ -17,7 +17,8 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.message;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,10 +26,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.Message;
@@ -45,10 +46,11 @@ import java.util.Map;
 /**
  * Implements receive message operation.
  */
-public class ReceiveMessage extends AbstractConnector {
+public class ReceiveMessage extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler.getConnection(Constants.CONNECTOR_NAME,
@@ -71,10 +73,10 @@ public class ReceiveMessage extends AbstractConnector {
             ReceiveMessageRequest.Builder receiveMessageBuilder = ReceiveMessageRequest.builder().
                     queueUrl(queueUrl);
             if (StringUtils.isNotBlank(maxNumberOfMessages)) {
-                receiveMessageBuilder.maxNumberOfMessages(Integer.getInteger(maxNumberOfMessages));
+                receiveMessageBuilder.maxNumberOfMessages(Integer.parseInt(maxNumberOfMessages));
             }
             if (StringUtils.isNotBlank(waitTimeSeconds)) {
-                receiveMessageBuilder.waitTimeSeconds(Integer.getInteger(waitTimeSeconds));
+                receiveMessageBuilder.waitTimeSeconds(Integer.parseInt(waitTimeSeconds));
             }
             if (StringUtils.isNotBlank(messageAttributeNames)) {
                 List<String> names = new ArrayList<String>();
@@ -84,7 +86,7 @@ public class ReceiveMessage extends AbstractConnector {
                 receiveMessageBuilder.messageAttributeNames(names);
             }
             if (StringUtils.isNotBlank(visibilityTimeout)) {
-                receiveMessageBuilder.visibilityTimeout(Integer.getInteger(visibilityTimeout));
+                receiveMessageBuilder.visibilityTimeout(Integer.parseInt(visibilityTimeout));
             }
             if (StringUtils.isNotBlank(messageSystemAttributes)) {
                 List<String> names = new ArrayList<String>();
@@ -99,9 +101,11 @@ public class ReceiveMessage extends AbstractConnector {
             }
             ReceiveMessageResponse receiveMessageResponse = sqsConnection.getSqsClient().
                     receiveMessage(receiveMessageBuilder.build());
-            addResponse(receiveMessageResponse, messageContext);
+            JsonObject resultJSON = createReceiveMessageJsonResponse(receiveMessageResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -117,68 +121,91 @@ public class ReceiveMessage extends AbstractConnector {
         }
     }
 
-    private void addResponse(ReceiveMessageResponse receiveMessageResponse, MessageContext messageContext) {
-        OMElement resultElement = Utils.createOMElement("ReceiveMessageResponse", null);
-        OMElement result = Utils.createOMElement("ReceiveMessageResult", null);
-
+    private JsonObject createReceiveMessageJsonResponse(ReceiveMessageResponse receiveMessageResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(receiveMessageResponse.responseMetadata());
+        
+        JsonObject receiveMessageResult = new JsonObject();
+        JsonArray messagesArray = new JsonArray();
+        
         List<Message> messages = receiveMessageResponse.messages();
         for (Message msg : messages) {
-            OMElement message = Utils.createOMElement(Constants.MESSAGE, null);
-            message.addChild(Utils.createOMElement(Constants.MESSAGE_ID, msg.messageId()));
-            message.addChild(Utils.createOMElement(Constants.MD5_OF_BODY, msg.md5OfBody()));
-            message.addChild(Utils.createOMElement(Constants.BODY, msg.body()));
-            message.addChild(Utils.createOMElement(Constants.RECEIPT_HANDLE, msg.receiptHandle()));
+            JsonObject messageJson = new JsonObject();
+            messageJson.addProperty(Constants.MESSAGE_ID, msg.messageId());
+            messageJson.addProperty(Constants.MD5_OF_BODY, msg.md5OfBody());
+            messageJson.addProperty(Constants.BODY, msg.body());
+            messageJson.addProperty(Constants.RECEIPT_HANDLE, msg.receiptHandle());
+            
             String md5OfMessageAttributes = msg.md5OfMessageAttributes();
             if (StringUtils.isNotBlank(md5OfMessageAttributes)) {
-                message.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_ATTRIBUTES,
-                        msg.md5OfMessageAttributes()));
+                messageJson.addProperty(Constants.MD5_OF_MESSAGE_ATTRIBUTES, md5OfMessageAttributes);
             }
+            
+            // Add message attributes
+            JsonArray messageAttributesArray = new JsonArray();
             for (Map.Entry<String, MessageAttributeValue> entry : msg.messageAttributes().entrySet()) {
-                OMElement omMessageAttribute = Utils.createOMElement(Constants.MESSAGE_ATTRIBUTE,
-                        null);
-                omMessageAttribute.addChild(Utils.createOMElement(Constants.NAME, entry.getKey()));
-                OMElement value = Utils.createOMElement(Constants.VALUE, null);
+                JsonObject messageAttribute = new JsonObject();
+                messageAttribute.addProperty(Constants.NAME, entry.getKey());
+                
+                JsonObject value = new JsonObject();
                 MessageAttributeValue values = entry.getValue();
+                
                 if (values.binaryListValues().size() > 0) {
-                    OMElement binaryListValues = Utils.createOMElement(Constants.BINARY_LIST_VALUES,
-                            null);
+                    JsonArray binaryListValues = new JsonArray();
                     for (SdkBytes sdkBytes : values.binaryListValues()) {
-                        binaryListValues.addChild(Utils.createOMElement(Constants.BINARY, sdkBytes));
+                        binaryListValues.add(sdkBytes.asUtf8String());
                     }
-                    value.addChild(binaryListValues);
+                    value.add(Constants.BINARY_LIST_VALUES, binaryListValues);
                 }
+                
                 SdkBytes binaryValue = values.binaryValue();
                 if (binaryValue != null) {
-                    value.addChild(Utils.createOMElement(Constants.BINARY_VALUE, binaryValue));
+                    value.addProperty(Constants.BINARY_VALUE, binaryValue.asUtf8String());
                 }
+                
                 String dataType = values.dataType();
                 if (StringUtils.isNotBlank(dataType)) {
-                    value.addChild(Utils.createOMElement(Constants.DATA_TYPE, dataType));
+                    value.addProperty(Constants.DATA_TYPE, dataType);
                 }
+                
                 String stringValue = values.stringValue();
                 if (StringUtils.isNotBlank(stringValue)) {
-                    value.addChild(Utils.createOMElement(Constants.STRING_VALUE, stringValue));
+                    value.addProperty(Constants.STRING_VALUE, stringValue);
                 }
+                
                 List<String> stringListValues = values.stringListValues();
                 if (stringListValues.size() > 0) {
-                    OMElement stringListValuesElement = Utils.createOMElement(Constants.STRING_LIST_VALUES, null);
+                    JsonArray stringListValuesArray = new JsonArray();
                     for (String stringListValue : stringListValues) {
-                        stringListValuesElement.addChild(Utils.createOMElement(Constants.STRING, stringListValue));
+                        stringListValuesArray.add(stringListValue);
                     }
-                    value.addChild(stringListValuesElement);
+                    value.add(Constants.STRING_LIST_VALUES, stringListValuesArray);
                 }
-                omMessageAttribute.addChild(value);
-                message.addChild(omMessageAttribute);
+                
+                messageAttribute.add(Constants.VALUE, value);
+                messageAttributesArray.add(messageAttribute);
             }
+            if (messageAttributesArray.size() > 0) {
+                messageJson.add(Constants.MESSAGE_ATTRIBUTES, messageAttributesArray);
+            }
+            
+            // Add system attributes
+            JsonArray attributesArray = new JsonArray();
             for (Map.Entry<MessageSystemAttributeName, String> entry : msg.attributes().entrySet()) {
-                OMElement messageSystemAttribute = Utils.createOMElement(Constants.ATTRIBUTE, null);
-                messageSystemAttribute.addChild(Utils.createOMElement(Constants.NAME, entry.getKey().name()));
-                messageSystemAttribute.addChild(Utils.createOMElement(Constants.VALUE, entry.getValue()));
-                message.addChild(messageSystemAttribute);
+                JsonObject attribute = new JsonObject();
+                attribute.addProperty(Constants.NAME, entry.getKey().name());
+                attribute.addProperty(Constants.VALUE, entry.getValue());
+                attributesArray.add(attribute);
             }
-            result.addChild(message);
+            if (attributesArray.size() > 0) {
+                messageJson.add(Constants.ATTRIBUTES, attributesArray);
+            }
+            
+            messagesArray.add(messageJson);
         }
-        resultElement.addChild(result);
-        Utils.createResponseMetaDataElement(receiveMessageResponse.responseMetadata(), messageContext, resultElement);
+        
+        receiveMessageResult.add(Constants.MESSAGES, messagesArray);
+        resultJson.add(Constants.RECEIVE_MESSAGE_RESULT, receiveMessageResult);
+        
+        return resultJson;
     }
 }

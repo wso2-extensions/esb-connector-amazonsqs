@@ -17,7 +17,8 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.message;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.json.JSONArray;
@@ -27,10 +28,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageBatchRequest;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageBatchRequestEntry;
@@ -45,10 +46,11 @@ import java.util.Set;
 /**
  * Implements delete message operation.
  */
-public class DeleteMessageBatch extends AbstractConnector {
+public class DeleteMessageBatch extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -66,7 +68,7 @@ public class DeleteMessageBatch extends AbstractConnector {
             JSONArray messageEntries = new JSONArray(messageRequestEntries);
             for (int i = 0; i < messageEntries.length(); i++) {
                 JSONObject entryInJson = (JSONObject) messageEntries.get(i);
-                Set keySet = entryInJson.keySet();
+                Set<String> keySet = entryInJson.keySet();
                 DeleteMessageBatchRequestEntry.Builder batchEntryBuilder = DeleteMessageBatchRequestEntry.builder();
                 if (keySet.contains(Constants.ID)) {
                     batchEntryBuilder.id(entryInJson.get(Constants.ID).toString());
@@ -95,20 +97,11 @@ public class DeleteMessageBatch extends AbstractConnector {
             DeleteMessageBatchResponse response = sqsConnection.getSqsClient().deleteMessageBatch(
                     deleteMessageBatchRequest.build());
 
-            OMElement resultElement = Utils.createOMElement("DeleteMessageBatchResponse",
-                    null);
-            OMElement batchResultElement = Utils.createOMElement("DeleteMessageBatchResult",
-                    null);
-            for (DeleteMessageBatchResultEntry entry: response.successful()) {
-                OMElement batchResultEntryElement = Utils.createOMElement("DeleteMessageBatchResultEntry",
-                        null);
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.ID_KEY, entry.id()));
-            }
-            Utils.createBatchResultErrorEntryResponse(response.failed(), batchResultElement);
-            resultElement.addChild(batchResultElement);
-            Utils.createResponseMetaDataElement(response.responseMetadata(), messageContext, resultElement);
+            JsonObject resultJSON = createDeleteMessageBatchJsonResponse(response);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -122,5 +115,28 @@ public class DeleteMessageBatch extends AbstractConnector {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createDeleteMessageBatchJsonResponse(DeleteMessageBatchResponse response) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(response.responseMetadata());
+
+        JsonObject deleteMessageBatchResult = new JsonObject();
+
+        // Add successful entries
+        JsonArray successfulArray = new JsonArray();
+        for (DeleteMessageBatchResultEntry entry : response.successful()) {
+            JsonObject successfulEntry = new JsonObject();
+            successfulEntry.addProperty("Id", entry.id());
+            successfulArray.add(successfulEntry);
+        }
+        deleteMessageBatchResult.add(Constants.SUCCESSFUL, successfulArray);
+
+        // Add failed entries
+        JsonArray failedArray = Utils.createBatchResultErrorEntryJsonArray(response.failed());
+        deleteMessageBatchResult.add(Constants.FAILED, failedArray);
+
+        resultJson.add(Constants.DELETE_MESSAGE_BATCH_RESULT, deleteMessageBatchResult);
+
+        return resultJson;
     }
 }

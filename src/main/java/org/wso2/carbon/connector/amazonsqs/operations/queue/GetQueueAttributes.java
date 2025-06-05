@@ -17,7 +17,8 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.queue;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,28 +26,25 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
-import software.amazon.awssdk.services.sqs.model.CreateQueueResponse;
 import software.amazon.awssdk.services.sqs.model.GetQueueAttributesRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueAttributesResponse;
-import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
 import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
-import software.amazon.awssdk.services.sqs.model.SetQueueAttributesRequest;
-import software.amazon.awssdk.services.sqs.model.SetQueueAttributesResponse;
 import software.amazon.awssdk.services.sqs.model.SqsException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GetQueueAttributes extends AbstractConnector  {
+public class GetQueueAttributes extends AbstractConnectorOperation  {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -67,7 +65,7 @@ public class GetQueueAttributes extends AbstractConnector  {
                 }
                 getQueueAttributesBuilder.attributeNamesWithStrings(entries);
             } else {
-                getQueueAttributesBuilder.attributeNamesWithStrings("All");
+                getQueueAttributesBuilder.attributeNamesWithStrings(Constants.ALL);
             }
             if (StringUtils.isNotBlank(apiCallTimeout) || StringUtils.isNotBlank(apiCallAttemptTimeout)) {
                 getQueueAttributesBuilder.overrideConfiguration(
@@ -75,19 +73,11 @@ public class GetQueueAttributes extends AbstractConnector  {
             }
             GetQueueAttributesResponse setQueueAttributesResponse = sqsConnection.getSqsClient().
                     getQueueAttributes(getQueueAttributesBuilder.build());
-            OMElement resultElement = Utils.createOMElement("GetQueueAttributesResponse", null);
-            OMElement attributesResult = Utils.createOMElement("GetQueueAttributesResult", null);
-            for (Map.Entry<QueueAttributeName, String> entry : setQueueAttributesResponse.attributes().entrySet()) {
-                OMElement messageSystemAttribute = Utils.createOMElement(Constants.ATTRIBUTE, null);
-                messageSystemAttribute.addChild(Utils.createOMElement(Constants.NAME, entry.getKey().name()));
-                messageSystemAttribute.addChild(Utils.createOMElement(Constants.VALUE, entry.getValue()));
-                attributesResult.addChild(messageSystemAttribute);
-            }
-            resultElement.addChild(attributesResult);
-            Utils.createResponseMetaDataElement(setQueueAttributesResponse.responseMetadata(), messageContext,
-                    resultElement);
+            JsonObject resultJSON = createGetQueueAttributesJsonResponse(setQueueAttributesResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -102,5 +92,24 @@ public class GetQueueAttributes extends AbstractConnector  {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createGetQueueAttributesJsonResponse(GetQueueAttributesResponse response) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(response.responseMetadata());
+        
+        JsonObject getQueueAttributesResult = new JsonObject();
+        JsonArray attributesArray = new JsonArray();
+        
+        for (Map.Entry<QueueAttributeName, String> entry : response.attributes().entrySet()) {
+            JsonObject attribute = new JsonObject();
+            attribute.addProperty(Constants.NAME, entry.getKey().name());
+            attribute.addProperty(Constants.VALUE, entry.getValue());
+            attributesArray.add(attribute);
+        }
+        
+        getQueueAttributesResult.add(Constants.ATTRIBUTES, attributesArray);
+        resultJson.add(Constants.GET_QUEUE_ATTRIBUTES_RESULT, getQueueAttributesResult);
+        
+        return resultJson;
     }
 }

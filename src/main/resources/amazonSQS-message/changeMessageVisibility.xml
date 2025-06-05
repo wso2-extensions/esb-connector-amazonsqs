@@ -22,12 +22,12 @@
                description="The receipt handle associated with the message, whose visibility timeout is changed"/>
     <parameter name="visibilityTimeout"
                description="The new value (in seconds - from 0 to 43200 - maximum 12 hours) for the message's visibility timeout"/>
-    <parameter name="queueId" description="The unique identifier of the queue"/>
-    <parameter name="queueName" description="The name of the queue"/>
     <parameter name="apiCallTimeout" description="The amount of time(In Seconds) to allow the client to complete
                 the execution of an API call"/>
     <parameter name="apiCallAttemptTimeout" description="The amount of time(In Seconds) to wait for the http request
                 to complete before giving up and timing out"/>
+    <parameter name="responseVariable" description="The name of the variable to which the response should be stored."/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
     <sequence>
         <class name="org.wso2.carbon.connector.amazonsqs.operations.message.ChangeMessageVisibility"/>
     </sequence>

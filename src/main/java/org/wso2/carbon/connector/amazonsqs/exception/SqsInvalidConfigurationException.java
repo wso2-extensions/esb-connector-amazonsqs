@@ -17,7 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.exception;
 
-import org.wso2.carbon.connector.core.ConnectException;
+import org.wso2.integration.connector.core.ConnectException;
 
 /**
  *  This class is a custom exception used to indicate issues related to the operations of Amazon SQS.

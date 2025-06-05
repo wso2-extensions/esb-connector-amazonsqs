@@ -18,7 +18,7 @@
 -->
 <connector>
     <component name="amazonsqs" package="org.wso2.carbon.connector">
-        <dependency component="amazonSQS-config"/>
+        <dependency component="config"/>
         <dependency component="amazonSQS-message"/>
         <dependency component="amazonSQS-permission"/>
         <dependency component="amazonSQS-queue"/>

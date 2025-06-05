@@ -18,12 +18,12 @@
 package org.wso2.carbon.connector.amazonsqs.connection;
 
 import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.connector.core.connection.Connection;
+import org.wso2.integration.connector.core.connection.Connection;
+import org.wso2.integration.connector.core.connection.ConnectionConfig;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.awscore.AwsRequestOverrideConfiguration;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -103,5 +103,18 @@ public class SqsConnection implements Connection {
                     Duration.ofMillis(apiCallAttemptTimeout)));
         }
         return sqsClientBuilder.credentialsProvider(credentialsProvider).build();
+    }
+
+    @Override
+    public void connect(ConnectionConfig config) {
+
+        throw new UnsupportedOperationException("Nothing to do when connecting.");
+    }
+
+    @Override
+    public void close() {
+        if (sqsClient != null) {
+            this.sqsClient.close();
+        }
     }
 }

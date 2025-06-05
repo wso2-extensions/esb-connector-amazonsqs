@@ -16,38 +16,46 @@
  ~  specific language governing permissions and limitations
  ~  under the License.
 -->
-<component name="amazonSQS-queue" type="synapse/template">
+<component name="amazonSQS-queue" type="synapse/template" displayName="Queues">
     <subComponents>
         <component name="createQueue">
             <file>createQueue.xml</file>
+            <displayName>Create Queue</displayName>
             <description>Creates a new queue, or returns the URL of an existing one</description>
         </component>
         <component name="getQueueAttributes">
             <file>getQueueAttributes.xml</file>
+            <displayName>Get Queue Attributes</displayName>
             <description>Gets attributes for the specified queue</description>
         </component>
         <component name="setQueueAttributes">
             <file>setQueueAttributes.xml</file>
+            <displayName>Set Queue Attributes</displayName>
             <description>Sets the value of one or more queue attributes</description>
         </component>
         <component name="getQueueUrl">
             <file>getQueueUrl.xml</file>
+            <displayName>Get Queue URL</displayName>
             <description>Returns the URL of an existing queue</description>
         </component>
         <component name="listQueues">
             <file>listQueues.xml</file>
+            <displayName>List Queues</displayName>
             <description>Returns a list of queues</description>
         </component>
         <component name="deleteQueue">
             <file>deleteQueue.xml</file>
+            <displayName>Delete Queue</displayName>
             <description>Deletes the queue specified by the queue URL</description>
         </component>
         <component name="purgeQueue">
             <file>purgeQueue.xml</file>
+            <displayName>Purge Queue</displayName>
             <description> Deletes the messages in a queue specified by the queue URL</description>
         </component>
         <component name="listDeadLetterSourceQueues">
             <file>listDeadLetterSourceQueues.xml</file>
+            <displayName>List Dead Letter Source Queues</displayName>
             <description>Returns a list of your queues that have the RedrivePolicy queue attribute</description>
         </component>
     </subComponents>

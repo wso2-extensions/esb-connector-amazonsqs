@@ -17,7 +17,8 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.message;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.json.JSONArray;
@@ -27,31 +28,29 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
-import software.amazon.awssdk.services.sqs.model.BatchResultErrorEntry;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchResponse;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchResultEntry;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import software.amazon.awssdk.services.sqs.model.SqsException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Implements send message batch operation.
  */
-public class SendMessageBatch extends AbstractConnector {
+public class SendMessageBatch extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -69,7 +68,7 @@ public class SendMessageBatch extends AbstractConnector {
             JSONArray messageEntries = new JSONArray(messageRequestEntries);
             for (int i = 0; i < messageEntries.length(); i++) {
                 JSONObject entryInJson = (JSONObject) messageEntries.get(i);
-                Set keySet = entryInJson.keySet();
+                Set<String> keySet = entryInJson.keySet();
                 SendMessageBatchRequestEntry.Builder SendMessageBatchEntryBuilder = SendMessageBatchRequestEntry.
                         builder();
                 if (keySet.contains(Constants.ID)) {
@@ -122,30 +121,11 @@ public class SendMessageBatch extends AbstractConnector {
             }
             SendMessageBatchResponse sendMessageBatchResponse = sqsConnection.getSqsClient().
                     sendMessageBatch(sendMessageBatchBuilder.build());
-            OMElement resultElement = Utils.createOMElement("SendMessageBatchResponse", null);
-            OMElement batchResultElement = Utils.createOMElement("SendMessageBatchResult", null);
-
-            for (SendMessageBatchResultEntry entry: sendMessageBatchResponse.successful()) {
-                OMElement batchResultEntryElement = Utils.createOMElement("SendMessageBatchResultEntry",
-                        null);
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.ID_KEY, entry.id()));
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_ATTRIBUTES,
-                        entry.md5OfMessageAttributes()));
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_BODY,
-                        entry.md5OfMessageBody()));
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES,
-                        entry.md5OfMessageSystemAttributes()));
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.SEQUENCE_NUMBER,
-                        entry.sequenceNumber()));
-                batchResultEntryElement.addChild(Utils.createOMElement(Constants.MESSAGE_ID, entry.messageId()));
-                batchResultElement.addChild(batchResultEntryElement);
-            }
-            Utils.createBatchResultErrorEntryResponse(sendMessageBatchResponse.failed(), batchResultElement);
-            resultElement.addChild(batchResultElement);
-            Utils.createResponseMetaDataElement(sendMessageBatchResponse.responseMetadata(), messageContext,
-                    resultElement);
+            JsonObject resultJSON = createSendMessageBatchJsonResponse(sendMessageBatchResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -159,5 +139,39 @@ public class SendMessageBatch extends AbstractConnector {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createSendMessageBatchJsonResponse(SendMessageBatchResponse sendMessageBatchResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(sendMessageBatchResponse.responseMetadata());
+
+        JsonObject sendMessageBatchResult = new JsonObject();
+
+        // Add successful entries
+        JsonArray successfulArray = new JsonArray();
+        for (SendMessageBatchResultEntry entry : sendMessageBatchResponse.successful()) {
+            JsonObject successfulEntry = new JsonObject();
+            successfulEntry.addProperty("Id", entry.id());
+            if (entry.md5OfMessageAttributes() != null) {
+                successfulEntry.addProperty(Constants.MD5_OF_MESSAGE_ATTRIBUTES, entry.md5OfMessageAttributes());
+            }
+            successfulEntry.addProperty(Constants.MD5_OF_MESSAGE_BODY, entry.md5OfMessageBody());
+            if (entry.md5OfMessageSystemAttributes() != null) {
+                successfulEntry.addProperty(Constants.MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES, entry.md5OfMessageSystemAttributes());
+            }
+            if (entry.sequenceNumber() != null) {
+                successfulEntry.addProperty(Constants.SEQUENCE_NUMBER, entry.sequenceNumber());
+            }
+            successfulEntry.addProperty(Constants.MESSAGE_ID, entry.messageId());
+            successfulArray.add(successfulEntry);
+        }
+        sendMessageBatchResult.add(Constants.SUCCESSFUL, successfulArray);
+
+        // Add failed entries
+        JsonArray failedArray = Utils.createBatchResultErrorEntryJsonArray(sendMessageBatchResponse.failed());
+        sendMessageBatchResult.add(Constants.FAILED, failedArray);
+
+        resultJson.add(Constants.SEND_MESSAGE_BATCH_RESULT, sendMessageBatchResult);
+
+        return resultJson;
     }
 }

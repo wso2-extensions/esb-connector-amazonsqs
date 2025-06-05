@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "SendMessage Response Schema",
+  "description": "Output schema for sendMessage operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "SendMessageResult": {
+          "type": "object",
+          "properties": {
+            "MessageId": {
+              "type": "string",
+              "description": "The unique identifier for the message"
+            },
+            "MD5OfMessageBody": {
+              "type": "string",
+              "description": "The MD5 digest of the message body"
+            },
+            "MD5OfMessageAttributes": {
+              "type": "string",
+              "description": "The MD5 digest of the message attributes (optional)"
+            },
+            "MD5OfMessageSystemAttributes": {
+              "type": "string",
+              "description": "The MD5 digest of the message system attributes (optional)"
+            },
+            "SequenceNumber": {
+              "type": "string",
+              "description": "The sequence number for FIFO queues (optional)"
+            }
+          },
+          "required": ["MessageId", "MD5OfMessageBody"]
+        }
+      },
+      "required": ["ResponseMetadata", "SendMessageResult"]
+    }
+  },
+  "required": ["payload"]
+}

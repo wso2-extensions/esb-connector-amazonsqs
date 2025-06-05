@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "ListDeadLetterSourceQueues Response Schema",
+  "description": "Output schema for listDeadLetterSourceQueues operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "ListDeadLetterSourceQueuesResult": {
+          "type": "object",
+          "properties": {
+            "QueueUrls": {
+              "type": "array",
+              "description": "Array of dead letter source queue URLs",
+              "items": {
+                "type": "string",
+                "description": "Queue URL"
+              }
+            },
+            "NextToken": {
+              "type": "string",
+              "description": "Token for pagination (optional)"
+            }
+          },
+          "required": ["QueueUrls"]
+        }
+      },
+      "required": ["ResponseMetadata", "ListDeadLetterSourceQueuesResult"]
+    }
+  },
+  "required": ["payload"]
+}

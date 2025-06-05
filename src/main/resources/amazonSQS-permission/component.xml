@@ -16,16 +16,18 @@
  ~  specific language governing permissions and limitations
  ~  under the License.
 -->
-<component name="amazonSQS-permission" type="synapse/template">
+<component name="amazonSQS-permission" type="synapse/template" displayName="Permissions">
     <subComponents>
         <component name="addPermission">
             <file>addPermission.xml</file>
+            <displayName>Add Permission</displayName>
             <description>Adds a permission to a queue for a specific principal which allows access sharing to the
                 queue
             </description>
         </component>
         <component name="removePermission">
             <file>removePermission.xml</file>
+            <displayName>Remove Permission</displayName>
             <description>Revokes any permissions in the queue policy</description>
         </component>
     </subComponents>

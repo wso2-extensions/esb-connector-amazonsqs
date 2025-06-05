@@ -17,6 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.permission;
 
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -24,10 +25,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.RemovePermissionRequest;
 import software.amazon.awssdk.services.sqs.model.RemovePermissionResponse;
@@ -36,10 +37,11 @@ import software.amazon.awssdk.services.sqs.model.SqsException;
 /**
  * Implements remove permission operation.
  */
-public class RemovePermission extends AbstractConnector {
+public class RemovePermission extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -58,10 +60,11 @@ public class RemovePermission extends AbstractConnector {
             }
             RemovePermissionResponse removePermissionResponse = sqsConnection.getSqsClient().
                     removePermission(deleteQueueRequest.build());
-            Utils.add200ResponseWithOutBody(removePermissionResponse.responseMetadata(), messageContext,
-                    "RemovePermissionResponse");
+            JsonObject resultJson = Utils.createResponseMetaDataElement(removePermissionResponse.responseMetadata());
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJson, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);

@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "ChangeMessageVisibilityBatch Response Schema",
+  "description": "Output schema for changeMessageVisibilityBatch operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "ChangeMessageVisibilityBatchResult": {
+          "type": "object",
+          "properties": {
+            "Successful": {
+              "type": "array",
+              "description": "Array of successfully processed entries",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string",
+                    "description": "The user-specified ID of the message"
+                  }
+                },
+                "required": ["Id"]
+              }
+            },
+            "Failed": {
+              "type": "array",
+              "description": "Array of failed visibility change entries",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string",
+                    "description": "The user-specified ID of the message"
+                  },
+                  "SenderFault": {
+                    "type": "boolean",
+                    "description": "Whether the error happened due to the sender's fault"
+                  },
+                  "Code": {
+                    "type": "string",
+                    "description": "Error code"
+                  },
+                  "Message": {
+                    "type": "string",
+                    "description": "Error message"
+                  }
+                },
+                "required": ["Id", "SenderFault", "Code"]
+              }
+            }
+          },
+          "required": ["Successful", "Failed"]
+        }
+      },
+      "required": ["ResponseMetadata", "ChangeMessageVisibilityBatchResult"]
+    }
+  },
+  "required": ["payload"]
+}

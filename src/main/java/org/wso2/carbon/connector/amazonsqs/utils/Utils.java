@@ -17,40 +17,33 @@
  */
 package org.wso2.carbon.connector.amazonsqs.utils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
-import org.apache.synapse.commons.json.JsonBuilder;
-import org.apache.synapse.commons.json.JsonFormatter;
-import org.apache.synapse.commons.json.JsonUtil;
-import org.apache.synapse.core.axis2.Axis2MessageContext;
-import org.apache.synapse.transport.passthru.PassThroughConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
 import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.awscore.AwsRequestOverrideConfiguration;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.services.sqs.endpoints.internal.Value;
 import software.amazon.awssdk.services.sqs.model.BatchResultErrorEntry;
 import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
-import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
 import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeNameForSends;
 import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeValue;
 import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
 import software.amazon.awssdk.services.sqs.model.SqsResponseMetadata;
 
 import javax.xml.stream.XMLStreamException;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -108,47 +101,45 @@ public class Utils {
         }
     }
 
-    public static void add200ResponseWithOutBody(SqsResponseMetadata responseMetadata,
-                                                 MessageContext messageContext, String parentElementName) {
-        OMElement resultElement = Utils.createOMElement(parentElementName, null);
-        createResponseMetaDataElement(responseMetadata, messageContext, resultElement);
-        setStatusCode(messageContext, "200");
+    public static JsonObject generateSuccessJsonResponse(SqsResponseMetadata responseMetadata) {
+        JsonObject result = createResponseMetaDataElement(responseMetadata);
+        result.addProperty("success", true);
+        return result;
     }
 
-    public static void createResponseMetaDataElement(SqsResponseMetadata responseMetadata,
-                                                     MessageContext messageContext, OMElement resultElement) {
+    /**
+     * Generates a JSON object representing the operation result
+     *
+     * @param responseMetadata     The file operation result
+     * @return JsonObject containing the operation results
+     */
+    public static JsonObject createResponseMetaDataElement(SqsResponseMetadata responseMetadata) {
+        // Create a new JSON payload
+        JsonObject resultJson = new JsonObject();
 
-        OMElement responseMetadataElement = Utils.createOMElement("ResponseMetadata", null);
-        responseMetadataElement.addChild(Utils.createOMElement("RequestId", responseMetadata.requestId()));
-        resultElement.addChild(responseMetadataElement);
-        SOAPBody soapBody = messageContext.getEnvelope().getBody();
-        JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
-        ((Axis2MessageContext) messageContext).getAxis2MessageContext().
-                removeProperty(PassThroughConstants.NO_ENTITY_BODY);
-        soapBody.addChild(resultElement);
+        // Add the response metadata to the JSON payload
+        JsonObject responseMetadataJson = new JsonObject();
+        responseMetadataJson.addProperty(Constants.REQUEST_ID, responseMetadata.requestId());
+        resultJson.add(Constants.RESPONSE_METADATA, responseMetadataJson);
+        return resultJson;
     }
 
-    public static void addErrorResponse(MessageContext messageContext, AwsServiceException e) {
-        OMElement resultElement = Utils.createOMElement("ErrorResponse", null);
-        OMElement error = Utils.createOMElement("Error", null);
-        error.addChild(Utils.createOMElement("Type", e.awsErrorDetails().serviceName()));
-        error.addChild(Utils.createOMElement("Code", e.awsErrorDetails().errorCode()));
-        error.addChild(Utils.createOMElement("Message", e.awsErrorDetails().errorMessage()));
-        error.addChild(Utils.createOMElement("Detail", null));
-        resultElement.addChild(error);
-        resultElement.addChild(Utils.createOMElement("RequestId", e.requestId()));
-        SOAPBody soapBody = messageContext.getEnvelope().getBody();
-        JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
-        ((Axis2MessageContext) messageContext).getAxis2MessageContext().
-                removeProperty(PassThroughConstants.NO_ENTITY_BODY);
-        soapBody.addChild(resultElement);
-        setStatusCode(messageContext, String.valueOf(e.statusCode()));
-    }
+    public static JsonObject generateErrorResponse(AwsServiceException e) {
+        // Create error JSON structure
+        JsonObject resultJson = new JsonObject();
+        JsonObject errorJson = new JsonObject();
 
-    public static void setStatusCode(MessageContext messageContext, String statusCode) {
-        org.apache.axis2.context.MessageContext axis2MessageCtx = ((Axis2MessageContext) messageContext).
-                getAxis2MessageContext();
-        axis2MessageCtx.setProperty(Constants.STATUS_CODE, statusCode);
+        // Add error details
+        errorJson.addProperty(Constants.TYPE, e.awsErrorDetails().serviceName());
+        errorJson.addProperty(Constants.CODE, e.awsErrorDetails().errorCode());
+        errorJson.addProperty(Constants.MESSAGE, e.awsErrorDetails().errorMessage());
+
+        // Add error and request ID to main response
+        resultJson.add(Constants.ERROR, errorJson);
+        resultJson.addProperty(Constants.REQUEST_ID, e.requestId());
+        resultJson.addProperty(Constants.SUCCESS, false);
+
+        return resultJson;
     }
 
     public static Map<String, MessageAttributeValue> addMessageAttributes(String messageAttributes) throws JSONException {
@@ -158,7 +149,7 @@ public class Utils {
         while (keys.hasNext()) {
             String key = (String) keys.next();
             JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
-            Set keySet = messageAttributeInJson.keySet();
+            Set<String> keySet = messageAttributeInJson.keySet();
             MessageAttributeValue.Builder messageAttributeValueBuilder = MessageAttributeValue.builder();
 
             if (keySet.contains(Constants.DATA_TYPE)) {
@@ -205,7 +196,7 @@ public class Utils {
         while (keys.hasNext()) {
             String key = (String) keys.next();
             JSONObject messageAttributeInJson = (JSONObject) messageAttributesInJson.get(key);
-            Set keySet = messageAttributeInJson.keySet();
+            Set<String> keySet = messageAttributeInJson.keySet();
             MessageSystemAttributeValue.Builder messageSystemAttributeValue = MessageSystemAttributeValue.builder();
             if (keySet.contains(Constants.DATA_TYPE)) {
                 messageSystemAttributeValue.dataType(messageAttributeInJson.get(Constants.DATA_TYPE).toString());
@@ -316,16 +307,29 @@ public class Utils {
         return attributeMap;
     }
 
+    public static JsonArray createBatchResultErrorEntryJsonArray(List<BatchResultErrorEntry> failedResponse) {
+        JsonArray errorArray = new JsonArray();
+        for (BatchResultErrorEntry entry : failedResponse) {
+            JsonObject errorEntry = new JsonObject();
+            errorEntry.addProperty(Constants.ID_KEY, entry.id());
+            errorEntry.addProperty(Constants.CODE, entry.code());
+            errorEntry.addProperty(Constants.MESSAGE, entry.message());
+            errorEntry.addProperty(Constants.SENDER_FAULT, entry.senderFault());
+            errorArray.add(errorEntry);
+        }
+        return errorArray;
+    }
+
     public static void createBatchResultErrorEntryResponse(List<BatchResultErrorEntry> failedResponse,
                                                            OMElement batchResultElement) {
         for (
                 BatchResultErrorEntry entry : failedResponse) {
-            OMElement batchResultEntryElement = Utils.createOMElement("BatchResultErrorEntry ",
+            OMElement batchResultEntryElement = Utils.createOMElement(Constants.BATCH_RESULT_ERROR_ENTRY,
                     null);
             batchResultEntryElement.addChild(Utils.createOMElement(Constants.ID_KEY, entry.id()));
-            batchResultEntryElement.addChild(Utils.createOMElement("Code", entry.code()));
-            batchResultEntryElement.addChild(Utils.createOMElement("MESSAGE", entry.message()));
-            batchResultEntryElement.addChild(Utils.createOMElement("SenderFault",
+            batchResultEntryElement.addChild(Utils.createOMElement(Constants.CODE, entry.code()));
+            batchResultEntryElement.addChild(Utils.createOMElement(Constants.MESSAGE, entry.message()));
+            batchResultEntryElement.addChild(Utils.createOMElement(Constants.SENDER_FAULT,
                     entry.senderFault()));
             batchResultElement.addChild(batchResultEntryElement);
         }

@@ -45,7 +45,7 @@ public class Constants {
     /**
      * Constant for status code.
      */
-    public static final String STATUS_CODE = "HTTP_SC";
+    public static final String STATUS_CODE = "statusCode";
 
     /**
      * Constant for Region.
@@ -108,8 +108,6 @@ public class Constants {
      */
     public static final String BINARY_LIST_VALUES = "BinaryListValues";
 
-    public static final String MESSAGE_ATTRIBUTE = "MessageAttribute";
-    public static final String BINARY = "Binary";
     public static final String STRING = "String";
     public static final String NAME = "Name";
     public static final String VALUE = "Value";
@@ -175,5 +173,35 @@ public class Constants {
     public static final String AWS_ACCOUNT_NUMBERS = "awsAccountNumbers";
     public static final String MD5_OF_MESSAGE_BODY = "MD5OfMessageBody";
     public static final String MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES = "MD5OfMessageSystemAttributes";
+
+    // AWS API Response Field Names
+    public static final String NEXT_TOKEN_KEY = "NextToken";
+    public static final String QUEUE_URLS = "QueueUrls";
+    public static final String LIST_DEAD_LETTER_SOURCE_QUEUES_RESULT = "ListDeadLetterSourceQueuesResult";
+    public static final String GET_QUEUE_URL_RESULT = "GetQueueUrlResult";
+    public static final String SEND_MESSAGE_RESULT = "SendMessageResult";
+    public static final String RECEIVE_MESSAGE_RESULT = "ReceiveMessageResult";
+    public static final String MESSAGES = "Messages";
+    public static final String LIST_QUEUES_RESULT = "ListQueuesResult";
+    public static final String CREATE_QUEUE_RESULT = "CreateQueueResult";
+    public static final String GET_QUEUE_ATTRIBUTES_RESULT = "GetQueueAttributesResult";
+    public static final String SEND_MESSAGE_BATCH_RESULT = "SendMessageBatchResult";
+    public static final String DELETE_MESSAGE_BATCH_RESULT = "DeleteMessageBatchResult";
+    public static final String CHANGE_MESSAGE_VISIBILITY_BATCH_RESULT = "ChangeMessageVisibilityBatchResult";
+    public static final String SUCCESSFUL = "Successful";
+    public static final String FAILED = "Failed";
+    public static final String ALL = "All";
+
+    // AWS Response Metadata Field Names
+    public static final String REQUEST_ID = "RequestId";
+    public static final String RESPONSE_METADATA = "ResponseMetadata";
+
+    // AWS Error Response Field Names
+    public static final String ERROR = "Error";
+    public static final String TYPE = "Type";
+    public static final String CODE = "Code";
+    public static final String SUCCESS = "success";
+    public static final String SENDER_FAULT = "SenderFault";
+    public static final String BATCH_RESULT_ERROR_ENTRY = "BatchResultErrorEntry";
 
 }

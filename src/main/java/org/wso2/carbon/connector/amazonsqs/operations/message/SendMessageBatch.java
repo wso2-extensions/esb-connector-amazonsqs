@@ -171,6 +171,7 @@ public class SendMessageBatch extends AbstractConnectorOperation {
         sendMessageBatchResult.add(Constants.FAILED, failedArray);
 
         resultJson.add(Constants.SEND_MESSAGE_BATCH_RESULT, sendMessageBatchResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
 
         return resultJson;
     }

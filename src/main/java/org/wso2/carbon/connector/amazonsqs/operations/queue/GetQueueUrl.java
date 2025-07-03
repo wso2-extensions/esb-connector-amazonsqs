@@ -88,6 +88,7 @@ public class GetQueueUrl extends AbstractConnectorOperation {
         getQueueUrlResult.addProperty(Constants.QUEUE_URL_KEY, getQueueUrlResponse.queueUrl());
 
         resultJson.add(Constants.GET_QUEUE_URL_RESULT, getQueueUrlResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
         return resultJson;
     }
 }

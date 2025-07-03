@@ -205,7 +205,9 @@ public class ReceiveMessage extends AbstractConnectorOperation {
         
         receiveMessageResult.add(Constants.MESSAGES, messagesArray);
         resultJson.add(Constants.RECEIVE_MESSAGE_RESULT, receiveMessageResult);
-        
+        resultJson.addProperty(Constants.SUCCESS, true);
+
+        // Add response metadata
         return resultJson;
     }
 }

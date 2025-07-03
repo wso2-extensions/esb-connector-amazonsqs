@@ -20,9 +20,13 @@
         "AddPermissionResult": {
           "type": "object",
           "description": "Empty result object for successful permission addition"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "AddPermissionResult"]
+      "required": ["ResponseMetadata", "AddPermissionResult", "success"]
     }
   },
   "required": ["payload"]

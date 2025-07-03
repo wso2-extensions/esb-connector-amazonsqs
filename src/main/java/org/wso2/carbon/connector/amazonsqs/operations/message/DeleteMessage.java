@@ -85,6 +85,7 @@ public class DeleteMessage extends AbstractConnectorOperation {
     private JsonObject createDeleteMessageJsonResponse(DeleteMessageResponse deleteMessageResponse) {
         JsonObject resultJson = Utils.createResponseMetaDataElement(deleteMessageResponse.responseMetadata());
         // DeleteMessage has no specific result data, just response metadata
+        resultJson.addProperty(Constants.SUCCESS, true);
         return resultJson;
     }
 }

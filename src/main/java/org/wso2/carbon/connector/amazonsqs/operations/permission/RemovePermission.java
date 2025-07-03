@@ -61,6 +61,7 @@ public class RemovePermission extends AbstractConnectorOperation {
             RemovePermissionResponse removePermissionResponse = sqsConnection.getSqsClient().
                     removePermission(deleteQueueRequest.build());
             JsonObject resultJson = Utils.createResponseMetaDataElement(removePermissionResponse.responseMetadata());
+            resultJson.addProperty(Constants.SUCCESS, true);
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJson, null, null);
         } catch (SqsException e) {
             JsonObject errResult = Utils.generateErrorResponse(e);

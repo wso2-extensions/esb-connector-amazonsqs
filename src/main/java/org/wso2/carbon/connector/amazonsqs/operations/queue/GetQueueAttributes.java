@@ -109,6 +109,7 @@ public class GetQueueAttributes extends AbstractConnectorOperation  {
         
         getQueueAttributesResult.add(Constants.ATTRIBUTES, attributesArray);
         resultJson.add(Constants.GET_QUEUE_ATTRIBUTES_RESULT, getQueueAttributesResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
         
         return resultJson;
     }

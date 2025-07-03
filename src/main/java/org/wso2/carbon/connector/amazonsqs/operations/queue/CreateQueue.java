@@ -96,6 +96,7 @@ public class CreateQueue extends AbstractConnectorOperation {
         createQueueResult.addProperty(Constants.QUEUE_URL_KEY, createQueueResponse.queueUrl());
 
         resultJson.add(Constants.CREATE_QUEUE_RESULT, createQueueResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
 
         return resultJson;
     }

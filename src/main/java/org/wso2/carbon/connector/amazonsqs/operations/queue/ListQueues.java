@@ -109,6 +109,7 @@ public class ListQueues extends AbstractConnectorOperation {
         }
 
         resultJson.add(Constants.LIST_QUEUES_RESULT, listQueuesResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
 
         return resultJson;
     }

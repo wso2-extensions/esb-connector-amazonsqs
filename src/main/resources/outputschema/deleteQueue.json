@@ -20,9 +20,13 @@
         "DeleteQueueResult": {
           "type": "object",
           "description": "Empty result object for successful deletion"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "DeleteQueueResult"]
+      "required": ["ResponseMetadata", "DeleteQueueResult", "success"]
     }
   },
   "required": ["payload"]

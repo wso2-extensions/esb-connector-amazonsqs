@@ -142,6 +142,7 @@ public class ChangeMessageVisibilityBatch extends AbstractConnectorOperation {
         changeMessageVisibilityBatchResult.add(Constants.FAILED, failedArray);
 
         resultJson.add(Constants.CHANGE_MESSAGE_VISIBILITY_BATCH_RESULT, changeMessageVisibilityBatchResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
 
         return resultJson;
     }

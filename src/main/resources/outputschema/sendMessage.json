@@ -42,9 +42,13 @@
             }
           },
           "required": ["MessageId", "MD5OfMessageBody"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "SendMessageResult"]
+      "required": ["ResponseMetadata", "SendMessageResult", "success"]
     }
   },
   "required": ["payload"]

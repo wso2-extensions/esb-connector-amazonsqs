@@ -34,9 +34,13 @@
             }
           },
           "required": ["QueueUrls"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "ListDeadLetterSourceQueuesResult"]
+      "required": ["ResponseMetadata", "ListDeadLetterSourceQueuesResult", "success"]
     }
   },
   "required": ["payload"]

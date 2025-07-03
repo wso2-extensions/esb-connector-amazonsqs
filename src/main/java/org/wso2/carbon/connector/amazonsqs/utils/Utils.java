@@ -103,7 +103,7 @@ public class Utils {
 
     public static JsonObject generateSuccessJsonResponse(SqsResponseMetadata responseMetadata) {
         JsonObject result = createResponseMetaDataElement(responseMetadata);
-        result.addProperty("success", true);
+        result.addProperty(Constants.SUCCESS, true);
         return result;
     }
 

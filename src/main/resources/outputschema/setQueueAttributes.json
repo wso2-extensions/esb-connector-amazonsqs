@@ -20,9 +20,13 @@
         "SetQueueAttributesResult": {
           "type": "object",
           "description": "Empty result object for successful attribute setting"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "SetQueueAttributesResult"]
+      "required": ["ResponseMetadata", "SetQueueAttributesResult", "success"]
     }
   },
   "required": ["payload"]

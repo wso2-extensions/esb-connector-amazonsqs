@@ -20,9 +20,13 @@
         "ChangeMessageVisibilityResult": {
           "type": "object",
           "description": "Empty result object for successful visibility change"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "ChangeMessageVisibilityResult"]
+      "required": ["ResponseMetadata", "ChangeMessageVisibilityResult", "success"]
     }
   },
   "required": ["payload"]

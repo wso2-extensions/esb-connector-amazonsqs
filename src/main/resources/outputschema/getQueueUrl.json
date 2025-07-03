@@ -26,9 +26,13 @@
             }
           },
           "required": ["QueueUrl"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "GetQueueUrlResult"]
+      "required": ["ResponseMetadata", "GetQueueUrlResult", "success"]
     }
   },
   "required": ["payload"]

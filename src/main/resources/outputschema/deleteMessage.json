@@ -20,9 +20,13 @@
         "DeleteMessageResult": {
           "type": "object",
           "description": "Empty result object for successful deletion"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "DeleteMessageResult"]
+      "required": ["ResponseMetadata", "DeleteMessageResult", "success"]
     }
   },
   "required": ["payload"]

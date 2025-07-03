@@ -109,6 +109,8 @@ public class ListDeadLetterSourceQueues extends AbstractConnectorOperation {
         }
 
         resultJson.add(Constants.LIST_DEAD_LETTER_SOURCE_QUEUES_RESULT, listDeadLetterSourceQueuesResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+
         return resultJson;
     }
 }

@@ -82,9 +82,13 @@
             }
           },
           "required": ["Successful", "Failed"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "SendMessageBatchResult"]
+      "required": ["ResponseMetadata", "SendMessageBatchResult", "success"]
     }
   },
   "required": ["payload"]

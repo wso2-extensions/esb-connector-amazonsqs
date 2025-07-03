@@ -20,9 +20,13 @@
         "PurgeQueueResult": {
           "type": "object",
           "description": "Empty result object for successful purge"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "PurgeQueueResult"]
+      "required": ["ResponseMetadata", "PurgeQueueResult", "success"]
     }
   },
   "required": ["payload"]

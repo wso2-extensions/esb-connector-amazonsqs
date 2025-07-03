@@ -40,9 +40,13 @@
             }
           },
           "required": ["Attributes"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "GetQueueAttributesResult"]
+      "required": ["ResponseMetadata", "GetQueueAttributesResult", "success"]
     }
   },
   "required": ["payload"]

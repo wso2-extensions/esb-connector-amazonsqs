@@ -126,6 +126,8 @@ public class SendMessage extends AbstractConnectorOperation {
         }
 
         resultJson.add(Constants.SEND_MESSAGE_RESULT, sendMessageResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+
         return resultJson;
     }
 }

@@ -136,6 +136,7 @@ public class DeleteMessageBatch extends AbstractConnectorOperation {
         deleteMessageBatchResult.add(Constants.FAILED, failedArray);
 
         resultJson.add(Constants.DELETE_MESSAGE_BATCH_RESULT, deleteMessageBatchResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
 
         return resultJson;
     }

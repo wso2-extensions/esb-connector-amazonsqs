@@ -16,9 +16,17 @@
             }
           },
           "required": ["RequestId"]
+        },
+        "RemovePermissionResult": {
+          "type": "object",
+          "description": "Empty result object for successful permission removal"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "RemovePermissionResult"]
+      "required": ["ResponseMetadata", "RemovePermissionResult", "success"]
     }
   },
   "required": ["payload"]

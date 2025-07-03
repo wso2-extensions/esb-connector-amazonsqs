@@ -100,9 +100,13 @@
             }
           },
           "required": ["Messages"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
         }
       },
-      "required": ["ResponseMetadata", "ReceiveMessageResult"]
+      "required": ["ResponseMetadata", "ReceiveMessageResult", "success"]
     }
   },
   "required": ["payload"]

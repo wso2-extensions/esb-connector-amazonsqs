@@ -88,6 +88,7 @@ public class ChangeMessageVisibility extends AbstractConnectorOperation {
     private JsonObject createChangeMessageVisibilityJsonResponse(ChangeMessageVisibilityResponse response) {
         JsonObject resultJson = Utils.createResponseMetaDataElement(response.responseMetadata());
         // ChangeMessageVisibility has no specific result data, just response metadata
+        resultJson.addProperty(Constants.SUCCESS, true);
         return resultJson;
     }
 }

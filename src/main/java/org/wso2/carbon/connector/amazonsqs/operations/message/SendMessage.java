@@ -17,7 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.message;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,10 +25,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
@@ -37,10 +37,11 @@ import software.amazon.awssdk.services.sqs.model.SqsException;
 /**
  * Implements send message operation.
  */
-public class SendMessage extends AbstractConnector {
+public class SendMessage extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -86,9 +87,12 @@ public class SendMessage extends AbstractConnector {
                 sendMessageBuilder.overrideConfiguration(
                         Utils.getOverrideConfiguration(apiCallTimeout, apiCallAttemptTimeout).build());
             }
-            createResponse(sqsConnection.getSqsClient().sendMessage(sendMessageBuilder.build()), messageContext);
+            SendMessageResponse sendMessageResponse = sqsConnection.getSqsClient().sendMessage(sendMessageBuilder.build());
+            JsonObject resultJSON = createSendMessageJsonResponse(sendMessageResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -104,22 +108,26 @@ public class SendMessage extends AbstractConnector {
         }
     }
 
-    private void createResponse(SendMessageResponse sendMessageResponse, MessageContext messageContext) {
-        OMElement resultElement = Utils.createOMElement("SendMessageResponse", null);
-        OMElement result = Utils.createOMElement("SendMessageResult", null);
-        result.addChild(Utils.createOMElement(Constants.MESSAGE_ID, sendMessageResponse.messageId()));
-        result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_BODY, sendMessageResponse.md5OfMessageBody()));
-        String md5OfMessageAttributes = sendMessageResponse.md5OfMessageAttributes();
-        if (StringUtils.isNotBlank(md5OfMessageAttributes)) {
-            result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_ATTRIBUTES, md5OfMessageAttributes));
+    private JsonObject createSendMessageJsonResponse(SendMessageResponse sendMessageResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(sendMessageResponse.responseMetadata());
+
+        JsonObject sendMessageResult = new JsonObject();
+        sendMessageResult.addProperty(Constants.MESSAGE_ID, sendMessageResponse.messageId());
+        sendMessageResult.addProperty(Constants.MD5_OF_MESSAGE_BODY, sendMessageResponse.md5OfMessageBody());
+        
+        if (sendMessageResponse.md5OfMessageAttributes() != null) {
+            sendMessageResult.addProperty(Constants.MD5_OF_MESSAGE_ATTRIBUTES, sendMessageResponse.md5OfMessageAttributes());
         }
-        String md5OfMessageSystemAttributes = sendMessageResponse.md5OfMessageSystemAttributes();
-        if (StringUtils.isNotBlank(md5OfMessageSystemAttributes)) {
-            result.addChild(Utils.createOMElement(Constants.MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES,
-                    md5OfMessageSystemAttributes));
+        if (sendMessageResponse.md5OfMessageSystemAttributes() != null) {
+            sendMessageResult.addProperty(Constants.MD5_OF_MESSAGE_SYSTEM_ATTRIBUTES, sendMessageResponse.md5OfMessageSystemAttributes());
         }
-        resultElement.addChild(result);
-        Utils.createResponseMetaDataElement(sendMessageResponse.responseMetadata(), messageContext, resultElement);
-        Utils.setStatusCode(messageContext, "200");
+        if (sendMessageResponse.sequenceNumber() != null) {
+            sendMessageResult.addProperty(Constants.SEQUENCE_NUMBER, sendMessageResponse.sequenceNumber());
+        }
+
+        resultJson.add(Constants.SEND_MESSAGE_RESULT, sendMessageResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+
+        return resultJson;
     }
 }

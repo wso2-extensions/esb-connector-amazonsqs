@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "ListQueues Response Schema",
+  "description": "Output schema for listQueues operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "ListQueuesResult": {
+          "type": "object",
+          "properties": {
+            "QueueUrls": {
+              "type": "array",
+              "description": "Array of queue URLs",
+              "items": {
+                "type": "string",
+                "description": "Queue URL"
+              }
+            },
+            "NextToken": {
+              "type": "string",
+              "description": "Token for pagination (optional)"
+            }
+          },
+          "required": ["QueueUrls"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "ListQueuesResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

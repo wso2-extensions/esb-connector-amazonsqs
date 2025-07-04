@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "DeleteQueue Response Schema",
+  "description": "Output schema for deleteQueue operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "DeleteQueueResult": {
+          "type": "object",
+          "description": "Empty result object for successful deletion"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "DeleteQueueResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

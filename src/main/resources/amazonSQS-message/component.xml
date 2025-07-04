@@ -16,34 +16,41 @@
  ~  specific language governing permissions and limitations
  ~  under the License.
 -->
-<component name="amazonSQS-message" type="synapse/template">
+<component name="amazonSQS-message" type="synapse/template" displayName="Messages">
     <subComponents>
         <component name="sendMessage">
             <file>sendMessage.xml</file>
+            <displayName>Send Message</displayName>
             <description>Delivers a message to the specified queue</description>
         </component>
         <component name="sendMessageBatch">
             <file>sendMessageBatch.xml</file>
+            <displayName>Send Message Batch</displayName>
             <description>Delivers batch messages to the specified queue</description>
         </component>
         <component name="receiveMessage">
             <file>receiveMessage.xml</file>
+            <displayName>Receive Message</displayName>
             <description>Retrieves one or more messages from the specified queue</description>
         </component>
         <component name="changeMessageVisibility">
             <file>changeMessageVisibility.xml</file>
+            <displayName>Change Message Visibility</displayName>
             <description>Changes the visibility timeout of a specified message in a queue</description>
         </component>
         <component name="changeMessageVisibilityBatch">
             <file>changeMessageVisibilityBatch.xml</file>
+            <displayName>Change Message Visibility Batch</displayName>
             <description>Changes the visibility timeout of multiple messages</description>
         </component>
         <component name="deleteMessage">
             <file>deleteMessage.xml</file>
+            <displayName>Delete Message</displayName>
             <description>Deletes the specified message from the specified queue</description>
         </component>
         <component name="deleteMessageBatch">
             <file>deleteMessageBatch.xml</file>
+            <displayName>Delete Message Batch</displayName>
             <description>Deletes multiple messages from the specified queue</description>
         </component>
     </subComponents>

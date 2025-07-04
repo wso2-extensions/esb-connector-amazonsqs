@@ -17,7 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.queue;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,28 +25,23 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
-import software.amazon.awssdk.awscore.AwsRequestOverrideConfiguration;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
 import software.amazon.awssdk.services.sqs.model.CreateQueueResponse;
-import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
 import software.amazon.awssdk.services.sqs.model.SqsException;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Implements create queue operation.
  */
-public class CreateQueue extends AbstractConnector {
+public class CreateQueue extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -73,12 +68,11 @@ public class CreateQueue extends AbstractConnector {
             }
             CreateQueueResponse createQueueResponse = sqsConnection.getSqsClient().
                     createQueue(createQueueRequest.build());
-            OMElement resultElement = Utils.createOMElement("CreateQueueResponse", null);
-            resultElement.addChild(Utils.createOMElement("CreateQueueResult",
-                    Utils.createOMElement(Constants.QUEUE_URL_KEY, createQueueResponse.queueUrl())));
-            Utils.createResponseMetaDataElement(createQueueResponse.responseMetadata(), messageContext, resultElement);
+            JsonObject resultJSON = createCreateQueueJsonResponse(createQueueResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -93,5 +87,17 @@ public class CreateQueue extends AbstractConnector {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createCreateQueueJsonResponse(CreateQueueResponse createQueueResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(createQueueResponse.responseMetadata());
+
+        JsonObject createQueueResult = new JsonObject();
+        createQueueResult.addProperty(Constants.QUEUE_URL_KEY, createQueueResponse.queueUrl());
+
+        resultJson.add(Constants.CREATE_QUEUE_RESULT, createQueueResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+
+        return resultJson;
     }
 }

@@ -17,7 +17,7 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.queue;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,10 +25,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
@@ -37,10 +37,11 @@ import software.amazon.awssdk.services.sqs.model.SqsException;
 /**
  * Implements get URL of queue operation.
  */
-public class GetQueueUrl extends AbstractConnector {
+public class GetQueueUrl extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -59,12 +60,11 @@ public class GetQueueUrl extends AbstractConnector {
             }
             GetQueueUrlResponse getQueueUrlResponse = sqsConnection.getSqsClient().
                     getQueueUrl(getQueueUrlRequestBuilder.build());
-            OMElement resultElement = Utils.createOMElement("GetQueueUrlResponse", null);
-            resultElement.addChild(Utils.createOMElement("GetQueueUrlResult",
-                    Utils.createOMElement(Constants.QUEUE_URL_KEY, getQueueUrlResponse.queueUrl())));
-            Utils.createResponseMetaDataElement(getQueueUrlResponse.responseMetadata(), messageContext, resultElement);
+            JsonObject resultJSON = createGetQueueUrlJsonResponse(getQueueUrlResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -79,5 +79,16 @@ public class GetQueueUrl extends AbstractConnector {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createGetQueueUrlJsonResponse(GetQueueUrlResponse getQueueUrlResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(getQueueUrlResponse.responseMetadata());
+
+        JsonObject getQueueUrlResult = new JsonObject();
+        getQueueUrlResult.addProperty(Constants.QUEUE_URL_KEY, getQueueUrlResponse.queueUrl());
+
+        resultJson.add(Constants.GET_QUEUE_URL_RESULT, getQueueUrlResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+        return resultJson;
     }
 }

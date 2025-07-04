@@ -17,7 +17,8 @@
  */
 package org.wso2.carbon.connector.amazonsqs.operations.queue;
 
-import org.apache.axiom.om.OMElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.amazonsqs.connection.SqsConnection;
@@ -25,10 +26,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnectorOperation;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sqs.model.ListQueuesRequest;
 import software.amazon.awssdk.services.sqs.model.ListQueuesResponse;
@@ -37,10 +38,11 @@ import software.amazon.awssdk.services.sqs.model.SqsException;
 /**
  * Implements list queues operation.
  */
-public class ListQueues extends AbstractConnector {
+public class ListQueues extends AbstractConnectorOperation {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws ConnectException {
         try {
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             SqsConnection sqsConnection = (SqsConnection) handler
@@ -70,16 +72,11 @@ public class ListQueues extends AbstractConnector {
             ListQueuesResponse listQueueUrlResponse = sqsConnection.getSqsClient().
                     listQueues(listQueuesRequestBuilder.build());
 
-            OMElement resultElement = Utils.createOMElement("ListQueuesResponse", null);
-            OMElement listQueuesResult =  Utils.createOMElement("ListQueuesResult", null);
-
-            for (String url : listQueueUrlResponse.queueUrls()) {
-                listQueuesResult.addChild(Utils.createOMElement(Constants.QUEUE_URL_KEY, url));
-            }
-            resultElement.addChild(listQueuesResult);
-            Utils.createResponseMetaDataElement(listQueueUrlResponse.responseMetadata(), messageContext, resultElement);
+            JsonObject resultJSON = createListQueuesJsonResponse(listQueueUrlResponse);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, resultJSON, null, null);
         } catch (SqsException e) {
-            Utils.addErrorResponse(messageContext, e);
+            JsonObject errResult = Utils.generateErrorResponse(e);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, errResult, null, null);
         } catch (SdkClientException e) {
             Utils.setErrorPropertiesToMessage(messageContext, Error.CLIENT_SDK_ERROR, e.getMessage());
             handleException(Constants.CLIENT_EXCEPTION_MSG, e, messageContext);
@@ -94,5 +91,26 @@ public class ListQueues extends AbstractConnector {
             Utils.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(Constants.GENERAL_ERROR_MSG + e.getMessage(), messageContext);
         }
+    }
+
+    private JsonObject createListQueuesJsonResponse(ListQueuesResponse listQueuesResponse) {
+        JsonObject resultJson = Utils.createResponseMetaDataElement(listQueuesResponse.responseMetadata());
+
+        JsonObject listQueuesResult = new JsonObject();
+        JsonArray queueUrlsArray = new JsonArray();
+
+        for (String url : listQueuesResponse.queueUrls()) {
+            queueUrlsArray.add(url);
+        }
+
+        listQueuesResult.add(Constants.QUEUE_URLS, queueUrlsArray);
+        if (listQueuesResponse.nextToken() != null) {
+            listQueuesResult.addProperty(Constants.NEXT_TOKEN_KEY, listQueuesResponse.nextToken());
+        }
+
+        resultJson.add(Constants.LIST_QUEUES_RESULT, listQueuesResult);
+        resultJson.addProperty(Constants.SUCCESS, true);
+
+        return resultJson;
     }
 }

@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "ReceiveMessage Response Schema",
+  "description": "Output schema for receiveMessage operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "ReceiveMessageResult": {
+          "type": "object",
+          "properties": {
+            "Messages": {
+              "type": "array",
+              "description": "Array of received messages",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "MessageId": {
+                    "type": "string",
+                    "description": "The unique identifier for the message"
+                  },
+                  "ReceiptHandle": {
+                    "type": "string",
+                    "description": "The receipt handle for the message"
+                  },
+                  "MD5OfBody": {
+                    "type": "string",
+                    "description": "The MD5 digest of the message body"
+                  },
+                  "Body": {
+                    "type": "string",
+                    "description": "The message body"
+                  },
+                  "MessageAttributes": {
+                    "type": "array",
+                    "description": "Message attributes",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "Name": {
+                          "type": "string"
+                        },
+                        "Value": {
+                          "type": "object",
+                          "properties": {
+                            "StringValue": {
+                              "type": "string"
+                            },
+                            "BinaryValue": {
+                              "type": "string"
+                            },
+                            "StringListValues": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "BinaryListValues": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "DataType": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Attributes": {
+                    "type": "array",
+                    "description": "System attributes",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "Name": {
+                          "type": "string"
+                        },
+                        "Value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": ["Messages"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "ReceiveMessageResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

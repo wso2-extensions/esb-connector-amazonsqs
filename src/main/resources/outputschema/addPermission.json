@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "AddPermission Response Schema",
+  "description": "Output schema for addPermission operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "AddPermissionResult": {
+          "type": "object",
+          "description": "Empty result object for successful permission addition"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "AddPermissionResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

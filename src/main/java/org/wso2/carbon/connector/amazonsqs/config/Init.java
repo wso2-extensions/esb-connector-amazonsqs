@@ -27,10 +27,10 @@ import org.wso2.carbon.connector.amazonsqs.constants.Constants;
 import org.wso2.carbon.connector.amazonsqs.exception.SqsInvalidConfigurationException;
 import org.wso2.carbon.connector.amazonsqs.utils.Error;
 import org.wso2.carbon.connector.amazonsqs.utils.Utils;
-import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.integration.connector.core.AbstractConnector;
+import org.wso2.integration.connector.core.ConnectException;
+import org.wso2.integration.connector.core.connection.ConnectionHandler;
+import org.wso2.integration.connector.core.util.ConnectorUtils;
 
 /**
  * Initializes the AWS connection based on provided configs.

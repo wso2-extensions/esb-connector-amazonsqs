@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "CreateQueue Response Schema",
+  "description": "Output schema for createQueue operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "CreateQueueResult": {
+          "type": "object",
+          "properties": {
+            "QueueUrl": {
+              "type": "string",
+              "description": "The URL of the created queue"
+            }
+          },
+          "required": ["QueueUrl"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "CreateQueueResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

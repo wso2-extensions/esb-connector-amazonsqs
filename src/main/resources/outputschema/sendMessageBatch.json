@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "SendMessageBatch Response Schema",
+  "description": "Output schema for sendMessageBatch operation",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string",
+              "description": "The unique request ID returned by AWS"
+            }
+          },
+          "required": ["RequestId"]
+        },
+        "SendMessageBatchResult": {
+          "type": "object",
+          "properties": {
+            "Successful": {
+              "type": "array",
+              "description": "Array of successfully sent messages",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string",
+                    "description": "The user-specified ID of the message"
+                  },
+                  "MessageId": {
+                    "type": "string",
+                    "description": "The unique identifier for the message"
+                  },
+                  "MD5OfMessageBody": {
+                    "type": "string",
+                    "description": "The MD5 digest of the message body"
+                  },
+                  "MD5OfMessageAttributes": {
+                    "type": "string",
+                    "description": "The MD5 digest of the message attributes (optional)"
+                  },
+                  "MD5OfMessageSystemAttributes": {
+                    "type": "string",
+                    "description": "The MD5 digest of the message system attributes (optional)"
+                  },
+                  "SequenceNumber": {
+                    "type": "string",
+                    "description": "The sequence number for FIFO queues (optional)"
+                  }
+                },
+                "required": ["Id", "MessageId", "MD5OfMessageBody"]
+              }
+            },
+            "Failed": {
+              "type": "array",
+              "description": "Array of failed message entries",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string",
+                    "description": "The user-specified ID of the message"
+                  },
+                  "SenderFault": {
+                    "type": "boolean",
+                    "description": "Whether the error happened due to the sender's fault"
+                  },
+                  "Code": {
+                    "type": "string",
+                    "description": "Error code"
+                  },
+                  "Message": {
+                    "type": "string",
+                    "description": "Error message"
+                  }
+                },
+                "required": ["Id", "SenderFault", "Code"]
+              }
+            }
+          },
+          "required": ["Successful", "Failed"]
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        }
+      },
+      "required": ["ResponseMetadata", "SendMessageBatchResult", "success"]
+    }
+  },
+  "required": ["payload"]
+}

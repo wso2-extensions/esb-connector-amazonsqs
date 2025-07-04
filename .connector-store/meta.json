@@ -23,103 +23,1015 @@
             ],
             "operations": [
                 {
-                    "name": "init",
-                    "description": "Config operation",
-                    "isHidden": true
-                },
-                {
-                    "name": "sendMessage",
-                    "description": "Delivers a message to the specified queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "sendMessageBatch",
-                    "description": "Delivers batch messages to the specified queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "receiveMessage",
-                    "description": "Retrieves one or more messages from the specified queue",
-                    "isHidden": false
-                },
-                {
                     "name": "changeMessageVisibility",
-                    "description": "Changes the visibility timeout of a specified message in a queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "changeMessageVisibilityBatch",
-                    "description": "Changes the visibility timeout of multiple messages",
-                    "isHidden": false
-                },
-                {
-                    "name": "deleteMessage",
-                    "description": "Deletes the specified message from the specified queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "deleteMessageBatch",
-                    "description": "Deletes multiple messages from the specified queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "addPermission",
-                    "description": "Adds a permission to a queue for a specific principal which allows access sharing to the queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "removePermission",
-                    "description": "Revokes any permissions in the queue policy",
+                    "description": "Change Message Visibility",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue whose message's visibility is changed."
+                        },
+                        {
+                            "name": "receiptHandle",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The receipt handle associated with the message, whose visibility timeout is changed."
+                        },
+                        {
+                            "name": "visibilityTimeout",
+                            "type": "integerOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The new value (in seconds from 0 to 43200, which is 12 hours) for the message's visibility timeout."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
                     "name": "createQueue",
-                    "description": "Creates a new queue, or returns the URL of an existing one",
+                    "description": "Create Queue",
+                    "params": [
+                        {
+                            "name": "queueName",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The name of the queue."
+                        },
+                        {
+                            "name": "attributeEntries",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A map of attributes with their corresponding values. (e.g., {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1' }}"
+                        },
+                        {
+                            "name": "tags",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The cost allocation tags to the specified Amazon SQS queue. (e.g., {QueueType: Testing})"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
-                    "name": "getQueueAttributes",
-                    "description": "Gets attributes for the specified queue",
-                    "isHidden": false
-                },
-                {
-                    "name": "setQueueAttributes",
-                    "description": "Sets the value of one or more queue attributes",
+                    "name": "deleteMessageBatch",
+                    "description": "Delete Message Batch",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue from which messages are deleted."
+                        },
+                        {
+                            "name": "messageRequestEntries",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "A list of receipt handles for the messages to be deleted.(e.g., [{'receiptHandle': '324343434545', 'id': 'id1' }])"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
                     "name": "getQueueUrl",
-                    "description": "Returns the URL of an existing queue",
+                    "description": "Get Queue URL",
+                    "params": [
+                        {
+                            "name": "queueName",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The name of the queue."
+                        },
+                        {
+                            "name": "accountId",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The AWS account ID without hyphens of the account that created the queue."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
-                    "name": "listQueues",
-                    "description": "Returns a list of queues",
+                    "name": "getQueueAttributes",
+                    "description": "Get Queue Attributes",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue whose attribute information is retrieved."
+                        },
+                        {
+                            "name": "attributes",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A list of attributes to retrieve information for. (e.g., Policy, DelaySeconds)"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
-                    "name": "deleteQueue",
-                    "description": "Deletes the queue specified by the queue URL",
+                    "name": "removePermission",
+                    "description": "Remove Permission",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue from which permissions are removed."
+                        },
+                        {
+                            "name": "label",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The unique identification of the permission to remove"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
                     "name": "purgeQueue",
-                    "description": "Deletes the messages in a queue specified by the queue URL",
+                    "description": "Purge Queue",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to delete."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "setQueueAttributes",
+                    "description": "Set Queue Attributes",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue whose attributes are set."
+                        },
+                        {
+                            "name": "attributeEntries",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "A map of attributes to set.(e.g., {'RedrivePolicy': {'deadLetterTargetArn': 'arn:aws:sqs:us-east-1:844555590511:TestQueue', 'maxReceiveCount': 10}})"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "listQueues",
+                    "description": "List Queues",
+                    "params": [
+                        {
+                            "name": "queueNamePrefix",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A string to use for filtering the list results."
+                        },
+                        {
+                            "name": "maxResults",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Maximum number of results to include in the response."
+                        },
+                        {
+                            "name": "nextToken",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Pagination token to request the next set of results."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "deleteMessage",
+                    "description": "Delete Message",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue from which messages are deleted."
+                        },
+                        {
+                            "name": "receiptHandle",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The receipt handle associated with the message to be deleted."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "changeMessageVisibilityBatch",
+                    "description": "Change Message Visibility Batch",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue whose messages' visibility is changed."
+                        },
+                        {
+                            "name": "messageRequestEntries",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "A list of receipt handles of the messages for which the visibility timeout must be changed. (e.g., [{'receiptHandle': '123234343434454', 'id': 'id1'', 'VisibilityTimeout': 5}])"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "addPermission",
+                    "description": "Add Permission",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to which permissions are added."
+                        },
+                        {
+                            "name": "awsAccountNumbers",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The AWS account numbers of the principal who will be given permission.(e.g., 111111111234, 111111111111)"
+                        },
+                        {
+                            "name": "actionNames",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The action the client wants to allow for the specified principal. (e.g., SendMessage, DeleteMessage)"
+                        },
+                        {
+                            "name": "label",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The unique identification of the permission you are setting (e.g., AliceSendMessage)"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 },
                 {
                     "name": "listDeadLetterSourceQueues",
-                    "description": "Returns a list of your queues that have the RedrivePolicy queue attribute",
+                    "description": "List Dead Letter Source Queues",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of a dead-letter queue."
+                        },
+                        {
+                            "name": "maxResults",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Maximum number of results to include in the response."
+                        },
+                        {
+                            "name": "nextToken",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Pagination token to request the next set of results."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "receiveMessage",
+                    "description": "Receive Message",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to which a message is sent."
+                        },
+                        {
+                            "name": "maxNumberOfMessages",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "1",
+                            "description": "The maximum number of messages to be returned."
+                        },
+                        {
+                            "name": "waitTimeSeconds",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration (in seconds) for which the call will wait for a message to arrive in the queue before returning."
+                        },
+                        {
+                            "name": "messageAttributeNames",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The name of the message attribute.(e.g., attributeName1, attributeName2)"
+                        },
+                        {
+                            "name": "visibilityTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration (in seconds) in which the received messages are hidden from subsequent retrieve requests after being retrieved by the request."
+                        },
+                        {
+                            "name": "messageSystemAttributeNames",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A list of attributes that need to be returned along with each message.e.g., systemAttributeName1, systemAttributeName2"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "sendMessageBatch",
+                    "description": "Send Message Batch",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to which a message is sent."
+                        },
+                        {
+                            "name": "messageRequestEntries",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The list of messages to be sent.(e.g., [{'delaySeconds': 0, 'id': 'id1', 'messageBody': 'hi', 'messageAttributes': {'my_attribute_name_1': {'DataType': 'String','StringValue': 'my_attribute_value_1'}}, messageSystemAttributes: {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}}])"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "sendMessage",
+                    "description": "Send Message",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to which a message is sent."
+                        },
+                        {
+                            "name": "messageBody",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The message to be sent."
+                        },
+                        {
+                            "name": "delaySeconds",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The number of seconds (0 to 900, which is 15 minutes) to delay a specific message."
+                        },
+                        {
+                            "name": "messageAttributes",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Each message attribute consists of a Name, Type, and Value. (e.g., { 'attributeName' :{ DataType: value, StringValue: value}}"
+                        },
+                        {
+                            "name": "messageDeduplicationId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The ID used for deduplication of sent messages."
+                        },
+                        {
+                            "name": "messageGroupId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The ID that specifies that a message belongs to a specific message group."
+                        },
+                        {
+                            "name": "messageSystemAttributes",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Each message attribute consists of a Name, Type, and Value.(e.g., {'AWSTraceHeader': {'DataType': 'String','StringValue': 'AWS X-Ray'}}"
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "deleteQueue",
+                    "description": "Delete Queue",
+                    "params": [
+                        {
+                            "name": "queueUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the queue to delete."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
                     "isHidden": false
                 }
             ],
             "connections": [
                 {
                     "name": "amazonsqs",
-                    "description": "Connection for interacting with Amazon SQS queues."
+                    "description": "Amazon SQS Connection",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "AMAZON_SQS_CONNECTION_1",
+                            "description": "The name for the AmazonSQS connection"
+                        },
+                        {
+                            "name": "region",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Region which is used select a regional endpoint to make requests."
+                        },
+                        {
+                            "name": "accessKeyId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The access key ID that corresponds to the secret access key."
+                        },
+                        {
+                            "name": "secretAccessKey",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "AWS secret access key."
+                        },
+                        {
+                            "name": "connectionMaxIdleTime",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The timeout (in seconds) after which an idle connection should be closed."
+                        },
+                        {
+                            "name": "connectionTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The timeout (in seconds) for establishing a connection to a remote service."
+                        },
+                        {
+                            "name": "connectionTimeToLive",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The timeout(in seconds) after which a connection should be closed."
+                        },
+                        {
+                            "name": "connectionAcquisitionTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The timeout(in seconds) for acquiring an established connection from the pool."
+                        },
+                        {
+                            "name": "socketTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The timeout(in seconds) for each read to the underlying socket."
+                        },
+                        {
+                            "name": "apiCallTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The total execution time(in seconds), including all retry attempts."
+                        },
+                        {
+                            "name": "apiCallAttemptTimeout",
+                            "type": "integerOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The duration(in seconds) for a single HTTP attempt before retrying the API call."
+                        }
+                    ]
                 }
-            ],
-            "isHidden": false
+            ]
         },
         {
             "tagName": "v2.0.3",

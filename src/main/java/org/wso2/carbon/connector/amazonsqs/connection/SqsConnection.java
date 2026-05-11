@@ -29,6 +29,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.SqsClientBuilder;
 
+import java.net.URI;
 import java.time.Duration;
 
 /**
@@ -90,6 +91,10 @@ public class SqsConnection implements Connection {
         }
         SqsClientBuilder sqsClientBuilder = SqsClient.builder().region(Region.of(connectionConfig.getRegion())).
                 httpClient(apacheHttpClientBuilder.build());
+        String endpoint = connectionConfig.getEndpoint();
+        if (StringUtils.isNotBlank(endpoint)) {
+            sqsClientBuilder.endpointOverride(URI.create(endpoint));
+        }
         AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.create();
         if (StringUtils.isNotBlank(awsAccessKeyId) && StringUtils.isNotBlank(awsSecretAccessKey)) {
             credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.

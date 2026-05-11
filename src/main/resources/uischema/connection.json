@@ -78,6 +78,17 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "endpoint",
+                    "displayName": "Custom Endpoint URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Optional custom endpoint URL. Use this for VPC interface endpoints or private/custom SQS-compatible hosts (for example: https://vpce-xxxx.sqs.us-east-1.vpce.amazonaws.com). Leave blank to use the default AWS endpoint for the selected region."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "connectionMaxIdleTime",
                     "displayName": "Connection Max Idle Time",
                     "inputType": "integerOrExpression",

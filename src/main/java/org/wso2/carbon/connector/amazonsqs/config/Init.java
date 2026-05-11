@@ -81,6 +81,8 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
                 lookupTemplateParamater(msgContext, Constants.AWS_ACCESS_KEY_ID);
         String awsSecretAccessKey = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, Constants.AWS_SECRET_ACCESS_KEY);
+        String endpoint = (String) ConnectorUtils.
+                lookupTemplateParamater(msgContext, Constants.ENDPOINT);
         String socketTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext, Constants.SOCKET_TIMEOUT);
         String connectionAcquisitionTimeout = (String) ConnectorUtils.lookupTemplateParamater(msgContext,
                 Constants.CONNECTION_ACQUISITION_TIMEOUT);
@@ -100,6 +102,9 @@ public class Init extends AbstractConnector implements ManagedLifecycle {
         connectionConfig.setRegion(region);
         connectionConfig.setAwsAccessKeyId(awsAccessKeyId);
         connectionConfig.setAwsSecretAccessKey(awsSecretAccessKey);
+        if (StringUtils.isNotBlank(endpoint)) {
+            connectionConfig.setEndpoint(endpoint);
+        }
         if (StringUtils.isNotBlank(socketTimeout)) {
             connectionConfig.setSocketTimeout(Utils.convertToMillis(socketTimeout));
         }

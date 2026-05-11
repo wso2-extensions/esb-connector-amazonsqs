@@ -63,6 +63,11 @@ public class Constants {
     public static final String AWS_SECRET_ACCESS_KEY = "secretAccessKey";
 
     /**
+     * Constant for optional endpoint override (e.g. VPC interface endpoint or custom proxy URL).
+     */
+    public static final String ENDPOINT = "endpoint";
+
+    /**
      * Constant for client exception msg.
      */
     public static final String CLIENT_EXCEPTION_MSG = "Error occurred while generating the client: ";

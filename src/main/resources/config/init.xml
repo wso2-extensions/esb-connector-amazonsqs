@@ -22,6 +22,9 @@
     <parameter name="accessKeyId"
                description="The access key ID that corresponds to the secret access key that you used to sign the request"/>
     <parameter name="secretAccessKey" description="The secret access key"/>
+    <parameter name="endpoint" description="Optional custom endpoint URL. Use this for VPC interface endpoints or
+     private/custom SQS-compatible hosts (for example: https://vpce-xxxx.sqs.us-east-1.vpce.amazonaws.com).
+     Leave blank to use the default AWS endpoint for the selected region."/>
     <parameter name="connectionMaxIdleTime" description="The maximum amount of time(In Seconds) that a connection should be
                 allowed to remain open while idle"/>
     <parameter name="connectionTimeout" description="The amount of time(In Seconds) to wait when initially establishing

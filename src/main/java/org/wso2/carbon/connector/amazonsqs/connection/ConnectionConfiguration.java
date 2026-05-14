@@ -27,6 +27,7 @@ public class ConnectionConfiguration {
     public String region;
     private String awsAccessKeyId;
     private String awsSecretAccessKey;
+    private String endpoint;
 
     private String connectionName;
     private Integer connectionAcquisitionTimeout = -1;
@@ -76,6 +77,14 @@ public class ConnectionConfiguration {
 
     public void setAwsSecretAccessKey(String awsSecretAccessKey) {
         this.awsSecretAccessKey = awsSecretAccessKey;
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     public Integer getConnectionAcquisitionTimeout() {
@@ -141,6 +150,7 @@ public class ConnectionConfiguration {
                     StringUtils.equals(this.region, connectionConfiguration.getRegion()) &&
                     StringUtils.equals(this.awsAccessKeyId, connectionConfiguration.getAwsAccessKeyId()) &&
                     StringUtils.equals(this.awsSecretAccessKey, connectionConfiguration.getAwsSecretAccessKey()) &&
+                    StringUtils.equals(this.endpoint, connectionConfiguration.getEndpoint()) &&
                     StringUtils.equals(this.connectionTimeout.toString(), connectionConfiguration.
                             getConnectionTimeout().toString()) &&
                     StringUtils.equals(this.socketTimeout.toString(), connectionConfiguration.getSocketTimeout().
